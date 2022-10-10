@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{gloves.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{gloves.header.search}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th th:text="#{gloves.parameter.id}">?????</th>
+        <th th:text="#{gloves.parameter.name}">?????</th>
+        <th th:text="#{gloves.parameter.condition}">?????</th>
+        <th th:text="#{gloves.parameter.size}">?????</th>
+    </tr>
+    <tr th:each="oneGloves : ${glovessBySearch}">
+        <td th:text="${oneGloves.getId()}">?????</td>
+        <td th:text="${oneGloves.getName()}" th:align="left">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneGloves.getCondition()}}">?????</td>
+        <td th:text="${oneGloves.getSize()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/gloves/edit/{id}(id=${oneGloves.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/admin/info-equipment/gloves/{id}(id=${oneGloves.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Return to "gloves/show_all"-->
+<a href="/admin/info-equipment/gloves/">
+    <button th:text="#{equipment.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

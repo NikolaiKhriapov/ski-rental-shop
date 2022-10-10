@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{ski.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{equipment.search_results}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows" th:cellpadding="5">
+    <tr>
+        <th th:text="#{ski.parameter.id}">?????</th>
+        <th th:text="#{ski.parameter.name}">?????</th>
+        <th th:text="#{ski.parameter.condition}">?????</th>
+        <th th:text="#{ski.parameter.size}">?????</th>
+        <th th:text="#{ski.parameter.stiffness}">?????</th>
+    </tr>
+    <tr th:each="oneSki : ${skiBySearch}">
+        <td th:text="${oneSki.getId()}">?????</td>
+        <td th:text="${oneSki.getName()}" th:align="left">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneSki.getCondition()}}">?????</td>
+        <td th:text="#{${'ski.size.' + oneSki.getSize()}}">?????</td>
+        <td th:text="#{${'ski.stiffness.' + oneSki.getStiffness()}}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/ski/edit/{id}(id=${oneSki.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/admin/info-equipment/ski/{id}(id=${oneSki.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Return to "ski/show_all"-->
+<a href="/admin/info-equipment/ski/">
+    <button th:text="#{equipment.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

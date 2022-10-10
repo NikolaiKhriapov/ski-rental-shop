@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{protective_shorts.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{protective_shorts.header.edit}">?????</h1>
+
+<!--Input parameters-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-equipment/protective-shorts/edit/{id}(id=${id})}"
+      th:object="${protectiveShortsToUpdate}">
+    <table th:align="center" style="text-align:left" th:cellpadding="2">
+        <tr>
+            <td th:text="#{protective_shorts.parameter.name} + ': '">?????</td>
+            <td>
+                <input type="text" th:field="*{name}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{protective_shorts.parameter.condition} + ': '">?????</td>
+            <td>
+                <select th:field="*{condition}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.EquipmentCondition).values()}"
+                            th:value="${i.name()}"
+                            th:text="#{${'equipment_condition.' + i}}"
+                            th:selected="${protectiveShortsToUpdate.getCondition()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{protective_shorts.parameter.size} + ': '">?????</td>
+            <td>
+                <select th:field="*{size}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.ProtectiveShorts.Size).values()}"
+                            th:value="${i}"
+                            th:text="${i}"
+                            th:selected="${protectiveShortsToUpdate.getSize()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <input type="submit" th:value="#{equipment.button.save}"/>
+</form>
+
+<br>
+
+<!--Return to "/admin/info-equipment/protective-shorts"-->
+<a href="/admin/info-equipment/protective-shorts">
+    <button th:text="#{protective_shorts.button.edit.go_to_protective_shorts}">?????</button>
+</a>
+
+<!--Return to "/admin"-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

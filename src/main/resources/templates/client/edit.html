@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{client.edit.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{client.edit.header}">?????</h1>
+
+<!--Input parameters-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-clients/edit/{id}(id=${id})}"
+      th:object="${clientToUpdate}">
+    <table th:align="center" style="text-align:left" th:cellpadding="2">
+        <tr>
+            <td th:text="#{client.edit.field.surname}">?????</td>
+            <td>
+                <input type="text" th:field="*{surname}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{client.edit.field.phone1}">?????</td>
+            <td>
+                <input type="text" th:field="*{phone1}" placeholder="X(XXX)XXX-XX-XX"/>
+                <div style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{client.edit.field.phone2}">?????</td>
+            <td>
+                <input type="text" th:field="*{phone2}" placeholder="X(XXX)XXX-XX-XX"/>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <input type="submit" th:value="#{client.edit.button.save}"/>
+</form>
+
+<br>
+
+<!--Return to "/admin/info-clients"-->
+<a href="/admin/info-clients">
+    <button th:text="#{client.edit.button.go_to_clients}">?????</button>
+</a>
+
+<!--Return to "/admin"-->
+<a href="/admin">
+    <button th:text="#{client.edit.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

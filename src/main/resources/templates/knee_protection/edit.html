@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{knee_protection.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{knee_protection.header.edit}">?????</h1>
+
+<!--Input parameters-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-equipment/knee-protection/edit/{id}(id=${id})}"
+      th:object="${kneeProtectionToUpdate}">
+    <table th:align="center" style="text-align:left" th:cellpadding="2">
+        <tr>
+            <td th:text="#{knee_protection.parameter.name} + ': '">?????</td>
+            <td>
+                <input type="text" th:field="*{name}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{knee_protection.parameter.condition} + ': '">?????</td>
+            <td>
+                <select th:field="*{condition}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.EquipmentCondition).values()}"
+                            th:value="${i.name()}"
+                            th:text="#{${'equipment_condition.' + i}}"
+                            th:selected="${kneeProtectionToUpdate.getCondition()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{knee_protection.parameter.size} + ': '">?????</td>
+            <td>
+                <select th:field="*{size}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.KneeProtection.Size).values()}"
+                            th:value="${i}"
+                            th:text="${i}"
+                            th:selected="${kneeProtectionToUpdate.getSize()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <input type="submit" th:value="#{equipment.button.save}"/>
+</form>
+
+<br>
+
+<!--Return to "/admin/info-equipment/knee-protection"-->
+<a href="/admin/info-equipment/knee-protection">
+    <button th:text="#{knee_protection.button.edit.go_to_knee_protection}">?????</button>
+</a>
+
+<!--Return to "/admin"-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

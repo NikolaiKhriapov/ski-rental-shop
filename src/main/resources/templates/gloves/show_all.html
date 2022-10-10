@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{gloves.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{gloves.header.show_all}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-equipment/gloves/search}">
+    <input th:type="text" th:name="search" th:placeholder="#{equipment.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{equipment.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-equipment/gloves/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{gloves.parameter.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/gloves/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{gloves.parameter.name}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/gloves/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{gloves.parameter.condition}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/gloves/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{gloves.parameter.size}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneGloves : ${allGloves}">
+        <td th:text="${oneGloves.getId()}">?????</td>
+        <td th:text="${oneGloves.getName()}" th:align="left">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneGloves.getCondition()}}">?????</td>
+        <td th:text="${oneGloves.getSize()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/gloves/edit/{id}(id=${oneGloves.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-equipment/gloves/{id}(id=${oneGloves.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-equipment/gloves/add-new">
+    <button th:text="#{gloves.button.show_all.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to list of equipment-->
+<a href="/admin/info-equipment">
+    <button th:text="#{equipment.button.go_to_equipment}">?????</button>
+</a>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{snowboard.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{snowboard.header.search}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows" th:cellpadding="5">
+    <tr>
+        <th th:text="#{snowboard.parameter.id}">?????</th>
+        <th th:text="#{snowboard.parameter.name}">?????</th>
+        <th th:text="#{snowboard.parameter.condition}">?????</th>
+        <th th:text="#{snowboard.parameter.size}">?????</th>
+        <th th:text="#{snowboard.parameter.stiffness}">?????</th>
+        <th th:text="#{snowboard.parameter.arch}">?????</th>
+        <th th:text="#{snowboard.parameter.binding_size}">?????</th>
+    </tr>
+    <tr th:each="oneSnowboard : ${snowboardsBySearch}">
+        <td th:text="${oneSnowboard.getId()}">?????</td>
+        <td th:text="${oneSnowboard.getName()}" th:align="left">?????</td>
+        <td th:text="${oneSnowboard.getSize()}">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneSnowboard.getCondition()}}">?????</td>
+        <td th:text="#{${'snowboard.stiffness.' + oneSnowboard.getStiffness()}}">?????</td>
+        <td th:text="#{${'snowboard.arch.' + oneSnowboard.getArch()}}">?????</td>
+        <td th:text="${oneSnowboard.getBindingSize()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/snowboard/edit/{id}(id=${oneSnowboard.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/admin/info-equipment/snowboard/{id}(id=${oneSnowboard.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Return to "snowboard/show_all"-->
+<a href="/admin/info-equipment/snowboard/">
+    <button th:text="#{equipment.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

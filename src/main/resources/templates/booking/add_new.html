@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{booking.add_new.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<h1 th:text="#{booking.add_new.header}">?????</h1>
+
+<!--Input parameters-->
+<form th:method="POST"
+      th:object="${newBooking}"
+      th:action="@{/admin/info-booking}">
+    <table th:align="center" style="text-align:left" th:cellpadding="2">
+        <tr>
+            <td th:text="#{booking.add_new.field.client}">?????</td>
+            <td>
+                <input type="text" th:field="*{client.surname}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.add_new.field.phone1}">?????</td>
+            <td>
+                <input type="text" th:field="*{client.phone1}" placeholder="X(XXX)XXX-XX-XX"/>
+                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}" th:errors="*{client.phone1}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.add_new.field.phone2}">?????</td>
+            <td><input type="text" th:field="*{client.phone2}" placeholder="X(XXX)XXX-XX-XX"/></td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.add_new.field.date_of_arrival}">?????</td>
+            <td>
+                <input type="datetime-local" th:field="*{dateOfArrival}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}" th:errors="*{dateOfArrival}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.add_new.field.date_of_return}">?????</td>
+            <td>
+                <input type="datetime-local" th:field="*{dateOfReturn}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">?????</div>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <input type="submit" th:value="#{booking.add_new.button.create}"/>
+</form>
+
+<br>
+
+<!--Return to "admin/info-booking"-->
+<a href="/admin/info-booking">
+    <button th:text="#{booking.add_new.button.go_to_bookings}">?????</button>
+</a>
+
+<!--Return to "admin/"-->
+<a href="/admin">
+    <button th:text="#{booking.add_new.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

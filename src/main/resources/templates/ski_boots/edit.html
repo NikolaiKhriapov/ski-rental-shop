@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{ski_boots.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{ski_boots.header.edit}">?????</h1>
+
+<!--Input parameters-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-equipment/ski-boots/{id}(id=${id})}"
+      th:object="${skiBootsToUpdate}">
+    <table th:align="center" style="text-align:left" th:cellpadding="2">
+        <tr>
+            <td th:text="#{ski_boots.parameter.name} + ': '">?????</td>
+            <td>
+                <input type="text" th:field="*{name}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">?????</div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{ski_boots.parameter.condition}">?????</td>
+            <td>
+                <select th:field="*{condition}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.EquipmentCondition).values()}"
+                            th:value="${i.name()}"
+                            th:text="#{${'equipment_condition.' + i}}"
+                            th:selected="${skiBootsToUpdate.getCondition()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{ski_boots.parameter.size} + ': '">?????</td>
+            <td>
+                <select th:field="*{size}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.SkiBoots.Size).values()}"
+                            th:value="${i.name()}"
+                            th:text="#{${'ski_boots.size.' + i}}"
+                            th:selected="${skiBootsToUpdate.getSize()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{ski_boots.parameter.stiffness} + ': '">?????</td>
+            <td>
+                <select th:field="*{stiffness}">
+                    <option th:each="i : ${T(my.project.skirentalshop.model.SkiBoots.Stiffness).values()}"
+                            th:value="${i.name()}"
+                            th:text="#{${'ski_boots.stiffness.' + i}}"
+                            th:selected="${skiBootsToUpdate.getStiffness()}">?????
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <input type="submit" th:value="#{equipment.button.save}"/>
+</form>
+
+<br>
+
+<!--Return to "ski_boots/show_all"-->
+<a href="/admin/info-equipment/ski-boots/">
+    <button th:text="#{ski_boots.button.edit.go_to_ski_boots}">?????</button>
+</a>
+
+<!--Return to "/admin"-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

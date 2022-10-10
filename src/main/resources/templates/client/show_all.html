@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{client.show_all.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{client.show_all.header}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-clients/search}">
+    <input th:type="text" th:name="search" th:placeholder="#{client.show_all.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{client.show_all.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows" th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-clients/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{client.show_all.table.header.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-clients/sort?parameter=surname&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{client.show_all.table.header.surname}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-clients/sort?parameter=phone1&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{client.show_all.table.header.phone1}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-clients/sort?parameter=phone2&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{client.show_all.table.header.phone2}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneClient : ${allClients}">
+        <td th:text="${oneClient.getId()}">?????</td>
+        <td th:text="${oneClient.getSurname()}" th:align="left">?????</td>
+        <td th:text="${oneClient.getPhone1()}">?????</td>
+        <td th:text="${oneClient.getPhone2()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-clients/edit/{id}(id=${oneClient.getId()})}">
+                <button th:text="#{client.show_all.table.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-clients/{id}(id=${oneClient.getId()})}">
+                <input type="submit" th:value="#{client.show_all.table.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-clients/add-new">
+    <button th:text="#{client.show_all.button.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{client.show_all.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

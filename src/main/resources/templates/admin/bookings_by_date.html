@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{admin.bookings_by_date.title} + ' | ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{admin.bookings_by_date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th><a th:text="#{booking.search.table.header.id}">?????</a></th>
+        <th><a th:text="#{booking.search.table.header.client}">?????</a></th>
+        <th><a th:text="#{booking.search.table.header.phone1}">?????</a></th>
+        <th><a th:text="#{booking.search.table.header.phone2}">?????</a></th>
+        <th><a th:text="#{booking.search.table.header.date_of_arrival}">?????</a></th>
+        <th><a th:text="#{booking.search.table.header.date_of_return}">?????</a></th>
+        <th><a th:text="#{booking.show_all.table.header.number_of_riders}">?????</a></th>
+    </tr>
+    <tr th:each="oneBooking : ${bookingsForTheDate}">
+        <td th:text="${oneBooking.getId()}">?????</td>
+        <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
+        <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
+        <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
+        <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}"></td>
+        <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}"></td>
+        <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <form th:method="GET"
+                  th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.getId()})}">
+                <input type="submit" th:value="#{booking.search.table.button.edit}"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/admin/info-booking/{id}(id=${oneBooking.getId()})}">
+                <input type="submit" th:value="#{booking.search.table.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+    <br>
+</table>
+
+<br>
+
+<!--Return button-->
+<a href="/admin">
+    <button th:text="#{booking.search.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

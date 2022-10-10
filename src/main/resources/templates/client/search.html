@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{client.search.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{client.search.header}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th th:text="#{client.search.table.header.id}">?????</th>
+        <th th:text="#{client.search.table.header.surname}">?????</th>
+        <th th:text="#{client.search.table.header.phone1}">?????</th>
+        <th th:text="#{client.search.table.header.phone2}">?????</th>
+        <th></th>
+    </tr>
+    <tr th:each="oneClient : ${clientsBySearch}">
+        <td th:text="${oneClient.getId()}">?????</td>
+        <td th:text="${oneClient.getSurname()}" th:align="left">?????</td>
+        <td th:text="${oneClient.getPhone1()}">?????</td>
+        <td th:text="${oneClient.getPhone2()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-clients/edit/{id}(id=${oneClient.getId()})}">
+                <button th:text="#{client.search.table.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-clients/{id}(id=${oneClient.getId()})}">
+                <input type="submit" th:value="#{client.search.table.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Return to "client/show_all"-->
+<a href="/admin/info-clients">
+    <button th:text="#{client.search.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

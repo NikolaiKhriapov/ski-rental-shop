@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{snowboard.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{snowboard.header.show_all}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-equipment/snowboard/search}">
+    <input th:type="text" th:name="search"
+           th:placeholder="#{equipment.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{equipment.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.name}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.condition}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.size}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.stiffness}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.arch}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/snowboard/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{snowboard.parameter.binding_size}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneSnowboard : ${allSnowboards}">
+        <td th:text="${oneSnowboard.getId()}">?????</td>
+        <td th:text="${oneSnowboard.getName()}" th:align="left">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneSnowboard.getCondition()}}">?????</td>
+        <td th:text="${oneSnowboard.getSize()}">?????</td>
+        <td th:text="#{${'snowboard.stiffness.' + oneSnowboard.getStiffness()}}">?????</td>
+        <td th:text="#{${'snowboard.arch.' + oneSnowboard.getArch()}}">?????</td>
+        <td th:text="${oneSnowboard.getBindingSize()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/snowboard/edit/{id}(id=${oneSnowboard.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-equipment/snowboard/{id}(id=${oneSnowboard.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-equipment/snowboard/add-new">
+    <button th:text="#{snowboard.button.show_all.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to list of equipment-->
+<a href="/admin/info-equipment">
+    <button th:text="#{equipment.button.go_to_equipment}">?????</button>
+</a>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

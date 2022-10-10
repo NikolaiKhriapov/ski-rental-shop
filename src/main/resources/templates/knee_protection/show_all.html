@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{knee_protection.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{knee_protection.header.show_all}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-equipment/knee-protection/search}">
+    <input th:type="text" th:name="search" th:placeholder="#{equipment.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{equipment.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-equipment/knee-protection/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{knee_protection.parameter.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/knee-protection/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{knee_protection.parameter.name}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/knee-protection/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{knee_protection.parameter.condition}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/knee-protection/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{knee_protection.parameter.size}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneKneeProtection : ${allKneeProtection}">
+        <td th:text="${oneKneeProtection.getId()}">?????</td>
+        <td th:text="${oneKneeProtection.getName()}" th:align="left">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneKneeProtection.getCondition()}}">?????</td>
+        <td th:text="${oneKneeProtection.getSize()}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <a th:href="@{/admin/info-equipment/knee-protection/edit/{id}(id=${oneKneeProtection.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/admin/info-equipment/knee-protection/{id}(id=${oneKneeProtection.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-equipment/knee-protection/add-new">
+    <button th:text="#{knee_protection.button.show_all.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to list of equipment-->
+<a href="/admin/info-equipment">
+    <button th:text="#{equipment.button.go_to_equipment}">?????</button>
+</a>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

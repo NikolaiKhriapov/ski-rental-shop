@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{ski.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{ski.header.show_all}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-equipment/ski/search}">
+    <input th:type="text" th:name="search"
+           th:placeholder="#{equipment.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{equipment.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-equipment/ski/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{ski.parameter.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/ski/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{ski.parameter.name}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/ski/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{ski.parameter.size}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/ski/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{ski.parameter.condition}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-equipment/ski/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{ski.parameter.stiffness}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneSki : ${allSki}">
+        <td th:text="${oneSki.getId()}">?????</td>
+        <td th:text="${oneSki.getName()}" th:align="left">?????</td>
+        <td th:text="${oneSki.getSize()}">?????</td>
+        <td th:text="#{${'equipment_condition.' + oneSki.getCondition()}}">?????</td>
+        <td th:text="#{${'ski.stiffness.' + oneSki.getStiffness()}}">?????</td>
+        <td>
+            <a th:href="@{/admin/info-equipment/ski/edit/{id}(id=${oneSki.getId()})}">
+                <button th:text="#{equipment.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-equipment/ski/{id}(id=${oneSki.getId()})}">
+                <input type="submit" th:value="#{equipment.button.delete}">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-equipment/ski/add-new">
+    <button th:text="#{ski.button.show_all.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to list of equipment-->
+<a href="/admin/info-equipment">
+    <button th:text="#{equipment.button.go_to_equipment}">?????</button>
+</a>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{equipment.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

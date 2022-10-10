@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{rider.show_all.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{rider.show_all.header}">?????</h1>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows" th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.name}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=height&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.height}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=weight&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.weight}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=sex&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.sex}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-riders/sort?parameter=foot&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{rider.show_all.table.header.foot}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneRider : ${allRiders}">
+        <td th:text="${oneRider.getId()}">?????</td>
+        <td th:text="${oneRider.getName()}">?????</td>
+        <td th:text="${oneRider.getHeight()}">?????</td>
+        <td th:text="${oneRider.getWeight()}">?????</td>
+        <td th:text="#{${'rider.sex.' + oneRider.getSex()}}">?????</td>
+        <td th:text="#{${'rider.size.' + oneRider.getFoot()}}">?????</td>
+        <td>
+            <a th:href="@{'/admin/info-riders/edit?id=' + ${oneRider.getId()}}">
+                <button th:text="#{rider.show_all.table.button.edit}">?????</button>
+            </a>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-riders/{id}(id=${oneRider.getId()})}">
+                <input type="submit" th:value="#{rider.show_all.table.button.delete}">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-riders/add-new">
+    <button th:text="#{rider.show_all.button.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to main-->
+<a href="/admin">
+    <button th:text="#{rider.show_all.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>

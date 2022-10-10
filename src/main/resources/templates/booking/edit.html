@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{booking.edit.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{booking.edit.header}">?????</h1>
+
+<!--Booking and Client parameters-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-booking/edit/{id}(id=${id})}"
+      th:object="${bookingToBeUpdated}">
+
+    <table th:align="center" style="text-align:left"
+           th:cellpadding="2">
+        <tr>
+            <td th:text="#{booking.edit.field.id}">?????</td>
+            <td th:text="${id}">?????</td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.edit.field.client}">?????</td>
+            <td>
+                <input type="text" th:field="*{client.surname}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">
+                    ?????
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.edit.field.phone1}">?????</td>
+            <td>
+                <input type="text" th:field="*{client.phone1}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}" th:errors="*{client.phone1}">
+                    ?????
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.edit.field.phone2}">?????</td>
+            <td><input type="text" th:field="*{client.phone2}"/></td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.edit.field.date_of_arrival}">?????</td>
+            <td>
+                <input type="datetime-local" th:field="*{dateOfArrival}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}" th:errors="*{dateOfArrival}">?????
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="#{booking.edit.field.date_of_return}">?????</td>
+            <td>
+                <input type="datetime-local" th:field="*{dateOfReturn}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">?????
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+
+    <input type="submit" th:value="#{booking.edit.button.save}"/>
+</form>
+
+<br/>
+
+<!--List of Riders-->
+<span th:if="${bookingToBeUpdated.getListOfRiders().size() > 0}">
+    <table th:align="center"
+           th:border="1" th:rules="rows"
+           th:cellpadding="5">
+        <tr th:each="oneRider : ${bookingToBeUpdated.getListOfRiders()}">
+            <td th:text="${oneRider.getId()}" style="vertical-align:top">?????</td>
+            <td style="vertical-align:top" th:align="left">
+                <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.getName()}">?????</div>
+                <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}">?????</div>
+                <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.getHeight()}">?????</div>
+                <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.getWeight()}">?????</div>
+                <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.foot}}">?????</div>
+            </td>
+            <td th:align="left">
+                <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
+                    <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}">?????</div>
+                </span>
+            </td>
+            <form th:method="PATCH"
+                  th:action="@{'/admin/info-booking/edit/assign-equipment?bid=' + ${id} + '&rid=' + ${oneRider.getId()}}"
+                  th:object="${oneRider.assignedEquipment}">
+                <td style="vertical-align:center" th:align="left">
+                    <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
+                        <div th:if="${oneEquipmentId.name} == SNOWBOARD">
+                            <select name="snowboard" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.snowboard.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneSnowboard : ${allSnowboardsAvailable}"
+                                            th:value="${oneSnowboard.getId()}"
+                                            th:text="${oneSnowboard.getSize()} + ' ' + ${oneSnowboard.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.snowboard.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.snowboard.id}"
+                                            th:text="${oneRider.assignedEquipment.snowboard.size} + ' ' +
+                                            ${oneRider.assignedEquipment.snowboard.name}">?????
+                                    </option>
+                                    <option th:each="oneSnowboard : ${allSnowboardsAvailable}"
+                                            th:value="${oneSnowboard.getId()}"
+                                            th:text="${oneSnowboard.getSize()} + ' ' + ${oneSnowboard.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == SNOWBOARD_BOOTS">
+                            <select name="snowboardBoots" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.snowboardBoots.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneSnowboardBoots : ${allSnowboardBootsAvailable}"
+                                            th:value="${oneSnowboardBoots.getId()}"
+                                            th:text="#{${'snowboard_boots.size.' + oneSnowboardBoots.getSize()}} + ' ' +
+                                            ${oneSnowboardBoots.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.snowboardBoots.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.snowboardBoots.id}"
+                                            th:text="#{${'snowboard_boots.size.' + oneRider.assignedEquipment.snowboardBoots.size}} + ' ' +
+                                            ${oneRider.assignedEquipment.snowboardBoots.name}">?????
+                                    </option>
+                                    <option th:each="oneSnowboardBoots : ${allSnowboardBootsAvailable}"
+                                            th:value="${oneSnowboardBoots.getId()}"
+                                            th:text="#{${'snowboard_boots.size.' + oneSnowboardBoots.getSize()}} + ' ' + ${oneSnowboardBoots.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == SKI">
+                            <select name="ski" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.ski.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneSki : ${allSkiAvailable}"
+                                            th:value="${oneSki.getId()}"
+                                            th:text="${oneSki.getSize()} + ' ' + ${oneSki.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.ski.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.ski.id}"
+                                            th:text="${oneRider.assignedEquipment.ski.size} + ' ' +
+                                            ${oneRider.assignedEquipment.ski.name}">?????
+                                    </option>
+                                    <option th:each="oneSki : ${allSkiAvailable}"
+                                            th:value="${oneSki.getId()}"
+                                            th:text="${oneSki.getSize()} + ', ' + ${oneSki.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == SKI_BOOTS">
+                            <select name="skiBoots" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.skiBoots.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneSkiBoots : ${allSkiBootsAvailable}"
+                                            th:value="${oneSkiBoots.getId()}"
+                                            th:text="#{${'ski_boots.size.' + oneSkiBoots.getSize()}} + ' ' + ${oneSkiBoots.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.skiBoots.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.skiBoots.id}"
+                                            th:text="#{${'ski_boots.size.' + oneRider.assignedEquipment.skiBoots.size}} + ' ' +
+                                            ${oneRider.assignedEquipment.skiBoots.name}">?????
+                                    </option>
+                                    <option th:each="oneSkiBoots : ${allSkiBootsAvailable}"
+                                            th:value="${oneSkiBoots.getId()}"
+                                            th:text="#{${'ski_boots.size.' + oneSkiBoots.getSize()}} + ' ' + ${oneSkiBoots.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == JACKET">
+                            <select name="jacket" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.jacket.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneJacket : ${allJacketsAvailable}"
+                                            th:value="${oneJacket.getId()}"
+                                            th:text="${oneJacket.getSize()} + ' ' + ${oneJacket.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.jacket.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.jacket.id}"
+                                            th:text="${oneRider.assignedEquipment.jacket.size} + ' ' +
+                                            ${oneRider.assignedEquipment.jacket.name}">?????
+                                    </option>
+                                    <option th:each="oneJacket : ${allJacketsAvailable}"
+                                            th:value="${oneJacket.getId()}"
+                                            th:text="${oneJacket.getSize()} + ' ' + ${oneJacket.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == KNEE_PROTECTION">
+                            <select name="kneeProtection" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.kneeProtection.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneKneeProtection : ${allKneeProtectionAvailable}"
+                                            th:value="${oneKneeProtection.getId()}"
+                                            th:text="${oneKneeProtection.getSize()} + ' ' + ${oneKneeProtection.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.kneeProtection.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.kneeProtection.id}"
+                                            th:text="${oneRider.assignedEquipment.kneeProtection.size} + ' ' +
+                                            ${oneRider.assignedEquipment.kneeProtection.name}">?????
+                                    </option>
+                                    <option th:each="oneKneeProtection : ${allKneeProtectionAvailable}"
+                                            th:value="${oneKneeProtection.getId()}"
+                                            th:text="${oneKneeProtection.getSize()} + ' ' + ${oneKneeProtection.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == PROTECTIVE_SHORTS">
+                            <select name="protectiveShorts" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.protectiveShorts.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneProtectiveShorts : ${allProtectiveShortsAvailable}"
+                                            th:value="${oneProtectiveShorts.getId()}"
+                                            th:text="${oneProtectiveShorts.getSize()} + ' ' + ${oneProtectiveShorts.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.protectiveShorts.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.protectiveShorts.id}"
+                                            th:text="${oneRider.assignedEquipment.protectiveShorts.size} + ' ' +
+                                            ${oneRider.assignedEquipment.protectiveShorts.name}">?????
+                                    </option>
+                                    <option th:each="oneProtectiveShorts : ${allProtectiveShortsAvailable}"
+                                            th:value="${oneProtectiveShorts.getId()}"
+                                            th:text="${oneProtectiveShorts.getSize()} + ' ' + ${oneProtectiveShorts.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == HELMET">
+                            <select name="helmet" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.helmet.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneHelmet : ${allHelmetsAvailable}"
+                                            th:value="${oneHelmet.getId()}"
+                                            th:text="${oneHelmet.getSize()} + ' ' + ${oneHelmet.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.helmet.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.helmet.id}"
+                                            th:text="${oneRider.assignedEquipment.helmet.size} + ' ' +
+                                            ${oneRider.assignedEquipment.helmet.name}">?????
+                                    </option>
+                                    <option th:each="oneHelmet : ${allHelmetsAvailable}"
+                                            th:value="${oneHelmet.getId()}"
+                                            th:text="${oneHelmet.getSize()} + ' ' + ${oneHelmet.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == GLOVES">
+                            <select name="gloves" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.gloves.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="oneGloves : ${allGlovesAvailable}"
+                                            th:value="${oneGloves.getId()}"
+                                            th:text="${oneGloves.getSize()} + ' ' + ${oneGloves.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.gloves.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.gloves.id}"
+                                            th:text="${oneRider.assignedEquipment.gloves.size} + ' ' +
+                                            ${oneRider.assignedEquipment.gloves.name}">?????
+                                    </option>
+                                    <option th:each="oneGloves : ${allGlovesAvailable}"
+                                            th:value="${oneGloves.getId()}"
+                                            th:text="${oneGloves.getSize()} + ' ' + ${oneGloves.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                        <div th:if="${oneEquipmentId.name} == PANTS">
+                            <select name="pants" style="width:300px">
+                                <span th:if="${oneRider.assignedEquipment.pants.id} == null">
+                                    <option value="" th:disabled="false" th:selected="selected"></option>
+                                    <option th:each="onePants : ${allPantsAvailable}"
+                                            th:value="${onePants.getId()}"
+                                            th:text="${onePants.getSize()} + ' ' + ${onePants.getName()}">?????
+                                    </option>
+                                </span>
+                                <span th:unless="${oneRider.assignedEquipment.pants.id} == null">
+                                    <option th:value="${oneRider.assignedEquipment.pants.id}"
+                                            th:text="${oneRider.assignedEquipment.pants.size} + ' ' +
+                                            ${oneRider.assignedEquipment.pants.name}">?????
+                                    </option>
+                                    <option th:each="onePants : ${allPantsAvailable}"
+                                            th:value="${onePants.getId()}"
+                                            th:text="${onePants.getSize()} + ' ' + ${onePants.getName()}">?????
+                                    </option>
+                                    <option value="" th:disabled="false"></option>
+                                </span>
+                            </select>
+                        </div>
+                    </span>
+                </td>
+                <td th:width="25"></td>
+                <td style="vertical-align:center">
+                    <input type="submit" th:value="#{booking.edit.table.button.assign}"/>
+                </td>
+            </form>
+            <td>
+                <a th:href="'/admin/info-riders/edit?id=' + ${oneRider.getId()} + '&bookingId=' + ${bookingToBeUpdated.getId()}">
+                    <button th:text="#{booking.edit.table.button.edit}">?????</button>
+                </a>
+            </td>
+            <td th:align="left">
+                <a th:href="@{'/admin/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.getId()} + '&rid=' + ${oneRider.getId()}}">
+                    <button th:text="#{booking.edit.table.button.remove}">?????</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+</span>
+<span th:unless="${bookingToBeUpdated.getListOfRiders().size() > 0}">Riders not found</span>
+
+<br><br>
+
+<!--Add existing Rider to Booking-->
+<form th:method="PATCH"
+      th:action="@{/admin/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.getId()})}"
+      th:object="${existingRiderToBeAddedId}">
+    <select name="existingRiderToBeAddedId">
+        <option th:each="oneRider : ${allRiders}"
+                th:value="${oneRider.getId()}"
+                th:text="${oneRider.getName()}">?????
+        </option>
+    </select>
+    <input type="submit" th:value="#{booking.edit.button.add_existing}"/>
+</form>
+
+<br>
+
+<!--Add new rider-->
+<a th:href="@{'/admin/info-riders/add-new?id=' + ${bookingToBeUpdated.getId()}}">
+    <button th:text="#{booking.edit.button.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return to "admin/info-booking"-->
+<a href="/admin/info-booking">
+    <button th:text="#{booking.edit.button.go_to_bookings}">?????</button>
+</a>
+
+<!--Return to "admin/"-->
+<a href="/admin">
+    <button th:text="#{booking.edit.button.go_to_main}">?????</button>
+</a>
+
+</body>
+
+</html>

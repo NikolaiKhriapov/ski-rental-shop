@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{booking.show_all.title}">?????</title>
+</head>
+
+<body th:align="center">
+
+<!--Header-->
+<h1 th:text="#{booking.show_all.header}">?????</h1>
+
+<!--Search-->
+<form th:method="GET"
+      th:action="@{/admin/info-booking/search}">
+    <input th:type="text" th:name="search"
+           th:placeholder="#{booking.show_all.search_placeholder}" style="width:200px"/>
+    <input type="submit" th:value="#{booking.show_all.search_button}"/>
+</form>
+
+<br>
+
+<!--Table-->
+<table th:align="center"
+       th:border="1" th:rules="rows"
+       th:cellpadding="5">
+    <tr>
+        <th>
+            <a th:href="@{'/admin/info-booking/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{booking.show_all.table.header.id}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-booking/sort?parameter=surname&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{booking.show_all.table.header.client}">?????</a>
+        </th>
+        <th><a th:text="#{booking.show_all.table.header.phone1}">?????</a></th>
+        <th><a th:text="#{booking.show_all.table.header.phone2}">?????</a></th>
+        <th>
+            <a th:href="@{'/admin/info-booking/sort?parameter=dateOfArrival&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{booking.show_all.table.header.date_of_arrival}">?????</a>
+        </th>
+        <th>
+            <a th:href="@{'/admin/info-booking/sort?parameter=dateOfReturn&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{booking.show_all.table.header.date_of_return}">?????</a>
+        </th>
+        <th><a th:text="#{booking.show_all.table.header.number_of_riders}">?????</a></th>
+        <th>
+            <a th:href="@{'/admin/info-booking/sort?parameter=completed&sortDirection=' + ${reverseSortDirection}}"
+               th:text="#{booking.show_all.table.header.completed}">?????</a>
+        </th>
+    </tr>
+    <tr th:each="oneBooking : ${allBookings}">
+        <td th:text="${oneBooking.getId()}">?????</td>
+        <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
+        <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
+        <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
+        <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}">?????</td>
+        <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}">?????</td>
+        <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
+        <td th:text="${oneBooking.isCompleted() ? '+' : '–'}">?????</td>
+        <td th:width="25"></td>
+        <td>
+            <form th:method="GET"
+                  th:action="@{/admin/info-booking/change-booking-completed/{id}(id=${oneBooking.getId()})}">
+                <span th:if="${oneBooking.isCompleted() == false}">
+                    <input type="submit" th:value="#{booking.main_page.table.button.mark_completed}"/>
+                </span>
+                <span th:unless="${oneBooking.isCompleted() == false}">
+                    <input type="submit" th:value="#{booking.main_page.table.button.mark_uncompleted}"/>
+                </span>
+            </form>
+        </td>
+        <td>
+            <form th:method="GET" th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.getId()})}">
+                <input type="submit" th:value="#{booking.show_all.table.button.edit}"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin/info-booking/{id}(id=${oneBooking.getId()})}">
+                <input type="submit" th:value="#{booking.show_all.table.button.delete}"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<!--Add new-->
+<a href="/admin/info-booking/add-new">
+    <button th:text="#{booking.show_all.button.add_new}">?????</button>
+</a>
+
+<br><br>
+
+<!--Return-->
+<a href="/admin">
+    <button th:text="#{booking.show_all.button.return}">?????</button>
+</a>
+
+</body>
+
+</html>
