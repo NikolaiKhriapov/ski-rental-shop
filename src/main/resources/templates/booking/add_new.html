@@ -1,70 +1,150 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title th:text="#{booking.add_new.title}">?????</title>
+    <link rel="stylesheet" href="/css/styles1.css">
 </head>
 
-<body th:align="center">
+<body>
 
-<h1 th:text="#{booking.add_new.header}">?????</h1>
+<div class="header">
+    <div>
+        <a href="/admin?lang=ru"><img src="/images/language/flag_ru.png" width="40" height="40"/></a>
+        <a href="/admin?lang=en"><img src="/images/language/flag_en.png" width="40" height="40"/></a>
+    </div>
+</div>
 
-<!--Input parameters-->
-<form th:method="POST"
-      th:object="${newBooking}"
-      th:action="@{/admin/info-booking}">
-    <table th:align="center" style="text-align:left" th:cellpadding="2">
-        <tr>
-            <td th:text="#{booking.add_new.field.client}">?????</td>
-            <td>
-                <input type="text" th:field="*{client.surname}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">?????</div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.add_new.field.phone1}">?????</td>
-            <td>
-                <input type="text" th:field="*{client.phone1}" placeholder="X(XXX)XXX-XX-XX"/>
-                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}" th:errors="*{client.phone1}">?????</div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.add_new.field.phone2}">?????</td>
-            <td><input type="text" th:field="*{client.phone2}" placeholder="X(XXX)XXX-XX-XX"/></td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.add_new.field.date_of_arrival}">?????</td>
-            <td>
-                <input type="datetime-local" th:field="*{dateOfArrival}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}" th:errors="*{dateOfArrival}">?????</div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.add_new.field.date_of_return}">?????</td>
-            <td>
-                <input type="datetime-local" th:field="*{dateOfReturn}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">?????</div>
-            </td>
-        </tr>
-    </table>
+<div class="main">
 
-    <br>
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{admin.main_page}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{admin.main_page.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{admin.main_page.today_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{admin.main_page.tomorrow_bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{admin.main_page.list_of_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{admin.main_page.list_of_clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{admin.main_page.list_of_riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{admin.main_page.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{admin.main_page.snowboard_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{admin.main_page.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{admin.main_page.ski_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{admin.main_page.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{admin.main_page.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{admin.main_page.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{admin.main_page.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{admin.main_page.protective_shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{admin.main_page.knee_protection}"/>
+        </button>
+    </div>
 
-    <input type="submit" th:value="#{booking.add_new.button.create}"/>
-</form>
+    <div class="content">
+        <div class="new-edit">
+            <!--Header-->
+            <h1 th:text="#{booking.add_new.header}">?????</h1>
 
-<br>
+            <!--Input parameters-->
+            <form th:method="POST"
+                  th:action="@{/admin/info-booking}"
+                  th:object="${newBooking}">
+                <table>
+                    <tr>
+                        <td th:text="#{booking.add_new.field.client} + ': '">?????</td>
+                        <td>
+                            <input type="text" th:field="*{client.surname}">
+                            <div style="color:red" th:if="${#fields.hasErrors('client.surname')}"
+                                 th:errors="*{client.surname}">?????
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{booking.add_new.field.phone1} + ': '">?????</td>
+                        <td>
+                            <input type="text" th:field="*{client.phone1}" placeholder="X(XXX)XXX-XX-XX">
+                            <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}"
+                                 th:errors="*{client.phone1}">?????
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{booking.add_new.field.phone2} + ': '">?????</td>
+                        <td><input type="text" th:field="*{client.phone2}" placeholder="X(XXX)XXX-XX-XX"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{booking.add_new.field.date_of_arrival} + ': '">?????</td>
+                        <td>
+                            <input type="datetime-local" th:field="*{dateOfArrival}">
+                            <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}"
+                                 th:errors="*{dateOfArrival}">?????
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{booking.add_new.field.date_of_return} + ': '">?????</td>
+                        <td>
+                            <input type="datetime-local" th:field="*{dateOfReturn}">
+                            <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}"
+                                 th:errors="*{dateOfReturn}">?????
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-<!--Return to "admin/info-booking"-->
-<a href="/admin/info-booking">
-    <button th:text="#{booking.add_new.button.go_to_bookings}">?????</button>
-</a>
+                <br>
 
-<!--Return to "admin/"-->
-<a href="/admin">
-    <button th:text="#{booking.add_new.button.go_to_main}">?????</button>
-</a>
+                <input type="submit" th:value="#{booking.add_new.button.create}">
+            </form>
+
+            <br>
+
+            <!--Return to "admin/info-booking"-->
+            <a href="/admin/info-booking">
+                <button th:text="#{equipment.button.return}">?????</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer"></div>
 
 </body>
 

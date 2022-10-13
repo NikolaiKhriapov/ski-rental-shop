@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Helmet extends Equipment {
+public class Helmet {
 
     enum Size {XS, S, M, L, XL}
 

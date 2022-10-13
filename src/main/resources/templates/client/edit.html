@@ -19,28 +19,28 @@
         <tr>
             <td th:text="#{client.edit.field.surname}">?????</td>
             <td>
-                <input type="text" th:field="*{surname}"/>
+                <input type="text" th:field="*{surname}">
                 <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">?????</div>
             </td>
         </tr>
         <tr>
             <td th:text="#{client.edit.field.phone1}">?????</td>
             <td>
-                <input type="text" th:field="*{phone1}" placeholder="X(XXX)XXX-XX-XX"/>
+                <input type="text" th:field="*{phone1}" placeholder="X(XXX)XXX-XX-XX">
                 <div style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">?????</div>
             </td>
         </tr>
         <tr>
             <td th:text="#{client.edit.field.phone2}">?????</td>
             <td>
-                <input type="text" th:field="*{phone2}" placeholder="X(XXX)XXX-XX-XX"/>
+                <input type="text" th:field="*{phone2}" placeholder="X(XXX)XXX-XX-XX">
             </td>
         </tr>
     </table>
 
     <br>
 
-    <input type="submit" th:value="#{client.edit.button.save}"/>
+    <input type="submit" th:value="#{client.edit.button.save}">
 </form>
 
 <br>

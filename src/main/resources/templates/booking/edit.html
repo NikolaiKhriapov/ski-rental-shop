@@ -1,100 +1,173 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title th:text="#{booking.edit.title}">?????</title>
+    <link rel="stylesheet" href="/css/styles1.css">
 </head>
 
-<body th:align="center">
+<body>
 
-<!--Header-->
-<h1 th:text="#{booking.edit.header}">?????</h1>
+<div class="header">
+    <div>
+        <a href="/admin?lang=ru"><img src="/images/language/flag_ru.png" width="40" height="40"/></a>
+        <a href="/admin?lang=en"><img src="/images/language/flag_en.png" width="40" height="40"/></a>
+    </div>
+</div>
 
-<!--Booking and Client parameters-->
-<form th:method="PATCH"
-      th:action="@{/admin/info-booking/edit/{id}(id=${id})}"
-      th:object="${bookingToBeUpdated}">
+<div class="main">
 
-    <table th:align="center" style="text-align:left"
-           th:cellpadding="2">
-        <tr>
-            <td th:text="#{booking.edit.field.id}">?????</td>
-            <td th:text="${id}">?????</td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.edit.field.client}">?????</td>
-            <td>
-                <input type="text" th:field="*{client.surname}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">
-                    ?????
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.edit.field.phone1}">?????</td>
-            <td>
-                <input type="text" th:field="*{client.phone1}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}" th:errors="*{client.phone1}">
-                    ?????
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.edit.field.phone2}">?????</td>
-            <td><input type="text" th:field="*{client.phone2}"/></td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.edit.field.date_of_arrival}">?????</td>
-            <td>
-                <input type="datetime-local" th:field="*{dateOfArrival}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}" th:errors="*{dateOfArrival}">?????
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td th:text="#{booking.edit.field.date_of_return}">?????</td>
-            <td>
-                <input type="datetime-local" th:field="*{dateOfReturn}"/>
-                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">?????
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{admin.main_page}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{admin.main_page.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{admin.main_page.today_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{admin.main_page.tomorrow_bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{admin.main_page.list_of_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{admin.main_page.list_of_clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{admin.main_page.list_of_riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{admin.main_page.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{admin.main_page.snowboard_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{admin.main_page.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{admin.main_page.ski_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{admin.main_page.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{admin.main_page.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{admin.main_page.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{admin.main_page.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{admin.main_page.protective_shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{admin.main_page.knee_protection}"/>
+        </button>
+    </div>
 
-    <br/>
+    <div class="content">
+        <div class="booking-edit">
 
-    <input type="submit" th:value="#{booking.edit.button.save}"/>
-</form>
+            <!--Edit Booking-->
+            <div class="booking-edit-booking">
+                <h1 th:text="#{booking.edit.header}">?????</h1>
 
-<br/>
+                <form th:method="PATCH"
+                      th:action="@{/admin/info-booking/edit/{id}(id=${id})}"
+                      th:object="${bookingToBeUpdated}">
+                    <table>
+                        <tr>
+                            <td th:text="#{booking.edit.field.id} + ': '">?????</td>
+                            <td th:text="${id}">?????</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.client} + ': '">?????</td>
+                            <td>
+                                <input type="text" th:field="*{client.surname}">
+                                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}"
+                                     th:errors="*{client.surname}">
+                                    ?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.phone1} + ': '">?????</td>
+                            <td>
+                                <input type="text" th:field="*{client.phone1}">
+                                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}"
+                                     th:errors="*{client.phone1}">
+                                    ?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.phone2} + ': '">?????</td>
+                            <td><input type="text" th:field="*{client.phone2}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.date_of_arrival} + ': '">?????</td>
+                            <td>
+                                <input type="datetime-local" th:field="*{dateOfArrival}">
+                                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}"
+                                     th:errors="*{dateOfArrival}">?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.date_of_return} + ': '">?????</td>
+                            <td>
+                                <input type="datetime-local" th:field="*{dateOfReturn}">
+                                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}"
+                                     th:errors="*{dateOfReturn}">?????
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
 
-<!--List of Riders-->
-<span th:if="${bookingToBeUpdated.getListOfRiders().size() > 0}">
-    <table th:align="center"
-           th:border="1" th:rules="rows"
-           th:cellpadding="5">
-        <tr th:each="oneRider : ${bookingToBeUpdated.getListOfRiders()}">
-            <td th:text="${oneRider.getId()}" style="vertical-align:top">?????</td>
-            <td style="vertical-align:top" th:align="left">
-                <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.getName()}">?????</div>
-                <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}">?????</div>
-                <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.getHeight()}">?????</div>
-                <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.getWeight()}">?????</div>
-                <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.foot}}">?????</div>
-            </td>
-            <td th:align="left">
-                <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
-                    <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}">?????</div>
-                </span>
-            </td>
-            <form th:method="PATCH"
-                  th:action="@{'/admin/info-booking/edit/assign-equipment?bid=' + ${id} + '&rid=' + ${oneRider.getId()}}"
-                  th:object="${oneRider.assignedEquipment}">
-                <td style="vertical-align:center" th:align="left">
-                    <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
-                        <div th:if="${oneEquipmentId.name} == SNOWBOARD">
-                            <select name="snowboard" style="width:300px">
+                    <br/>
+
+                    <input type="submit" th:value="#{booking.edit.button.save}">
+                </form>
+            </div>
+
+            <br>
+
+            <!--Edit list of riders-->
+            <div class="booking-edit-rider">
+                <span th:if="${bookingToBeUpdated.getListOfRiders().size() > 0}">
+                    <table>
+                        <tr th:each="oneRider : ${bookingToBeUpdated.getListOfRiders()}">
+                            <td th:text="${oneRider.getId()}" style="vertical-align:top">?????</td>
+                            <td style="vertical-align:top" th:align="left">
+                                <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.getName()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}">?????</div>
+                                <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.getHeight()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.getWeight()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.foot}}">?????</div>
+                            </td>
+                            <td th:width="190" th:align="left">
+                                <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
+                                    <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}">?????</div>
+                                </span>
+                            </td>
+                            <form th:method="PATCH"
+                                  th:action="@{'/admin/info-booking/edit/assign-equipment?bid=' + ${id} + '&rid=' + ${oneRider.getId()}}"
+                                  th:object="${oneRider.assignedEquipment}">
+                                <td th:width="10" style="vertical-align:center" th:align="left">
+                                    <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
+                                        <div th:if="${oneEquipmentId.name} == SNOWBOARD">
+                                            <select name="snowboard" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.snowboard.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
                                     <option th:each="oneSnowboard : ${allSnowboardsAvailable}"
@@ -114,8 +187,8 @@
                                     <option value="" th:disabled="false"></option>
                                 </span>
                             </select>
-                        </div>
-                        <div th:if="${oneEquipmentId.name} == SNOWBOARD_BOOTS">
+                                        </div>
+                                        <div th:if="${oneEquipmentId.name} == SNOWBOARD_BOOTS">
                             <select name="snowboardBoots" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.snowboardBoots.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -138,7 +211,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == SKI">
+                                        <div th:if="${oneEquipmentId.name} == SKI">
                             <select name="ski" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.ski.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -160,7 +233,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == SKI_BOOTS">
+                                        <div th:if="${oneEquipmentId.name} == SKI_BOOTS">
                             <select name="skiBoots" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.skiBoots.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -182,7 +255,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == JACKET">
+                                        <div th:if="${oneEquipmentId.name} == JACKET">
                             <select name="jacket" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.jacket.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -204,7 +277,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == KNEE_PROTECTION">
+                                        <div th:if="${oneEquipmentId.name} == KNEE_PROTECTION">
                             <select name="kneeProtection" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.kneeProtection.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -226,7 +299,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == PROTECTIVE_SHORTS">
+                                        <div th:if="${oneEquipmentId.name} == PROTECTIVE_SHORTS">
                             <select name="protectiveShorts" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.protectiveShorts.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -248,7 +321,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == HELMET">
+                                        <div th:if="${oneEquipmentId.name} == HELMET">
                             <select name="helmet" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.helmet.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -270,7 +343,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == GLOVES">
+                                        <div th:if="${oneEquipmentId.name} == GLOVES">
                             <select name="gloves" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.gloves.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -292,7 +365,7 @@
                                 </span>
                             </select>
                         </div>
-                        <div th:if="${oneEquipmentId.name} == PANTS">
+                                        <div th:if="${oneEquipmentId.name} == PANTS">
                             <select name="pants" style="width:300px">
                                 <span th:if="${oneRider.assignedEquipment.pants.id} == null">
                                     <option value="" th:disabled="false" th:selected="selected"></option>
@@ -314,61 +387,60 @@
                                 </span>
                             </select>
                         </div>
-                    </span>
-                </td>
-                <td th:width="25"></td>
-                <td style="vertical-align:center">
-                    <input type="submit" th:value="#{booking.edit.table.button.assign}"/>
-                </td>
-            </form>
-            <td>
-                <a th:href="'/admin/info-riders/edit?id=' + ${oneRider.getId()} + '&bookingId=' + ${bookingToBeUpdated.getId()}">
+                                    </span>
+                                </td>
+                                <td th:width="10" style="vertical-align:center">
+                                    <input type="submit" th:value="#{booking.edit.table.button.assign}">
+                                </td>
+                            </form>
+                            <td th:width="10">
+                                <a th:href="'/admin/info-riders/edit?id=' + ${oneRider.getId()} + '&bookingId=' + ${bookingToBeUpdated.getId()}">
                     <button th:text="#{booking.edit.table.button.edit}">?????</button>
                 </a>
-            </td>
-            <td th:align="left">
-                <a th:href="@{'/admin/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.getId()} + '&rid=' + ${oneRider.getId()}}">
+                            </td>
+                            <td th:width="10">
+                                <a th:href="@{'/admin/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.getId()} + '&rid=' + ${oneRider.getId()}}">
                     <button th:text="#{booking.edit.table.button.remove}">?????</button>
                 </a>
-            </td>
-        </tr>
-    </table>
-</span>
-<span th:unless="${bookingToBeUpdated.getListOfRiders().size() > 0}">Riders not found</span>
+                            </td>
+                        </tr>
+                    </table>
+                </span>
+                <span th:unless="${bookingToBeUpdated.getListOfRiders().size() > 0}">Riders not found</span>
+                <!--TODO: properties-->
+            </div>
 
-<br><br>
+            <br>
 
-<!--Add existing Rider to Booking-->
-<form th:method="PATCH"
-      th:action="@{/admin/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.getId()})}"
-      th:object="${existingRiderToBeAddedId}">
-    <select name="existingRiderToBeAddedId">
-        <option th:each="oneRider : ${allRiders}"
-                th:value="${oneRider.getId()}"
-                th:text="${oneRider.getName()}">?????
-        </option>
-    </select>
-    <input type="submit" th:value="#{booking.edit.button.add_existing}"/>
-</form>
+            <!--Add existing Rider to Booking-->
+            <div>
+                <form th:method="PATCH"
+                      th:action="@{/admin/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.getId()})}"
+                      th:object="${existingRiderToBeAddedId}">
+                    <select name="existingRiderToBeAddedId">
+                        <option th:each="oneRider : ${allRiders}"
+                                th:value="${oneRider.getId()}"
+                                th:text="${oneRider.getName()}">?????
+                        </option>
+                    </select>
+                    <input type="submit" th:value="#{booking.edit.button.add_existing}">
+                </form>
+            </div>
 
-<br>
+            <br>
 
-<!--Add new rider-->
-<a th:href="@{'/admin/info-riders/add-new?id=' + ${bookingToBeUpdated.getId()}}">
-    <button th:text="#{booking.edit.button.add_new}">?????</button>
-</a>
+            <!--Add new rider-->
+            <div>
+                <a th:href="@{'/admin/info-riders/add-new?id=' + ${bookingToBeUpdated.getId()}}">
+                    <button th:text="#{booking.edit.button.add_new}">?????</button>
+                </a>
+            </div>
+        </div>
+    </div>
 
-<br><br>
+</div>
 
-<!--Return to "admin/info-booking"-->
-<a href="/admin/info-booking">
-    <button th:text="#{booking.edit.button.go_to_bookings}">?????</button>
-</a>
-
-<!--Return to "admin/"-->
-<a href="/admin">
-    <button th:text="#{booking.edit.button.go_to_main}">?????</button>
-</a>
+<div class="footer"></div>
 
 </body>
 

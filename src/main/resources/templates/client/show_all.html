@@ -14,8 +14,8 @@
 <!--Search-->
 <form th:method="GET"
       th:action="@{/admin/info-clients/search}">
-    <input th:type="text" th:name="search" th:placeholder="#{client.show_all.search_placeholder}" style="width:200px"/>
-    <input type="submit" th:value="#{client.show_all.search_button}"/>
+    <input th:type="text" th:name="search" th:placeholder="#{client.show_all.search_placeholder}" style="width:200px">
+    <input type="submit" th:value="#{client.show_all.search_button}">
 </form>
 
 <br>
@@ -54,7 +54,7 @@
         </td>
         <td>
             <form th:method="DELETE" th:action="@{/admin/info-clients/{id}(id=${oneClient.getId()})}">
-                <input type="submit" th:value="#{client.show_all.table.button.delete}"/>
+                <input type="submit" th:value="#{client.show_all.table.button.delete}">
             </form>
         </td>
     </tr>

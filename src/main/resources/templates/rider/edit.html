@@ -38,13 +38,15 @@
         </tr>
         <tr>
             <td th:text="#{rider.edit.table.header.height}">?????</td>
-            <td><input type="text" th:field="*{height}"/>
+            <td>
+                <input type="text" th:field="*{height}">
                 <div style="color:red" th:if="${#fields.hasErrors('height')}" th:errors="*{height}">?????</div>
             </td>
         </tr>
         <tr>
             <td th:text="#{rider.edit.table.header.weight}">?????</td>
-            <td><input type="text" th:field="*{weight}"/>
+            <td>
+                <input type="text" th:field="*{weight}">
                 <div style="color:red" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">?????</div>
             </td>
         </tr>
@@ -67,7 +69,7 @@
                 <div th:each="i : ${T(my.project.skirentalshop.model.TypesOfEquipment).values()}">
                     <input type="checkbox"
                            th:field="*{equipmentNeededIds}"
-                           th:value="${i.name()}"/>
+                           th:value="${i.name()}">
                     <span th:text="#{${'equipment.type.' + i}}">?????</span>
                 </div>
             </td>
@@ -76,7 +78,7 @@
 
     <br>
 
-    <input type="submit" th:value="#{rider.edit.button.save}"/>
+    <input type="submit" th:value="#{rider.edit.button.save}">
 </form>
 
 <br>

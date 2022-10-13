@@ -4,57 +4,132 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{admin.bookings_by_date.title} + ' | ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</title>
+    <link rel="stylesheet" href="/css/styles1.css">
 </head>
 
-<body th:align="center">
+<body>
 
-<!--Header-->
-<h1 th:text="#{admin.bookings_by_date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</h1>
+<div class="header">
+    <div>
+        <a href="/admin?lang=ru"><img src="/images/language/flag_ru.png" width="40" height="40"/></a>
+        <a href="/admin?lang=en"><img src="/images/language/flag_en.png" width="40" height="40"/></a>
+    </div>
+</div>
 
-<!--Table-->
-<table th:align="center"
-       th:border="1" th:rules="rows"
-       th:cellpadding="5">
-    <tr>
-        <th><a th:text="#{booking.search.table.header.id}">?????</a></th>
-        <th><a th:text="#{booking.search.table.header.client}">?????</a></th>
-        <th><a th:text="#{booking.search.table.header.phone1}">?????</a></th>
-        <th><a th:text="#{booking.search.table.header.phone2}">?????</a></th>
-        <th><a th:text="#{booking.search.table.header.date_of_arrival}">?????</a></th>
-        <th><a th:text="#{booking.search.table.header.date_of_return}">?????</a></th>
-        <th><a th:text="#{booking.show_all.table.header.number_of_riders}">?????</a></th>
-    </tr>
-    <tr th:each="oneBooking : ${bookingsForTheDate}">
-        <td th:text="${oneBooking.getId()}">?????</td>
-        <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
-        <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
-        <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
-        <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}"></td>
-        <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}"></td>
-        <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
-        <td th:width="25"></td>
-        <td>
-            <form th:method="GET"
-                  th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.getId()})}">
-                <input type="submit" th:value="#{booking.search.table.button.edit}"/>
-            </form>
-        </td>
-        <td>
-            <form th:method="DELETE"
-                  th:action="@{/admin/info-booking/{id}(id=${oneBooking.getId()})}">
-                <input type="submit" th:value="#{booking.search.table.button.delete}"/>
-            </form>
-        </td>
-    </tr>
-    <br>
-</table>
+<div class="main">
 
-<br>
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{admin.main_page}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{admin.main_page.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{admin.main_page.today_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{admin.main_page.tomorrow_bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{admin.main_page.list_of_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{admin.main_page.list_of_clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{admin.main_page.list_of_riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{admin.main_page.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{admin.main_page.snowboard_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{admin.main_page.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{admin.main_page.ski_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{admin.main_page.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{admin.main_page.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{admin.main_page.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{admin.main_page.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{admin.main_page.protective_shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{admin.main_page.knee_protection}"/>
+        </button>
+    </div>
 
-<!--Return button-->
-<a href="/admin">
-    <button th:text="#{booking.search.button.return}">?????</button>
-</a>
+    <div class="content">
+        <div class="table">
+            <!--Header-->
+            <h1 th:text="#{admin.bookings_by_date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</h1>
+
+            <!--Table-->
+            <table>
+                <tr>
+                    <th><a th:text="#{booking.search.table.header.id}">?????</a></th>
+                    <th><a th:text="#{booking.search.table.header.client}">?????</a></th>
+                    <th><a th:text="#{booking.search.table.header.phone1}">?????</a></th>
+                    <th><a th:text="#{booking.search.table.header.phone2}">?????</a></th>
+                    <th><a th:text="#{booking.search.table.header.date_of_arrival}">?????</a></th>
+                    <th><a th:text="#{booking.search.table.header.date_of_return}">?????</a></th>
+                    <th><a th:text="#{booking.show_all.table.header.number_of_riders}">?????</a></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr th:each="oneBooking : ${bookingsForTheDate}">
+                    <td th:text="${oneBooking.getId()}">?????</td>
+                    <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
+                    <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
+                    <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
+                    <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}"></td>
+                    <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}"></td>
+                    <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
+                    <td>
+                        <form th:method="GET"
+                              th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.getId()})}">
+                            <input type="submit" th:value="#{booking.search.table.button.edit}">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:method="DELETE"
+                              th:action="@{/admin/info-booking/{id}(id=${oneBooking.getId()})}">
+                            <input type="submit" th:value="#{booking.search.table.button.delete}">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+
+            <!--Return button-->
+            <a href="/admin">
+                <button th:text="#{booking.search.button.return}">?????</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer"></div>
 
 </body>
 
