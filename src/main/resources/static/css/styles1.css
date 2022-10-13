@@ -1,0 +1,176 @@
+/* –––––––––––––––––––––––––––––––––– Global –––––––––––––––––––––––––––––––––– */
+
+body {
+    margin: 0;
+    background: white;
+    font-family: 'AmstelvarAlpha', sans-serif;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: normal;
+    margin-top: 0;
+}
+
+/* –––––––––––––––––––––––––––––––––– Header –––––––––––––––––––––––––––––––––– */
+
+.header {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    background: white;
+}
+
+/* ––––––––––––––––––––––––––––––––––– Main ––––––––––––––––––––––––––––––––––– */
+
+.main {
+    display: flex;
+    height: calc(100vh - 50px);
+}
+
+/* Sidebar */
+
+.sidebar {
+    position: relative;
+    width: 250px;
+    padding-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #3a3a3a;
+}
+
+.sidebar button {
+    border: 0;
+    padding: 0;
+    background: #3a3a3a;
+}
+
+.sidebar button a {
+    display: block;
+    padding: 12px;
+
+    text-decoration: none;
+    color: white;
+    text-align: left;
+    font-size: 16px;
+}
+
+.sidebar button a:hover {
+    color: white;
+    background: dimgrey;
+}
+
+/* Content */
+
+.content {
+    overflow: auto;
+    width: calc(100% - 250px);
+
+    background: darkgray;
+    text-align: center;
+}
+
+.content .table {
+    background: rgba(255, 255, 255, 90%);
+    padding: 30px;
+    border-radius: 10px;
+
+    width: 80%;
+    margin: 40px auto;
+}
+
+.content .table table {
+    width: 100%;
+    border: 1px solid darkgray;
+    border-collapse: collapse;
+}
+
+.content .table table td, th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.content .table table th {
+    color: black;
+    text-decoration: none;
+    font-weight: normal;
+
+    background-color: darkgray;
+    height: 30px;
+}
+
+.content .table table th a {
+    color: black;
+    text-decoration: none;
+}
+
+.content .table table tr:nth-child(odd) {
+    background-color: #ebebeb;
+}
+
+.content .table table tr:hover {
+    background-color: lightgray;
+}
+
+.content .new-edit {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+
+    width: 40%;
+    margin: 40px auto;
+}
+
+.content .new-edit table {
+    width: auto;
+    margin-left: 20%;
+    margin-right: auto;
+    text-align: left;
+}
+
+/* booking/edit */
+
+.content .booking-edit {
+    background: rgba(255, 255, 255, 90%);
+    padding: 30px;
+    border-radius: 10px;
+
+    width: 80%;
+    margin: 40px auto;
+}
+
+.content .booking-edit-booking table {
+    width: auto;
+    margin-left: 35%;
+    margin-right: auto;
+    text-align: left;
+}
+
+.content .booking-edit-rider table {
+    width: 86%;
+    margin-left: 7%;
+    margin-right: 7%;
+    border: 1px solid darkgray;
+    border-collapse: collapse;
+}
+
+.content .booking-edit-rider table td {
+    padding: 3px;
+}
+
+.content .booking-edit-rider table tr:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+.content .booking-edit-rider table tr:hover {
+    background-color: lightgray;
+}
+
+/* –––––––––––––––––––––––––––––––––– Footer –––––––––––––––––––––––––––––––––– */
+
+.footer {
+
+}

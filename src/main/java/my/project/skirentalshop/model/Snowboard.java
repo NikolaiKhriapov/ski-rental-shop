@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Entity
-public class Snowboard extends Equipment {
+public class Snowboard {
 
     enum Stiffness {
         UNKNOWN,

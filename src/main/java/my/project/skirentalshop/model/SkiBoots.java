@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Entity
-public class SkiBoots extends Equipment {
+public class SkiBoots {
 
     public enum Stiffness {
         UNKNOWN(),

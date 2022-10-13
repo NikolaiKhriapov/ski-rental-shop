@@ -26,12 +26,6 @@ public class AdminHomeController {
         return "admin/main_page";
     }
 
-    // hyperlink to equipment
-    @GetMapping("/info-equipment")
-    public String showEquipmentChoicePage() {
-        return "admin/equipment_info";
-    }
-
     // ----- bookings for today -----
     @GetMapping("/show-today")
     public String showBookingsForToday(Model model) {
