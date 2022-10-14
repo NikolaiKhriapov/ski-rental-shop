@@ -23,6 +23,7 @@ public class AdminHomeController {
     @GetMapping()
     public String showAdminMainPage(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
+        model.addAttribute("currentBookings", bookingService.showAllCurrentBookings());
         return "admin/main_page";
     }
 
@@ -34,6 +35,7 @@ public class AdminHomeController {
 
         model.addAttribute("date", todayBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(todayBeginning, todayEnd));
+        model.addAttribute("day", "today");
         return "admin/bookings_by_date";
     }
 
@@ -45,6 +47,7 @@ public class AdminHomeController {
 
         model.addAttribute("date", tomorrowBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(tomorrowBeginning, tomorrowEnd));
+        model.addAttribute("day", "tomorrow");
         return "admin/bookings_by_date";
     }
 

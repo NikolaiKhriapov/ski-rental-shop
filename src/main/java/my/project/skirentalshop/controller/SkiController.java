@@ -74,6 +74,7 @@ public class SkiController {
     @GetMapping("/search")
     public String showSkiBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("skiBySearch", skiService.showSkiBySearch(search));
+        model.addAttribute("search", search);
         return "ski/search";
     }
 

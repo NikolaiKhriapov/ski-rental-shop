@@ -74,6 +74,7 @@ public class ProtectiveShortsController {
     @GetMapping("/search")
     public String showProtectiveShortsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("protectiveShortsBySearch", protectiveShortsService.showProtectiveShortsBySearch(search));
+        model.addAttribute("search", search);
         return "protective_shorts/search";
     }
 

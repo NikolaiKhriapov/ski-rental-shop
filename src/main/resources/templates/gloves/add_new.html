@@ -4,16 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{gloves.title}">?????</title>
-    <link rel="stylesheet" href="/css/styles1.css">
+    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
 </head>
 
 <body>
 
 <div class="header">
-    <div>
-        <a href="/admin?lang=ru"><img src="/images/language/flag_ru.png" width="40" height="40"/></a>
-        <a href="/admin?lang=en"><img src="/images/language/flag_en.png" width="40" height="40"/></a>
-    </div>
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="top-nav-item-text center">
+                <a href="#" th:text="#{top_nav.account}"></a>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-content">
+                    <a href="/admin/info-equipment/gloves/add-new?theme=theme_1">Theme 1</a>
+                    <a href="/admin/info-equipment/gloves/add-new?theme=theme_2">Theme 2</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-content">
+                    <a href="/admin/info-equipment/gloves/add-new?lang=en">English</a>
+                    <a href="/admin/info-equipment/gloves/add-new?lang=ru">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <div class="main">
@@ -119,21 +140,19 @@
 
                 <br>
 
-                <input type="submit" th:value="#{gloves.button.show_all.add_new}">
+                <input class="button" type="submit" th:value="#{gloves.button.show_all.add_new}">
             </form>
 
             <br>
 
             <!--Return to "gloves/show_all"-->
             <a href="/admin/info-equipment/gloves/">
-                <button th:text="#{equipment.button.return}">?????</button>
+                <button class="button" th:text="#{equipment.button.return}">?????</button>
             </a>
         </div>
     </div>
 
 </div>
-
-<div class="footer"></div>
 
 </body>
 

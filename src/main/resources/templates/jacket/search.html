@@ -4,16 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{jacket.title}">?????</title>
-    <link rel="stylesheet" href="/css/styles1.css">
+    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
 </head>
 
 <body>
 
 <div class="header">
-    <div>
-        <a href="/admin?lang=ru"><img src="/images/language/flag_ru.png" width="40" height="40"/></a>
-        <a href="/admin?lang=en"><img src="/images/language/flag_en.png" width="40" height="40"/></a>
-    </div>
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="top-nav-item-text center">
+                <a href="#" th:text="#{top_nav.account}"></a>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/admin/info-equipment/jacket/search?search=' + ${search} + '&theme=theme_1'">Theme 1</a>
+                    <a th:href="'/admin/info-equipment/jacket/search?search=' + ${search} + '&theme=theme_2'">Theme 2</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/admin/info-equipment/jacket/search?search=' + ${search} + '&lang=en'">English</a>
+                    <a th:href="'/admin/info-equipment/jacket/search?search=' + ${search} + '&lang=ru'">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <div class="main">
@@ -88,22 +109,23 @@
                     <th th:text="#{jacket.parameter.name}">?????</th>
                     <th th:text="#{jacket.parameter.condition}">?????</th>
                     <th th:text="#{jacket.parameter.size}">?????</th>
-                    <th></th><th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <tr th:each="oneJacket : ${jacketsBySearch}">
                     <td th:text="${oneJacket.getId()}">?????</td>
                     <td th:text="${oneJacket.getName()}" th:align="left">?????</td>
                     <td th:text="#{${'equipment_condition.' + oneJacket.getCondition()}}">?????</td>
                     <td th:text="${oneJacket.getSize()}">?????</td>
-                    <td th:width="85">
+                    <td th:width="1">
                         <a th:href="@{/admin/info-equipment/jacket/edit/{id}(id=${oneJacket.getId()})}">
-                            <button th:text="#{equipment.button.edit}">?????</button>
+                            <button class="button" th:text="#{equipment.button.edit}">?????</button>
                         </a>
                     </td>
-                    <td th:width="75">
+                    <td th:width="1">
                         <form th:method="DELETE"
                               th:action="@{/admin/info-equipment/jacket/{id}(id=${oneJacket.getId()})}">
-                            <input type="submit" th:value="#{equipment.button.delete}">
+                            <input class="button" type="submit" th:value="#{equipment.button.delete}">
                         </form>
                     </td>
                 </tr>
@@ -113,14 +135,12 @@
 
             <!--Return to "jacket/show_all"-->
             <a href="/admin/info-equipment/jacket/">
-                <button th:text="#{equipment.button.return}">?????</button>
+                <button class="button" th:text="#{equipment.button.return}">?????</button>
             </a>
         </div>
     </div>
 
 </div>
-
-<div class="footer"></div>
 
 </body>
 

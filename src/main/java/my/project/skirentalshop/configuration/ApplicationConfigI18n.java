@@ -42,6 +42,7 @@ public class ApplicationConfigI18n implements WebMvcConfigurer {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames(
+                "classpath:/top_nav",
                 "classpath:/admin",
                 "classpath:/booking",
                 "classpath:/client",

@@ -74,6 +74,7 @@ public class SnowboardController {
     @GetMapping("/search")
     public String showSnowboardsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("snowboardsBySearch", snowboardService.showSnowboardsBySearch(search));
+        model.addAttribute("search", search);
         return "snowboard/search";
     }
 

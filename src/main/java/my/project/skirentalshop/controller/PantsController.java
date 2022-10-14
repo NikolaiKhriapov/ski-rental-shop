@@ -74,6 +74,7 @@ public class PantsController {
     @GetMapping("/search")
     public String showPantsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("pantsBySearch", pantsService.showPantsBySearch(search));
+        model.addAttribute("search", search);
         return "pants/search";
     }
 

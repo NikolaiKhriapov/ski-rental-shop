@@ -74,6 +74,7 @@ public class GlovesController {
     @GetMapping("/search")
     public String showGlovesBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("glovesBySearch", glovesService.showGlovesBySearch(search));
+        model.addAttribute("search", search);
         return "gloves/search";
     }
 

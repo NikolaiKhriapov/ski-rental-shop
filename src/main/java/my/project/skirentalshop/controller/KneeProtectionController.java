@@ -74,6 +74,7 @@ public class KneeProtectionController {
     @GetMapping("/search")
     public String showKneeProtectionBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("kneeProtectionBySearch", kneeProtectionService.showKneeProtectionBySearch(search));
+        model.addAttribute("search", search);
         return "knee_protection/search";
     }
 

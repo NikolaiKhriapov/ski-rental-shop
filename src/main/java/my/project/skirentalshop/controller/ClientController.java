@@ -72,6 +72,7 @@ public class ClientController {
     @GetMapping("/search")
     public String showClientsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("clientsBySearch", clientService.showClientsBySearch(search));
+        model.addAttribute("search", search);
         return "client/search";
     }
 

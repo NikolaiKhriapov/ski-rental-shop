@@ -135,8 +135,13 @@ public class BookingService {
         return bookingRepository.findByDateOfArrivalIsBetween(dateFrom, dateTo);
     }
 
-    // ----- show incomplete bookings -----
+    // ----- show all incomplete bookings -----
     public List<Booking> showAllIncompleteBookings() {
         return bookingRepository.findAllByCompletedFalseOrderByDateOfArrivalAsc();
+    }
+
+    // ----- show all current bookings -----
+    public Object showAllCurrentBookings() {
+        return bookingRepository.findAllByDateOfArrivalBeforeAndDateOfReturnAfter(new Date(), new Date());
     }
 }

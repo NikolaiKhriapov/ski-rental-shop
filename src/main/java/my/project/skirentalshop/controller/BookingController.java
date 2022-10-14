@@ -233,6 +233,7 @@ public class BookingController {
     @GetMapping("/search")
     public String showBookingsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("bookingsBySearch", bookingService.showBookingsBySearch(search));
+        model.addAttribute("search", search);
         return "booking/search";
     }
 

@@ -74,6 +74,7 @@ public class HelmetController {
     @GetMapping("/search")
     public String showHelmetsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("helmetBySearch", helmetService.showHelmetsBySearch(search));
+        model.addAttribute("search", search);
         return "helmet/search";
     }
 

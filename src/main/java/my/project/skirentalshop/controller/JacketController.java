@@ -74,6 +74,7 @@ public class JacketController {
     @GetMapping("/search")
     public String showJacketsBySearch(@RequestParam("search") String search, Model model) {
         model.addAttribute("jacketsBySearch", jacketService.showJacketsBySearch(search));
+        model.addAttribute("search", search);
         return "jacket/search";
     }
 
