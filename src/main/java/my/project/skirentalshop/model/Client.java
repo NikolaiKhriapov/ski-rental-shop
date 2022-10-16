@@ -17,6 +17,7 @@ public class Client {
     @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.client.invalid_phone_number}")
     private String phone1;
     private String phone2;
+    private String email; // TODO: add validation
     @OneToMany(mappedBy = "client")
     private List<Booking> listOfBookings;
 
@@ -55,6 +56,14 @@ public class Client {
 
     public void setPhone2(String phone2) {
         this.phone2 = phone2;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

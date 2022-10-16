@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head> <!-- TODO: finish -->
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>-->
+    <!--    <link rel="stylesheet" href="/css/authorization.css"/>-->
+    <!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+    <!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+    <!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">-->
+    <style>
+        body {
+            background-color: #3d3f41;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="form-signin"
+          th:method="POST"
+          th:action="@{/sign-up}"
+          th:object="${newApplicationUser}">
+        <h2 class="form-signin-heading">Register an account</h2>
+        <p>
+            <label for="name" class="sr-only">Name</label>
+            <input type="text" th:field="*{name}" id="name" name="name" class="form-control" placeholder="Name" required=""
+                   autofocus="">
+        </p>
+        <p>
+            <label for="surname" class="sr-only">Surname</label>
+            <input type="text" th:field="*{surname}" id="surname" name="surname" class="form-control" placeholder="Surname"
+                   required="">
+        </p>
+        <p>
+            <label for="phone" class="sr-only">Phone</label>
+            <input type="text" th:field="*{phone}" id="phone" name="phone" class="form-control" placeholder="Phone" required=""
+                   autofocus="">
+        </p>
+        <p>
+            <label for="email" class="sr-only">Email</label>
+            <input type="text" th:field="*{email}" id="email" name="email" class="form-control" placeholder="Email" required=""
+                   autofocus="">
+        </p>
+        <p>
+            <label for="password" class="sr-only">Password</label>
+            <input type="text" th:field="*{password}" id="password" name="password" class="form-control" placeholder="Password" required=""
+                   autofocus="">
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+    </form>
+</div>
+</body>
+</html>

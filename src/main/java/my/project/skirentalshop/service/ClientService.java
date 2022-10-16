@@ -61,4 +61,9 @@ public class ClientService {
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return clientRepository.findAll(sort);
     }
+
+    // ----- show client by email -----
+    public Client showOneClientByEmail(String email) {
+        return clientRepository.findByEmail(email);
+    }
 }

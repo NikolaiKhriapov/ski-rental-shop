@@ -66,8 +66,8 @@ public class SkiBoots {
     @javax.validation.constraints.Size(min = 3, max = 30, message = "{validation.ski_boots.invalid_name}")
     private String name;
     private EquipmentCondition condition;
-    private SkiBoots.Size size;
-    private SkiBoots.Stiffness stiffness;
+    private Size size;
+    private Stiffness stiffness;
     @OneToMany(mappedBy = "skiBoots")
     private List<AssignedEquipment> listOfAssignedEquipment;
 

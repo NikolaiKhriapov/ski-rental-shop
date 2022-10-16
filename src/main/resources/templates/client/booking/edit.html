@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{booking.edit.title}">?????</title>
+    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-content">
+                    <a href="#" th:text="#{top_nav.settings}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/client/info-booking/edit/' + ${id} + '?theme=theme_1'" th:text="#{top_nav.theme.theme_1}"></a>
+                    <a th:href="'/client/info-booking/edit/' + ${id} + '?theme=theme_2'" th:text="#{top_nav.theme.theme_2}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/client/info-booking/edit/' + ${id} + '?lang=en'">English</a>
+                    <a th:href="'/client/info-booking/edit/' + ${id} + '?lang=ru'">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/client" th:text="#{side_bar.client.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/client/info-booking/add-new" th:text="#{side_bar.client.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/client/history" th:text="#{side_bar.client.history}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/client/info-riders" th:text="#{side_bar.client.riders}"/>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="booking-edit">
+
+            <!--Edit Booking-->
+            <div class="booking-edit-booking">
+                <h1 th:text="#{booking.edit.header}">?????</h1>
+
+                <form th:method="PATCH"
+                      th:action="@{/client/info-booking/edit/{id}(id=${id})}"
+                      th:object="${bookingToBeUpdated}">
+                    <table>
+                        <tr>
+                            <td th:text="#{booking.edit.field.id} + ': '">?????</td>
+                            <td th:text="${id}">?????</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.client} + ': '">?????</td>
+                            <td>
+                                <input type="text" th:field="*{client.surname}">
+                                <div style="color:red" th:if="${#fields.hasErrors('client.surname')}"
+                                     th:errors="*{client.surname}">
+                                    ?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.phone1} + ': '">?????</td>
+                            <td>
+                                <input type="text" th:field="*{client.phone1}">
+                                <div style="color:red" th:if="${#fields.hasErrors('client.phone1')}"
+                                     th:errors="*{client.phone1}">
+                                    ?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.phone2} + ': '">?????</td>
+                            <td><input type="text" th:field="*{client.phone2}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.date_of_arrival} + ': '">?????</td>
+                            <td>
+                                <input type="datetime-local" th:field="*{dateOfArrival}">
+                                <div style="color:red" th:if="${#fields.hasErrors('dateOfArrival')}"
+                                     th:errors="*{dateOfArrival}">?????
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{booking.edit.field.date_of_return} + ': '">?????</td>
+                            <td>
+                                <input type="datetime-local" th:field="*{dateOfReturn}">
+                                <div style="color:red" th:if="${#fields.hasErrors('dateOfReturn')}"
+                                     th:errors="*{dateOfReturn}">?????
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br/>
+
+                    <input class="button" type="submit" th:value="#{booking.edit.button.save}">
+                </form>
+            </div>
+
+            <br>
+
+            <!--Edit list of riders-->
+            <div class="booking-edit-rider">
+                <span th:if="${bookingToBeUpdated.getListOfRiders().size() > 0}">
+                    <table>
+                        <tr th:each="oneRider : ${bookingToBeUpdated.getListOfRiders()}">
+                            <td th:text="${oneRider.getId()}" style="vertical-align:top">?????</td>
+                            <td style="vertical-align:top" th:align="left">
+                                <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.getName()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}">?????</div>
+                                <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.getHeight()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.getWeight()}">?????</div>
+                                <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.foot}}">?????</div>
+                            </td>
+                            <td th:align="left">
+                                <span th:each="oneEquipmentId : ${oneRider.getEquipmentNeededIds()}">
+                                    <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}">?????</div>
+                                </span>
+                            </td>
+                            <td th:width="10"> <!-- TODO: finish -->
+                                <a th:href="'/client/info-riders/edit?id=' + ${oneRider.getId()} + '&bookingId=' + ${bookingToBeUpdated.getId()}">
+                                    <button class="button" th:text="#{booking.edit.table.button.edit}">?????</button>
+                                </a>
+                            </td>
+                            <td th:width="10">
+                                <a th:href="@{'/client/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.getId()} + '&rid=' + ${oneRider.getId()}}">
+                                    <button class="button" th:text="#{booking.edit.table.button.remove}">?????</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </span>
+                <span th:unless="${bookingToBeUpdated.getListOfRiders().size() > 0}" th:text="#{booking.edit.table.empty}">?????</span>
+            </div>
+
+            <br>
+
+            <!--Add existing Rider to Booking--> <!-- TODO: finish -->
+            <div>
+                <form th:method="PATCH"
+                      th:action="@{/client/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.getId()})}"
+                      th:object="${existingRiderToBeAddedId}">
+                    <select name="existingRiderToBeAddedId">
+                        <option th:each="oneRider : ${allRidersForClient}"
+                                th:value="${oneRider.getId()}"
+                                th:text="${oneRider.getName()}">?????
+                        </option>
+                    </select>
+                    <input class="button" type="submit" th:value="#{booking.edit.button.add_existing}">
+                </form>
+            </div>
+
+            <br>
+
+            <!--Add new rider-->
+            <div>
+                <a th:href="@{'/client/info-riders/add-new?id=' + ${bookingToBeUpdated.getId()}}">
+                    <button class="button" th:text="#{booking.edit.button.add_new}">?????</button>
+                </a>
+            </div>
+
+            <br>
+
+            <!--Return to "/client"-->
+            <a href="/client">
+                <button class="button" th:text="#{booking.edit.button.return}">?????</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

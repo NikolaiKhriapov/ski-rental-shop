@@ -68,12 +68,12 @@ public class Rider {
     @DecimalMin(value = "20", message = "{validation.rider.height}")
     @DecimalMax(value = "220", message = "{validation.rider.height}")
     @NotNull(message = "{validation.rider.height}")
-    private Integer height;
+    private Integer height; // TODO: change to Double
     @NotNull(message = "{validation.rider.weight}")
     @DecimalMin(value = "10", message = "{validation.rider.weight}")
     @DecimalMax(value = "160", message = "{validation.rider.weight}")
     private Integer weight;
-    private Size foot;
+    private Size foot; // TODO: change to footSize
     @ManyToMany(mappedBy = "listOfRiders")
     private List<Booking> listOfBookings;
     @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)

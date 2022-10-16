@@ -141,7 +141,17 @@ public class BookingService {
     }
 
     // ----- show all current bookings -----
-    public Object showAllCurrentBookings() {
+    public List<Booking> showAllCurrentBookings() {
         return bookingRepository.findAllByDateOfArrivalBeforeAndDateOfReturnAfter(new Date(), new Date());
+    }
+
+    // ----- show upcoming bookings for the client -----
+    public List<Booking> showCurrentBookingsForClient(String email) {
+        return bookingRepository.findAllByClientEmailAndDateOfReturnAfter(email, new Date());
+    }
+
+    // ----- show all bookings for the client -----
+    public List<Booking> showAllBookingsForClient(String email) {
+        return bookingRepository.findAllByClientEmail(email);
     }
 }

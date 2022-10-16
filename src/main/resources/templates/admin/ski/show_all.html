@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{ski.title}">?????</title>
+    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-content">
+                    <a href="#" th:text="#{top_nav.settings}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-content">
+                    <a href="/admin/info-equipment/ski?theme=theme_1" th:text="#{top_nav.theme.theme_1}"></a>
+                    <a href="/admin/info-equipment/ski?theme=theme_2" th:text="#{top_nav.theme.theme_2}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-content">
+                    <a href="/admin/info-equipment/ski?lang=en">English</a>
+                    <a href="/admin/info-equipment/ski?lang=ru">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{side_bar.admin.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{side_bar.admin.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{side_bar.admin.today_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{side_bar.admin.tomorrow_bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{side_bar.admin.list_of_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{side_bar.admin.list_of_clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{side_bar.admin.list_of_riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{side_bar.admin.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side_bar.admin.snowboard_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{side_bar.admin.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{side_bar.admin.ski_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{side_bar.admin.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{side_bar.admin.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{side_bar.admin.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{side_bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{side_bar.admin.protective_shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{side_bar.admin.knee_protection}"/>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="table">
+            <!--Header-->
+            <h1 th:text="#{ski.header.show_all}">?????</h1>
+
+            <!--Search-->
+            <form th:method="GET"
+                  th:action="@{/admin/info-equipment/ski/search}">
+                <input th:type="text" th:name="search"
+                       th:placeholder="#{equipment.search_placeholder}" style="width:200px">
+                <input class="button" type="submit" th:value="#{equipment.search_button}">
+            </form>
+
+            <br>
+
+            <!--Table-->
+            <table>
+                <tr>
+                    <th>
+                        <a th:href="@{'/admin/info-equipment/ski/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+                           th:text="#{ski.parameter.id}">?????</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/admin/info-equipment/ski/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+                           th:text="#{ski.parameter.name}">?????</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/admin/info-equipment/ski/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+                           th:text="#{ski.parameter.size}">?????</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/admin/info-equipment/ski/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+                           th:text="#{ski.parameter.condition}">?????</a>
+                    </th>
+                    <th>
+                        <a th:href="@{'/admin/info-equipment/ski/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"
+                           th:text="#{ski.parameter.stiffness}">?????</a>
+                    </th>
+                    <th></th><th></th>
+                </tr>
+                <tr th:each="oneSki : ${allSki}">
+                    <td th:text="${oneSki.getId()}">?????</td>
+                    <td th:text="${oneSki.getName()}" th:align="left">?????</td>
+                    <td th:text="${oneSki.getSize()}">?????</td>
+                    <td th:text="#{${'equipment_condition.' + oneSki.getCondition()}}">?????</td>
+                    <td th:text="#{${'ski.stiffness.' + oneSki.getStiffness()}}">?????</td>
+                    <td th:width="1">
+                        <a th:href="@{/admin/info-equipment/ski/edit/{id}(id=${oneSki.getId()})}">
+                            <button class="button" th:text="#{equipment.button.edit}">?????</button>
+                        </a>
+                    </td>
+                    <td th:width="1">
+                        <form th:method="DELETE" th:action="@{/admin/info-equipment/ski/{id}(id=${oneSki.getId()})}">
+                            <input class="button" type="submit" th:value="#{equipment.button.delete}">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+
+            <!--Add new-->
+            <a href="/admin/info-equipment/ski/add-new">
+                <button class="button" th:text="#{ski.button.show_all.add_new}">?????</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

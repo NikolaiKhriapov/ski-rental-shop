@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{gloves.title}">?????</title>
+    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-content">
+                    <a href="#" th:text="#{top_nav.settings}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/admin/info-equipment/gloves/edit/' + ${id} + '?theme=theme_1'"
+                       th:text="#{top_nav.theme.theme_1}"></a>
+                    <a th:href="'/admin/info-equipment/gloves/edit/' + ${id} + '?theme=theme_2'"
+                       th:text="#{top_nav.theme.theme_2}"></a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-content">
+                    <a th:href="'/admin/info-equipment/gloves/edit/' + ${id} + '?lang=en'">English</a>
+                    <a th:href="'/admin/info-equipment/gloves/edit/' + ${id} + '?lang=ru'">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{side_bar.admin.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{side_bar.admin.new_booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{side_bar.admin.today_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{side_bar.admin.tomorrow_bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{side_bar.admin.list_of_bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{side_bar.admin.list_of_clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{side_bar.admin.list_of_riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{side_bar.admin.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side_bar.admin.snowboard_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{side_bar.admin.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{side_bar.admin.ski_boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{side_bar.admin.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{side_bar.admin.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{side_bar.admin.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{side_bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{side_bar.admin.protective_shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{side_bar.admin.knee_protection}"/>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="new-edit">
+            <!--Header-->
+            <h1 th:text="#{gloves.header.edit}">?????</h1>
+
+            <!--Input parameters-->
+            <form th:method="PATCH"
+                  th:action="@{/admin/info-equipment/gloves/edit/{id}(id=${id})}"
+                  th:object="${glovesToUpdate}">
+                <table>
+                    <tr>
+                        <td th:text="#{gloves.parameter.name} + ': '">?????</td>
+                        <td>
+                            <input type="text" th:field="*{name}">
+                            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">?????</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{gloves.parameter.condition} + ': '">?????</td>
+                        <td>
+                            <select th:field="*{condition}">
+                                <option th:each="i : ${T(my.project.skirentalshop.model.EquipmentCondition).values()}"
+                                        th:value="${i.name()}"
+                                        th:text="#{${'equipment_condition.' + i}}"
+                                        th:selected="${glovesToUpdate.getCondition()}">?????
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{gloves.parameter.size} + ': '">?????</td>
+                        <td>
+                            <select th:field="*{size}">
+                                <option th:each="i : ${T(my.project.skirentalshop.model.Gloves.Size).values()}"
+                                        th:value="${i}"
+                                        th:text="${i}"
+                                        th:selected="${glovesToUpdate.getSize()}">?????
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <input class="button" type="submit" th:value="#{equipment.button.save}">
+            </form>
+
+            <br>
+
+            <!--Return to "/admin/info-equipment/gloves"-->
+            <a href="/admin/info-equipment/gloves">
+                <button class="button" th:text="#{equipment.button.return}">?????</button>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

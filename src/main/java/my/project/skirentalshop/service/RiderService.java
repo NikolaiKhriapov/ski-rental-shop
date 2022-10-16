@@ -1,12 +1,14 @@
 package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.AssignedEquipment;
+import my.project.skirentalshop.model.Booking;
 import my.project.skirentalshop.model.Rider;
 import my.project.skirentalshop.repository.RiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,7 +55,7 @@ public class RiderService {
         riderRepository.deleteById(id);
     }
 
-    //--------sort---------
+    // ----- sort -----
     public List<Rider> sortAllRidersByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
@@ -79,5 +81,29 @@ public class RiderService {
         rider.getAssignedEquipment().setGloves(null);
 
         riderRepository.save(rider);
+    }
+
+    // ----- show available existing riders for client for booking -----
+    public List<Rider> showAvailableExistingRidersForClientForBooking(Booking bookingToBeUpdated,
+                                                                      BookingService bookingService) {
+        List<Rider> allRidersForClient = new ArrayList<>();
+
+        List<Booking> allBookingsForClient = bookingService.showAllBookingsForClient(bookingToBeUpdated.getClient().getEmail());
+        List<Booking> allBookingsForClientForTheSameTime = bookingService.showBookingsForTheDate(
+                bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
+
+        for (Booking oneBooking : allBookingsForClient) {
+            for (Rider oneRider : oneBooking.getListOfRiders()) {
+                if (!allRidersForClient.contains(oneRider)) {
+                    allRidersForClient.add(oneRider);
+                }
+            }
+        }
+        for (Booking oneBooking : allBookingsForClientForTheSameTime) {
+            allRidersForClient.removeAll(oneBooking.getListOfRiders());
+        }
+        allRidersForClient.removeAll(bookingToBeUpdated.getListOfRiders());
+
+        return allRidersForClient;
     }
 }
