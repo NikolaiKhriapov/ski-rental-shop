@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{client.main_page.title}">?????</title>
-    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+    <meta charset="UTF-8"/>
+    <title th:text="#{client.main_page.title}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
 <body>
@@ -17,21 +17,21 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="#" th:text="#{top_nav.settings}"></a>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                    <a href="/client/settings" th:text="#{top_nav.settings}"/>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/client?theme=theme_1" th:text="#{top_nav.theme.theme_1}"></a>
-                    <a href="/client?theme=theme_2" th:text="#{top_nav.theme.theme_2}"></a>
+                    <a href="/client?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
+                    <a href="/client?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/client?lang=en">English</a>
                     <a href="/client?lang=ru">Russian</a>
@@ -61,50 +61,60 @@
         </button>
     </div>
 
-    <div class="content">
+    <div class="main-screen">
 
-        <!--Table for Current Bookings-->
-        <div class="table">
-            <!--Current Bookings-->
-            <div>
-                <!--Header-->
-                <h1 th:text="#{client.main_page.table.upcoming}">?????</h1>
+        <div class="content">
+            <!--Table for Current Bookings-->
+            <div class="table">
+                <!--Current Bookings-->
+                <div>
+                    <!--Header-->
+                    <h1 th:text="#{client.main_page.table.upcoming}"/>
 
-                <!--Table-->
-                <table>
-                    <tr>
-                        <th><a th:text="#{client.main_page.table.header.id}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.booking_surname}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.phone1}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.phone2}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.date_of_arrival}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.date_of_return}">?????</a></th>
-                        <th><a th:text="#{client.main_page.table.header.number_of_riders}">?????</a></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr th:each="oneBooking : ${currentBookingsForClient}">
-                        <td th:text="${oneBooking.getId()}">?????</td>
-                        <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
-                        <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
-                        <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
-                        <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}"></td>
-                        <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}"></td>
-                        <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
-                        <td th:width="1">
-                            <form th:method="GET"
-                                  th:action="@{/client/info-booking/edit/{id}(id=${oneBooking.getId()})}">
-                                <input class="button" type="submit" th:value="#{client.main_page.table.button.edit}">
-                            </form>
-                        </td>
-                        <td th:width="1">
-                            <form th:method="DELETE"
-                                  th:action="@{/client/info-booking/{id}(id=${oneBooking.getId()})}">
-                                <input class="button" type="submit" th:value="#{client.main_page.table.button.delete}">
-                            </form>
-                        </td>
-                    </tr>
-                </table>
+                    <!--Table-->
+                    <table>
+                        <tr>
+                            <th><a th:text="#{client.main_page.table.header.id}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.booking_surname}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.phone1}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.phone2}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.date_of_arrival}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.date_of_return}"/></th>
+                            <th><a th:text="#{client.main_page.table.header.number_of_riders}"/></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr th:each="oneBooking : ${currentBookingsForClient}">
+                            <td th:text="${oneBooking.id}"/>
+                            <td th:text="${oneBooking.client.surname}" th:align="left"/>
+                            <td th:text="${oneBooking.client.phone1}"/>
+                            <td th:text="${oneBooking.client.phone2}"/>
+                            <td th:text="${#dates.format(oneBooking.dateOfArrival, 'dd MMM yyyy HH:mm')}"/>
+                            <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
+                            <td th:text="${oneBooking.listOfRiders.size}"/>
+                            <td th:width="1">
+                                <form th:method="GET"
+                                      th:action="@{/client/info-booking/edit/{id}(id=${oneBooking.id})}">
+                                    <input class="button" type="submit"
+                                           th:value="#{client.main_page.table.button.edit}"/>
+                                </form>
+                            </td>
+                            <td th:width="1">
+                                <form th:method="DELETE"
+                                      th:action="@{/client/info-booking/{id}(id=${oneBooking.id})}">
+                                    <input class="button" type="submit"
+                                           th:value="#{client.main_page.table.button.delete}"/>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="text-block">
+                <div class="center" th:text="#{top_nav.contact_us}"/>
             </div>
         </div>
 

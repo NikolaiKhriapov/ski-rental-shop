@@ -52,7 +52,7 @@ public class SkiController {
         return "admin/ski/edit";
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id,
                        @ModelAttribute("skiToUpdate") @Valid Ski updatedSki,
                        BindingResult bindingResult) {

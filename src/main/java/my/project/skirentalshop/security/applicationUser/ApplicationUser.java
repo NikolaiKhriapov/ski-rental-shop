@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -16,10 +17,18 @@ public class ApplicationUser implements UserDetails {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+    @NotBlank(message = "{validation.application_user.invalid_name.not_blank}")
+    @Size(max = 30, message = "{validation.application_user.invalid_name.size}")
     private String name;
+    @NotBlank(message = "{validation.application_user.invalid_surname.not_blank}")
+    @Size(max = 30, message = "{validation.application_user.invalid_surname.size}")
     private String surname;
+    @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.application_user.invalid_phone_number}")
     private String phone;
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "{validation.application_user.invalid_email}")
     private String email;
+//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$", message = "{validation.application_user.invalid_password}") //TODO: implement
+    @NotBlank(message = "{validation.application_user.invalid_password}")
     private String password;
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;

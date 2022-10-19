@@ -69,6 +69,9 @@ public class BookingService {
 
     // ----- delete booking -----
     public void deleteBookingById(Long id) {
+        Booking booking = showOneBookingById(id);
+        booking.setClient(null);
+        bookingRepository.save(booking);
         bookingRepository.deleteById(id);
     }
 

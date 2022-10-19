@@ -41,7 +41,7 @@ public class RiderService {
         Rider riderToBeUpdated = showOneRiderById(id);
 
         riderToBeUpdated.setName(updatedRider.getName());
-        riderToBeUpdated.setFoot(updatedRider.getFoot());
+        riderToBeUpdated.setFootSize(updatedRider.getFootSize());
         riderToBeUpdated.setSex(updatedRider.getSex());
         riderToBeUpdated.setHeight(updatedRider.getHeight());
         riderToBeUpdated.setWeight(updatedRider.getWeight());

@@ -21,7 +21,7 @@ public class PantsService {
 
     // ----- show all -----
     public List<Pants> showAllPants() {
-        return pantsRepository.findAllByOrderBySize();
+        return pantsRepository.findAllByOrderById();
     }
 
     //------add new-----

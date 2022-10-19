@@ -32,6 +32,7 @@ public class ClientBookingController {
     @GetMapping("/add-new")
     public String createNewBooking(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("!!!!!!! + 1: " + username); //TODO: remove
         Booking newBooking = new Booking();
         newBooking.setClient(clientService.showOneClientByEmail(username));
         model.addAttribute("newBooking", newBooking);

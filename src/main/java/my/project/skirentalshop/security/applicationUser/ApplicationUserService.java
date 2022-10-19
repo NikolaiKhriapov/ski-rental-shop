@@ -38,10 +38,25 @@ public class ApplicationUserService implements UserDetailsService {
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(applicationUser.getPassword());
-
         applicationUser.setPassword(encodedPassword);
         applicationUser.setApplicationUserRole(CLIENT);
 
         applicationUserRepository.save(applicationUser);
+    }
+
+    public void changeApplicationUserInfo(ApplicationUser applicationUserToUpdate, ApplicationUser updatedApplicationUser) {
+        applicationUserToUpdate.setName(updatedApplicationUser.getName());
+        applicationUserToUpdate.setSurname(updatedApplicationUser.getSurname());
+        applicationUserToUpdate.setPhone(updatedApplicationUser.getPhone());
+        applicationUserToUpdate.setEmail(updatedApplicationUser.getEmail());
+
+        applicationUserRepository.save(applicationUserToUpdate);
+    }
+
+    public void changeApplicationUserPassword(ApplicationUser applicationUserToUpdate, String newPassport) {
+        String encodedPassword = bCryptPasswordEncoder.encode(newPassport);
+        applicationUserToUpdate.setPassword(encodedPassword);
+
+        applicationUserRepository.save(applicationUserToUpdate);
     }
 }

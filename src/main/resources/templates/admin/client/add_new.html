@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{client.add_new.title}">?????</title>
-    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+    <meta charset="UTF-8"/>
+    <title th:text="#{client.add_new.title}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
 <body>
@@ -17,21 +17,20 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="#" th:text="#{top_nav.settings}"></a>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/admin/info-clients/add-new?theme=theme_1" th:text="#{top_nav.theme.theme_1}"></a>
-                    <a href="/admin/info-clients/add-new?theme=theme_2" th:text="#{top_nav.theme.theme_2}"></a>
+                    <a href="/admin/info-clients/add-new?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
+                    <a href="/admin/info-clients/add-new?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/admin/info-clients/add-new?lang=en">English</a>
                     <a href="/admin/info-clients/add-new?lang=ru">Russian</a>
@@ -44,7 +43,7 @@
 <div class="main">
 
     <div class="sidebar">
-        <button type="button">
+        <button type="button"> <!-- TODO: Consider different approach for buttons -->
             <a href="/admin" th:text="#{side_bar.admin.home}"/>
         </button>
         <br>
@@ -101,53 +100,64 @@
         </button>
     </div>
 
-    <div class="content">
-        <div class="new-edit">
-            <!--Header-->
-            <h1 th:text="#{client.add_new.header}">?????</h1>
+    <div class="main-screen">
 
-            <!--Input parameters-->
-            <form th:method="POST"
-                  th:action="@{/admin/info-clients}"
-                  th:object="${newClient}">
-                <table>
-                    <tr>
-                        <td th:text="#{client.add_new.field.surname} + ': '">?????</td>
-                        <td>
-                            <input type="text" th:field="*{surname}">
-                            <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
-                                ?????
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td th:text="#{client.add_new.field.phone1} + ': '">?????</td>
-                        <td>
-                            <input type="text" th:field="*{phone1}" placeholder="X(XXX)XXX-XX-XX">
-                            <div style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">?????
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td th:text="#{client.add_new.field.phone2} + ': '">?????</td>
-                        <td>
-                            <input type="text" th:field="*{phone2}" placeholder="X(XXX)XXX-XX-XX">
-                        </td>
-                    </tr>
-                </table>
+        <div class="content">
+            <div class="new-edit">
+                <!--Header-->
+                <h1 th:text="#{client.add_new.header}"/>
+
+                <!--Input parameters-->
+                <form th:method="POST"
+                      th:action="@{/admin/info-clients}"
+                      th:object="${newClient}">
+                    <table>
+                        <tr>
+                            <td th:text="#{client.add_new.field.name} + ': '"/>
+                            <td>
+                                <label for="input-surname"></label>
+                                <input id="input-surname"
+                                       type="text" th:field="*{surname}" th:placeholder="#{client.add_new.field.name}"/>
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{client.add_new.field.phone1} + ': '"/>
+                            <td>
+                                <label for="input-phone1"></label>
+                                <input id="input-phone1"
+                                       type="text" th:field="*{phone1}" placeholder="X(XXX)XXX-XX-XX"/>
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{client.add_new.field.phone2} + ': '"/>
+                            <td>
+                                <label for="input-phone2"></label>
+                                <input id="input-phone2"
+                                       type="text" th:field="*{phone2}" placeholder="X(XXX)XXX-XX-XX"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                    <input class="button" type="submit" th:value="#{client.add_new.button.create}"/>
+                </form>
 
                 <br>
 
-                <input class="button" type="submit" th:value="#{client.add_new.button.create}">
-            </form>
-
-            <br>
-
-            <!--Return to "client/show_all"-->
-            <a href="/admin/info-clients">
-                <button class="button" th:text="#{client.add_new.button.return}">?????</button>
-            </a>
+                <!--Return to "client/show_all"-->
+                <a href="/admin/info-clients">
+                    <button class="button" th:text="#{client.add_new.button.return}"/>
+                </a>
+            </div>
         </div>
+
     </div>
 
 </div>

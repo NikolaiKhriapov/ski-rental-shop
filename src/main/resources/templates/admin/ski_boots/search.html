@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{ski_boots.title}">?????</title>
-    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+    <meta charset="UTF-8"/>
+    <title th:text="#{ski_boots.title}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
 <body>
@@ -17,23 +17,22 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="#" th:text="#{top_nav.settings}"></a>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
                     <a th:href="'/admin/info-equipment/ski-boots/search?search=' + ${search} + '&theme=theme_1'"
-                       th:text="#{top_nav.theme.theme_1}"></a>
+                       th:text="#{top_nav.theme.theme_1}"/>
                     <a th:href="'/admin/info-equipment/ski-boots/search?search=' + ${search} + '&theme=theme_2'"
-                       th:text="#{top_nav.theme.theme_2}"></a>
+                       th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
                     <a th:href="'/admin/info-equipment/ski-boots/search?search=' + ${search} + '&lang=en'">English</a>
                     <a th:href="'/admin/info-equipment/ski-boots/search?search=' + ${search} + '&lang=ru'">Russian</a>
@@ -103,48 +102,53 @@
         </button>
     </div>
 
-    <div class="content">
-        <div class="table">
-            <!--Header-->
-            <h1 th:text="#{ski_boots.header.search}">?????</h1>
+    <div class="main-screen">
 
-            <!--Table-->
-            <table>
-                <tr>
-                    <th th:text="#{ski_boots.parameter.id}">?????</th>
-                    <th th:text="#{ski_boots.parameter.name}">?????</th>
-                    <th th:text="#{ski_boots.parameter.condition}">?????</th>
-                    <th th:text="#{ski_boots.parameter.size}">?????</th>
-                    <th th:text="#{ski_boots.parameter.stiffness}">?????</th>
-                    <th></th><th></th>
-                </tr>
-                <tr th:each="oneSkiBoots : ${skiBootsBySearch}">
-                    <td th:text="${oneSkiBoots.getId()}">?????</td>
-                    <td th:text="${oneSkiBoots.getName()}" th:align="left">?????</td>
-                    <td th:text="#{${'equipment_condition.' + oneSkiBoots.getCondition()}}">?????</td>
-                    <td th:text="#{${'ski_boots.size.' + oneSkiBoots.getSize()}}">?????</td>
-                    <td th:text="#{${'ski_boots.stiffness.' + oneSkiBoots.getStiffness()}}">?????</td>
-                    <td th:width="1">
-                        <a th:href="@{/admin/info-equipment/ski-boots/edit/{id}(id=${oneSkiBoots.getId()})}">
-                            <button class="button" th:text="#{equipment.button.edit}">?????</button>
-                        </a>
-                    </td>
-                    <td th:width="1">
-                        <form th:method="DELETE"
-                              th:action="@{/admin/info-equipment/ski-boots/{id}(id=${oneSkiBoots.getId()})}">
-                            <input class="button" type="submit" th:value="#{equipment.button.delete}">
-                        </form>
-                    </td>
-                </tr>
-            </table>
+        <div class="content">
+            <div class="table">
+                <!--Header-->
+                <h1 th:text="#{ski_boots.header.search}"/>
 
-            <br>
+                <!--Table-->
+                <table>
+                    <tr>
+                        <th th:text="#{ski_boots.parameter.id}"/>
+                        <th th:text="#{ski_boots.parameter.name}"/>
+                        <th th:text="#{ski_boots.parameter.condition}"/>
+                        <th th:text="#{ski_boots.parameter.size}"/>
+                        <th th:text="#{ski_boots.parameter.stiffness}"/>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="oneSkiBoots : ${skiBootsBySearch}">
+                        <td th:text="${oneSkiBoots.id}"/>
+                        <td th:text="${oneSkiBoots.name}" th:align="left"/>
+                        <td th:text="#{${'equipment_condition.' + oneSkiBoots.condition}}"/>
+                        <td th:text="#{${'ski_boots.size.' + oneSkiBoots.size}}"/>
+                        <td th:text="#{${'ski_boots.stiffness.' + oneSkiBoots.stiffness}}"/>
+                        <td th:width="1">
+                            <a th:href="@{/admin/info-equipment/ski-boots/edit/{id}(id=${oneSkiBoots.id})}">
+                                <button class="button" th:text="#{equipment.button.edit}"/>
+                            </a>
+                        </td>
+                        <td th:width="1">
+                            <form th:method="DELETE"
+                                  th:action="@{/admin/info-equipment/ski-boots/{id}(id=${oneSkiBoots.id})}">
+                                <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
 
-            <!--Return to "ski_boots/show_all"-->
-            <a href="/admin/info-equipment/ski-boots/">
-                <button class="button" th:text="#{equipment.button.return}">?????</button>
-            </a>
+                <br>
+
+                <!--Return to "ski_boots/show_all"-->
+                <a href="/admin/info-equipment/ski-boots/">
+                    <button class="button" th:text="#{equipment.button.return}"/>
+                </a>
+            </div>
         </div>
+
     </div>
 
 </div>

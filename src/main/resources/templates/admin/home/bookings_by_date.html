@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{admin.bookings_by_date.title} + ' | ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</title>
-    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+    <meta charset="UTF-8"/>
+    <title th:text="#{admin.bookings_by_date.title} + ' | ' + ${#dates.format(date, 'dd MMM yyyy')}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
 <body>
@@ -17,21 +17,20 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="#" th:text="#{top_nav.settings}"></a>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_1'" th:text="#{top_nav.theme.theme_1}"></a>
-                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_2'" th:text="#{top_nav.theme.theme_2}"></a>
+                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_1'" th:text="#{top_nav.theme.theme_1}"/>
+                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_2'" th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
                     <a th:href="'/admin/show-' + ${day} + '?lang=en'">English</a>
                     <a th:href="'/admin/show-' + ${day} + '?lang=ru'">Русский</a>
@@ -101,54 +100,58 @@
         </button>
     </div>
 
-    <div class="content">
-        <div class="table">
-            <!--Header-->
-            <h1 th:text="#{admin.bookings_by_date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}">?????</h1>
+    <div class="main-screen">
 
-            <!--Table-->
-            <table>
-                <tr>
-                    <th><a th:text="#{booking.search.table.header.id}">?????</a></th>
-                    <th><a th:text="#{booking.search.table.header.client}">?????</a></th>
-                    <th><a th:text="#{booking.search.table.header.phone1}">?????</a></th>
-                    <th><a th:text="#{booking.search.table.header.phone2}">?????</a></th>
-                    <th><a th:text="#{booking.search.table.header.date_of_arrival}">?????</a></th>
-                    <th><a th:text="#{booking.search.table.header.date_of_return}">?????</a></th>
-                    <th><a th:text="#{booking.show_all.table.header.number_of_riders}">?????</a></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr th:each="oneBooking : ${bookingsForTheDate}">
-                    <td th:text="${oneBooking.getId()}">?????</td>
-                    <td th:text="${oneBooking.getClient().getSurname()}" th:align="left">?????</td>
-                    <td th:text="${oneBooking.getClient().getPhone1()}">?????</td>
-                    <td th:text="${oneBooking.getClient().getPhone2()}">?????</td>
-                    <td th:text="${#dates.format(oneBooking.getDateOfArrival(), 'dd MMM yyyy HH:mm')}"></td>
-                    <td th:text="${#dates.format(oneBooking.getDateOfReturn(), 'dd MMM yyyy HH:mm')}"></td>
-                    <td th:text="${oneBooking.getListOfRiders().size()}">?????</td>
-                    <td th:width="1">
-                        <form th:method="GET"
-                              th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.getId()})}">
-                            <input class="button" type="submit" th:value="#{booking.search.table.button.edit}">
-                        </form>
-                    </td>
-                    <td th:width="1">
-                        <form th:method="DELETE"
-                              th:action="@{/admin/info-booking/{id}(id=${oneBooking.getId()})}">
-                            <input class="button" type="submit" th:value="#{booking.search.table.button.delete}">
-                        </form>
-                    </td>
-                </tr>
-            </table>
+        <div class="content">
+            <div class="table">
+                <!--Header-->
+                <h1 th:text="#{admin.bookings_by_date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}"/>
 
-            <br>
+                <!--Table-->
+                <table>
+                    <tr>
+                        <th><a th:text="#{booking.search.table.header.id}"/></th>
+                        <th><a th:text="#{booking.search.table.header.client}"/></th>
+                        <th><a th:text="#{booking.search.table.header.phone1}"/></th>
+                        <th><a th:text="#{booking.search.table.header.phone2}"/></th>
+                        <th><a th:text="#{booking.search.table.header.date_of_arrival}"/></th>
+                        <th><a th:text="#{booking.search.table.header.date_of_return}"/></th>
+                        <th><a th:text="#{booking.show_all.table.header.number_of_riders}"/></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="oneBooking : ${bookingsForTheDate}">
+                        <td th:text="${oneBooking.id}"/>
+                        <td th:text="${oneBooking.client.surname}" th:align="left"/>
+                        <td th:text="${oneBooking.client.phone1}"/>
+                        <td th:text="${oneBooking.client.phone2}"/>
+                        <td th:text="${#dates.format(oneBooking.dateOfArrival, 'dd MMM yyyy HH:mm')}"/>
+                        <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
+                        <td th:text="${oneBooking.listOfRiders.size}"/>
+                        <td th:width="1">
+                            <form th:method="GET"
+                                  th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.id})}">
+                                <input class="button" type="submit" th:value="#{booking.search.table.button.edit}"/>
+                            </form>
+                        </td>
+                        <td th:width="1">
+                            <form th:method="DELETE"
+                                  th:action="@{/admin/info-booking/{id}(id=${oneBooking.id})}">
+                                <input class="button" type="submit" th:value="#{booking.search.table.button.delete}"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
 
-            <!--Return button-->
-            <a href="/admin">
-                <button class="button" th:text="#{booking.search.button.return}">?????</button>
-            </a>
+                <br>
+
+                <!--Return button-->
+                <a href="/admin">
+                    <button class="button" th:text="#{booking.search.button.return}"/>
+                </a>
+            </div>
         </div>
+
     </div>
 
 </div>

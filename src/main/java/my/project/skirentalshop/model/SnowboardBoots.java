@@ -1,6 +1,7 @@
 package my.project.skirentalshop.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -60,7 +61,8 @@ public class SnowboardBoots {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
-    @javax.validation.constraints.Size(min = 3, max = 30, message = "{validation.snowboard_boots.invalid_name}")
+    @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
+    @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
     private EquipmentCondition condition;
     private Size size;

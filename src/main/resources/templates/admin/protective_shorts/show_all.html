@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{protective_shorts.title}">?????</title>
-    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>
+    <meta charset="UTF-8"/>
+    <title th:text="#{protective_shorts.title}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
 <body>
@@ -17,23 +17,20 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="#" th:text="#{top_nav.settings}"></a>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"></a>
+                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/admin/info-equipment/protective-shorts?theme=theme_1"
-                       th:text="#{top_nav.theme.theme_1}"></a>
-                    <a href="/admin/info-equipment/protective-shorts?theme=theme_2"
-                       th:text="#{top_nav.theme.theme_2}"></a>
+                    <a href="/admin/info-equipment/protective-shorts?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
+                    <a href="/admin/info-equipment/protective-shorts?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"></div>
+                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/admin/info-equipment/protective-shorts?lang=en">English</a>
                     <a href="/admin/info-equipment/protective-shorts?lang=ru">Russian</a>
@@ -103,68 +100,74 @@
         </button>
     </div>
 
-    <div class="content">
-        <div class="table">
-            <!--Header-->
-            <h1 th:text="#{protective_shorts.header.show_all}">?????</h1>
+    <div class="main-screen">
 
-            <!--Search-->
-            <form th:method="GET"
-                  th:action="@{/admin/info-equipment/protective-shorts/search}">
-                <input th:type="text" th:name="search"
-                       th:placeholder="#{equipment.search_placeholder}" style="width:200px">
-                <input class="button" type="submit" th:value="#{equipment.search_button}">
-            </form>
+        <div class="content">
+            <div class="table">
+                <!--Header-->
+                <h1 th:text="#{protective_shorts.header.show_all}"/>
 
-            <br>
+                <!--Search-->
+                <form th:method="GET"
+                      th:action="@{/admin/info-equipment/protective-shorts/search}">
+                    <label for="input-search"></label>
+                    <input id="input-search" style="width:200px"
+                           type="text" th:name="search" th:placeholder="#{equipment.search_placeholder}"/>
+                    <input class="button" type="submit" th:value="#{equipment.search_button}"/>
+                </form>
 
-            <!--Table-->
-            <table>
-                <tr>
-                    <th>
-                        <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
-                           th:text="#{protective_shorts.parameter.id}">?????</a>
-                    </th>
-                    <th>
-                        <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
-                           th:text="#{protective_shorts.parameter.name}">?????</a>
-                    </th>
-                    <th>
-                        <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
-                           th:text="#{protective_shorts.parameter.condition}">?????</a>
-                    </th>
-                    <th>
-                        <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
-                           th:text="#{protective_shorts.parameter.size}">?????</a>
-                    </th>
-                    <th></th><th></th>
-                </tr>
-                <tr th:each="oneProtectiveShorts : ${allProtectiveShorts}">
-                    <td th:text="${oneProtectiveShorts.getId()}">?????</td>
-                    <td th:text="${oneProtectiveShorts.getName()}" th:align="left">?????</td>
-                    <td th:text="#{${'equipment_condition.' + oneProtectiveShorts.getCondition()}}">?????</td>
-                    <td th:text="${oneProtectiveShorts.getSize()}">?????</td>
-                    <td th:width="1">
-                        <a th:href="@{/admin/info-equipment/protective-shorts/edit/{id}(id=${oneProtectiveShorts.getId()})}">
-                            <button class="button" th:text="#{equipment.button.edit}">?????</button>
-                        </a>
-                    </td>
-                    <td th:width="1">
-                        <form th:method="DELETE"
-                              th:action="@{/admin/info-equipment/protective-shorts/{id}(id=${oneProtectiveShorts.getId()})}">
-                            <input class="button" type="submit" th:value="#{equipment.button.delete}">
-                        </form>
-                    </td>
-                </tr>
-            </table>
+                <br>
 
-            <br>
+                <!--Table-->
+                <table>
+                    <tr>
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{protective_shorts.parameter.id}"/>
+                        </th>
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{protective_shorts.parameter.name}"/>
+                        </th>
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{protective_shorts.parameter.condition}"/>
+                        </th>
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/protective-shorts/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{protective_shorts.parameter.size}"/>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="oneProtectiveShorts : ${allProtectiveShorts}">
+                        <td th:text="${oneProtectiveShorts.id}"/>
+                        <td th:text="${oneProtectiveShorts.name}" th:align="left"/>
+                        <td th:text="#{${'equipment_condition.' + oneProtectiveShorts.condition}}"/>
+                        <td th:text="${oneProtectiveShorts.size}"/>
+                        <td th:width="1">
+                            <a th:href="@{/admin/info-equipment/protective-shorts/edit/{id}(id=${oneProtectiveShorts.id})}">
+                                <button class="button" th:text="#{equipment.button.edit}"/>
+                            </a>
+                        </td>
+                        <td th:width="1">
+                            <form th:method="DELETE"
+                                  th:action="@{/admin/info-equipment/protective-shorts/{id}(id=${oneProtectiveShorts.id})}">
+                                <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
 
-            <!--Add new-->
-            <a href="/admin/info-equipment/protective-shorts/add-new">
-                <button class="button" th:text="#{protective_shorts.button.show_all.add_new}">?????</button>
-            </a>
+                <br>
+
+                <!--Add new-->
+                <a href="/admin/info-equipment/protective-shorts/add-new">
+                    <button class="button" th:text="#{protective_shorts.button.show_all.add_new}"/>
+                </a>
+            </div>
         </div>
+
     </div>
 
 </div>

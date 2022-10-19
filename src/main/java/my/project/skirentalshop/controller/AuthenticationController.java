@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/")
@@ -35,7 +38,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    public String addNewUserToDB(@ModelAttribute("newApplicationUser") ApplicationUser newApplicationUser) {
+    public String addNewUserToDB(@ModelAttribute("newApplicationUser") @Valid ApplicationUser newApplicationUser,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "authentication/sign_up";
+        }
         applicationUserService.signUpUser(newApplicationUser);
         Client newClient = new Client(newApplicationUser.getName() + " " + newApplicationUser.getSurname(),
                 newApplicationUser.getPhone(), null);

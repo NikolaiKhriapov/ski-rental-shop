@@ -65,21 +65,21 @@ public class Rider {
     @NotEmpty(message = "{validation.rider.name}")
     private String name;
     private Sex sex;
-    @DecimalMin(value = "20", message = "{validation.rider.height}")
+    @DecimalMin(value = "60", message = "{validation.rider.height}")
     @DecimalMax(value = "220", message = "{validation.rider.height}")
     @NotNull(message = "{validation.rider.height}")
-    private Integer height; // TODO: change to Double
+    private Double height; //TODO: handle java.lang.NumberFormatException
     @NotNull(message = "{validation.rider.weight}")
-    @DecimalMin(value = "10", message = "{validation.rider.weight}")
+    @DecimalMin(value = "50", message = "{validation.rider.weight}")
     @DecimalMax(value = "160", message = "{validation.rider.weight}")
-    private Integer weight;
-    private Size foot; // TODO: change to footSize
+    private Double weight; //TODO: handle java.lang.NumberFormatException
+    private Size footSize;
     @ManyToMany(mappedBy = "listOfRiders")
     private List<Booking> listOfBookings;
     @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "rider_types_of_equipment", joinColumns = {@JoinColumn(name = "rider_id")})
     private List<TypesOfEquipment> equipmentNeededIds;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL) // TODO: Change to @OneToMany
     @JoinColumn(name = "assigned_equipment_id", referencedColumnName = "id")
     private AssignedEquipment assignedEquipment;
 
@@ -106,28 +106,28 @@ public class Rider {
         this.sex = sex;
     }
 
-    public Integer getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public Integer getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public Size getFoot() {
-        return foot;
+    public Size getFootSize() {
+        return footSize;
     }
 
-    public void setFoot(Size foot) {
-        this.foot = foot;
+    public void setFootSize(Size footSize) {
+        this.footSize = footSize;
     }
 
     public List<TypesOfEquipment> getEquipmentNeededIds() {
@@ -154,12 +154,12 @@ public class Rider {
         if (this == o) return true;
         if (!(o instanceof Rider rider)) return false;
         return id.equals(rider.id) && name.equals(rider.name) && sex == rider.sex && height.equals(rider.height) &&
-                weight.equals(rider.weight) && foot == rider.foot && equipmentNeededIds.equals(rider.equipmentNeededIds);
+                weight.equals(rider.weight) && footSize == rider.footSize && equipmentNeededIds.equals(rider.equipmentNeededIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, height, weight, foot, equipmentNeededIds);
+        return Objects.hash(id, name, sex, height, weight, footSize, equipmentNeededIds);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class Rider {
                 ", sex=" + sex.name() +
                 ", height=" + height +
                 ", weight=" + weight +
-                ", foot=" + foot.name() +
+                ", footSize=" + footSize.name() +
                 ", equipmentNeededIds=" + Arrays.toString(equipmentNeededIds.toArray()) +
                 ", assignedEquipment=" + assignedEquipment.toString() +
                 '}';

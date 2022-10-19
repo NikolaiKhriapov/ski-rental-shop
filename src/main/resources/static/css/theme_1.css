@@ -36,10 +36,11 @@ h1 {
     width: 100%;
     margin: 0 auto;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 50%);
+    background: white;
 }
 
 .header .top-nav {
-    margin: 0 50px;
+    margin: 0 50px 0 20px;
 }
 
 .header .top-nav .top-nav-items {
@@ -52,6 +53,7 @@ h1 {
 
     list-style: none;
     font-size: 18px;
+    color: black;
 }
 
 .dropdown .dropdown-button {
@@ -67,8 +69,9 @@ h1 {
 .dropdown-content {
     display: none;
     position: absolute;
+    color: black;
     background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -145,15 +148,22 @@ h1 {
     background: dimgrey;
 }
 
-/* Content */
+/* Main Screen */
 
-.content {
+.main-screen {
+    display: flex;
+    flex-direction: column;
+
     overflow: auto;
     width: calc(100% - 250px);
 
     font-size: 14px;
     background: darkgray;
     text-align: center;
+}
+
+.content {
+    height: calc(100% - 50px);
 }
 
 .content .table {
@@ -178,7 +188,6 @@ h1 {
 .content .table table th {
     color: black;
     text-decoration: none;
-    /*font-weight: normal;*/
 
     background-color: darkgray;
     height: 30px;
@@ -211,6 +220,10 @@ h1 {
     margin-left: 20%;
     margin-right: auto;
     text-align: left;
+}
+
+.validation-message {
+    color: red;
 }
 
 /* booking/edit */
@@ -249,4 +262,22 @@ h1 {
 
 .content .booking-edit-rider table tr:hover {
     background-color: lightgray;
+}
+
+.footer {
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+
+    list-style: none;
+    font-size: 18px;
+}
+
+.footer .text-block {
+    padding: 15px;
+
+    font-size: 14px;
+    color: black;
 }

@@ -30,12 +30,20 @@ public class BookingController {
     private final GlovesService glovesService;
 
     @Autowired
-    public BookingController(BookingService bookingService, ClientService clientService, RiderService riderService,
-                             AssignedEquipmentService assignedEquipmentService, SnowboardService snowboardService,
-                             SnowboardBootsService snowboardBootsService, SkiService skiService,
-                             SkiBootsService skiBootsService, JacketService jacketService,
-                             KneeProtectionService kneeProtectionService, ProtectiveShortsService protectiveShortsService,
-                             PantsService pantsService, HelmetService helmetService, GlovesService glovesService) {
+    public BookingController(BookingService bookingService,
+                             ClientService clientService,
+                             RiderService riderService,
+                             AssignedEquipmentService assignedEquipmentService,
+                             SnowboardService snowboardService,
+                             SnowboardBootsService snowboardBootsService,
+                             SkiService skiService,
+                             SkiBootsService skiBootsService,
+                             JacketService jacketService,
+                             KneeProtectionService kneeProtectionService,
+                             ProtectiveShortsService protectiveShortsService,
+                             PantsService pantsService,
+                             HelmetService helmetService,
+                             GlovesService glovesService) {
         this.bookingService = bookingService;
         this.clientService = clientService;
         this.riderService = riderService;

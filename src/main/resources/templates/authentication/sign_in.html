@@ -1,42 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>  <!-- TODO: finish -->
-    <meta charset="UTF-8">
-    <title>Sign in</title>
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{auth.sign_in.title}"/>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" crossorigin="anonymous">
-    <!--    <link rel="stylesheet" th:href="@{${#themes.code('styleSheet')}}"/>-->
-    <!--    <link rel="stylesheet" href="/css/authorization.css"/>-->
-    <!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
-    <!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
-    <!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" crossorigin="anonymous"/>
     <style>
         body {
             background-color: #3d3f41;
             color: white;
         }
+
+        .main-screen {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 50px - 40px);
+
+            overflow: auto;
+        }
+
+        .content {
+            height: calc(100% - 50px);
+        }
+
+        .footer {
+            margin: 0;
+            padding: 0;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+
+            list-style: none;
+            font-size: 18px;
+        }
+
+        .footer .text-block {
+            padding: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <form class="form-signin" method="post" action="/sign-in">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required=""
-                   autofocus="">
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                   required="">
-        </p>
-        <a href="/sign-up">Sign up</a>
-        <br><br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+
+<div class="main-screen">
+
+    <div class="content">
+        <form class="form-signin"
+              method="POST"
+              action="/sign-in">
+            <h2 class="form-signin-heading" th:text="#{auth.sign_in.header}"/>
+
+            <span>
+                <label for="input-username"></label>
+                <input id="input-username" class="form-control"
+                       type="text" name="username" th:placeholder="#{auth.sign_in.placeholder.username}"/>
+            </span>
+            <span>
+                <label for="input-password"></label>
+                <input id="input-password" class="form-control"
+                       type="password" name="password" th:placeholder="#{auth.sign_in.placeholder.password}"/>
+            </span>
+
+            <a href="/sign-up" th:text="#{auth.sign_in.link.sign_up}"/>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{auth.sign_in.button.sign_in}"/>
+        </form>
+    </div>
+
+    <div class="footer">
+        <div class="text-block">
+            <div class="center" th:text="#{auth.footer.contact_us}"/>
+        </div>
+    </div>
+
 </div>
+
 </body>
+
 </html>
