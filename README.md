@@ -9,6 +9,7 @@
 - Maven
 - PostgreSQL
 - Thymeleaf
+- CSS
 - Git
 
 ### Software:
