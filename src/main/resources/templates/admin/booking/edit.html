@@ -122,11 +122,11 @@
                             <tr>
                                 <td th:text="#{booking.edit.field.client} + ': '"/>
                                 <td>
-                                    <label for="input-surname"></label>
-                                    <input type="text" id="input-surname" th:field="*{client.surname}"
+                                    <label for="input-name"></label>
+                                    <input type="text" id="input-name" th:field="*{client.name}"
                                            th:placeholder="#{booking.edit.field.client.placeholder}"/>
                                     <div class="validation-message"
-                                         th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">
+                                         th:if="${#fields.hasErrors('client.name')}" th:errors="*{client.name}">
                                     </div>
                                 </td>
                             </tr>
@@ -185,7 +185,7 @@
                         <table>
                             <tr th:each="oneRider : ${bookingToBeUpdated.listOfRiders}">
                                 <td th:text="${oneRider.id}" style="vertical-align:top"/>
-                                <td style="vertical-align:top" th:align="left">     <!-- TODO: remove styling -->
+                                <td style="vertical-align:top" th:align="left">
                                     <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.name}"/>
                                     <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}"/>
                                     <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.height}"/>

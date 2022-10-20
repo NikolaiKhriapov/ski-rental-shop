@@ -84,7 +84,7 @@ public class BookingService {
 
     // ----- search -----
     public List<Booking> showBookingsBySearch(String search) {
-        return bookingRepository.findAllByClientSurnameContainingIgnoreCaseOrClientPhone1ContainingIgnoreCaseOrClientPhone2ContainingIgnoreCase(
+        return bookingRepository.findAllByClientNameContainingIgnoreCaseOrClientPhone1ContainingIgnoreCaseOrClientPhone2ContainingIgnoreCase(
                 search, search, search);
     }
 

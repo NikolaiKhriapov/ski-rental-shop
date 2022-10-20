@@ -52,7 +52,7 @@
         <form class="form-signin"
               th:method="POST"
               th:action="@{/sign-up}"
-              th:object="${newApplicationUser}">
+              th:object="${registrationRequest}">
             <h2 class="form-signin-heading" th:text="#{auth.sign_up.header}"/>
 
             <span>
@@ -69,10 +69,10 @@
                 <a style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></a>
             </span>
             <span>
-                <label for="input-phone"></label>
-                <input id="input-phone" class="form-control"
-                       type="text" th:field="*{phone}" th:placeholder="#{auth.sign_up.placeholder.phone}">
-                <a style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></a>
+                <label for="input-phone1"></label>
+                <input id="input-phone1" class="form-control"
+                       type="text" th:field="*{phone1}" th:placeholder="#{auth.sign_up.placeholder.phone}">
+                <a style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}"></a>
             </span>
             <span>
                 <label for="input-email"></label>
@@ -83,7 +83,7 @@
             <span>
                 <label for="input-password"></label>
                 <input id="input-password" class="form-control"
-                       type="text" th:field="*{password}" th:placeholder="#{auth.sign_up.placeholder.password}">
+                       type="password" th:field="*{password}" th:placeholder="#{auth.sign_up.placeholder.password}">
                 <a style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></a>
             </span>
 

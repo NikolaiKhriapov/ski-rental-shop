@@ -126,7 +126,7 @@
                                th:text="#{client.show_all.table.header.id}"/>
                         </th>
                         <th>
-                            <a th:href="@{'/admin/info-clients/sort?parameter=surname&sortDirection=' + ${reverseSortDirection}}"
+                            <a th:href="@{'/admin/info-clients/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
                                th:text="#{client.show_all.table.header.name}"/>
                         </th>
                         <th>
@@ -142,7 +142,7 @@
                     </tr>
                     <tr th:each="oneClient : ${allClients}">
                         <td th:text="${oneClient.id}"/>
-                        <td th:text="${oneClient.surname}" th:align="left"/>
+                        <td th:text="${oneClient.name}" th:align="left"/>
                         <td th:text="${oneClient.phone1}"/>
                         <td th:text="${oneClient.phone2}"/>
                         <td th:width="1">

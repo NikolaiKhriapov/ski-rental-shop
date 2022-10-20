@@ -1,15 +1,18 @@
-package my.project.skirentalshop.controller;
+package my.project.skirentalshop.security;
 
 import my.project.skirentalshop.model.Client;
-import my.project.skirentalshop.security.applicationUser.ApplicationUser;
-import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
+import my.project.skirentalshop.security.registration.RegistrationRequest;
+import my.project.skirentalshop.security.registration.RegistrationService;
 import my.project.skirentalshop.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
@@ -17,12 +20,12 @@ import javax.validation.Valid;
 @RequestMapping("/")
 public class AuthenticationController {
 
-    private final ApplicationUserService applicationUserService;
+    private final RegistrationService registrationService;
     private final ClientService clientService;
 
     @Autowired
-    public AuthenticationController(ApplicationUserService applicationUserService, ClientService clientService) {
-        this.applicationUserService = applicationUserService;
+    public AuthenticationController(RegistrationService registrationService, ClientService clientService) {
+        this.registrationService = registrationService;
         this.clientService = clientService;
     }
 
@@ -32,22 +35,24 @@ public class AuthenticationController {
     }
 
     @GetMapping("/sign-up")
-    public String registerNewUser(Model model) {
-        model.addAttribute("newApplicationUser", new ApplicationUser());
+    public String signUp(Model model) {
+        model.addAttribute("registrationRequest", new RegistrationRequest());
         return "authentication/sign_up";
     }
 
     @PostMapping("/sign-up")
-    public String addNewUserToDB(@ModelAttribute("newApplicationUser") @Valid ApplicationUser newApplicationUser,
+    public String addNewUserToDB(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "authentication/sign_up";
         }
-        applicationUserService.signUpUser(newApplicationUser);
-        Client newClient = new Client(newApplicationUser.getName() + " " + newApplicationUser.getSurname(),
-                newApplicationUser.getPhone(), null);
-        newClient.setEmail(newApplicationUser.getEmail());
+        registrationService.register(registrationRequest);
+
+        Client newClient = new Client(registrationRequest.getName() + " " + registrationRequest.getSurname(),
+                registrationRequest.getPhone1(), null);
+        newClient.setEmail(registrationRequest.getEmail());
         clientService.addNewClientToDB(newClient);
+
         return "redirect:/sign-in";
     }
 

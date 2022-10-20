@@ -121,7 +121,7 @@
                     </tr>
                     <tr th:each="oneClient : ${clientsBySearch}">
                         <td th:text="${oneClient.id}"/>
-                        <td th:text="${oneClient.surname}" th:align="left"/>
+                        <td th:text="${oneClient.name}" th:align="left"/>
                         <td th:text="${oneClient.phone1}"/>
                         <td th:text="${oneClient.phone2}"/>
                         <td th:width="1">

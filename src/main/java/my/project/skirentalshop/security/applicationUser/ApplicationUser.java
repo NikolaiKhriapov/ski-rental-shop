@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -17,18 +16,10 @@ public class ApplicationUser implements UserDetails {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
-    @NotBlank(message = "{validation.application_user.invalid_name.not_blank}")
-    @Size(max = 30, message = "{validation.application_user.invalid_name.size}")
     private String name;
-    @NotBlank(message = "{validation.application_user.invalid_surname.not_blank}")
-    @Size(max = 30, message = "{validation.application_user.invalid_surname.size}")
     private String surname;
-    @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.application_user.invalid_phone_number}")
-    private String phone;
-    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "{validation.application_user.invalid_email}")
+    private String phone1;
     private String email;
-//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$", message = "{validation.application_user.invalid_password}") //TODO: implement
-    @NotBlank(message = "{validation.application_user.invalid_password}")
     private String password;
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
@@ -69,11 +60,11 @@ public class ApplicationUser implements UserDetails {
     public ApplicationUser() {
     }
 
-    public ApplicationUser(String name, String surname, String phone, String email, String password,
+    public ApplicationUser(String name, String surname, String phone1, String email, String password,
                            ApplicationUserRole applicationUserRole) {
         this.name = name;
         this.surname = surname;
-        this.phone = phone;
+        this.phone1 = phone1;
         this.email = email;
         this.password = password;
         this.applicationUserRole = applicationUserRole;
@@ -104,12 +95,12 @@ public class ApplicationUser implements UserDetails {
         this.surname = surname;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPhone1() {
+        return phone1;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
     }
 
     public String getEmail() {
@@ -153,15 +144,12 @@ public class ApplicationUser implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ApplicationUser that = (ApplicationUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) &&
-                Objects.equals(surname, that.surname) && Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) && applicationUserRole == that.applicationUserRole &&
-                Objects.equals(locked, that.locked) && Objects.equals(enabled, that.enabled);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(phone1, that.phone1) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && applicationUserRole == that.applicationUserRole && Objects.equals(locked, that.locked) && Objects.equals(enabled, that.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, email, password, applicationUserRole, locked, enabled);
+        return Objects.hash(id, name, surname, phone1, email, password, applicationUserRole, locked, enabled);
     }
 
     @Override
@@ -170,6 +158,7 @@ public class ApplicationUser implements UserDetails {
                 "id=" + id +
                 ", name='" + name +
                 ", surname='" + surname +
+                ", phone1='" + phone1 +
                 ", email='" + email +
                 ", password='" + password +
                 ", applicationUserRole=" + applicationUserRole +

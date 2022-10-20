@@ -70,13 +70,15 @@
                 <h1 th:text="#{client.settings.info.header}"/>
                 <form th:method="PATCH"
                       th:action="@{/client/settings/edit-info}"
-                      th:object="${applicationUser}">
+                      th:object="${registrationRequest}">
                     <table>
                         <tr>
                             <td th:text="#{client.settings.info.name} + ': '"/>
                             <td>
                                 <label for="input-name"></label>
-                                <input id="input-name" style="width: 300px" type="text" th:field="*{name}"/>
+                                <input id="input-name" style="width: 300px" type="text"
+                                       th:placeholder="#{client.settings.info.name}"
+                                       th:field="${applicationUserToBeUpdated.name}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                             </td>
@@ -85,19 +87,23 @@
                             <td th:text="#{client.settings.info.surname} + ': '"></td>
                             <td>
                                 <label for="input-surname"></label>
-                                <input id="input-surname" style="width: 300px" type="text" th:field="*{surname}"/>
+                                <input id="input-surname" style="width: 300px" type="text"
+                                       th:placeholder="#{client.settings.info.surname}"
+                                       th:field="${applicationUserToBeUpdated.surname}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{client.settings.info.phone} + ': '"/>
+                            <td th:text="#{client.settings.info.phone1} + ': '"/>
                             <td>
-                                <label for="input-phone"></label>
-                                <input id="input-phone" style="width: 300px" type="text" th:field="*{phone}"/>
+                                <label for="input-phone1"></label>
+                                <input id="input-phone1" style="width: 300px" type="text"
+                                       placeholder="X(XXX)XXX-XX-XX"
+                                       th:field="${applicationUserToBeUpdated.phone1}"/>
                                 <div class="validation-message"
-                                     th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                                     th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">
                                 </div>
                             </td>
                         </tr>
@@ -105,7 +111,9 @@
                             <td th:text="#{client.settings.info.email} + ': '"/>
                             <td>
                                 <label for="input-email"></label>
-                                <input id="input-email" style="width: 300px" type="text" th:field="*{email}"/>
+                                <input id="input-email" style="width: 300px" type="text"
+                                       th:placeholder="#{client.settings.info.email}"
+                                       th:field="${applicationUserToBeUpdated.email}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
                                 </div>
@@ -113,10 +121,9 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="hidden" th:field="*{password}" value="temp"/>
+                                <input type="hidden" th:field="${applicationUserToBeUpdated.password}"/>
                             </td>
                         </tr>
-                        <!-- TODO: reconsider (temp p/w to pass validation, but not to get saved to the DB) -->
                     </table>
 
                     <br>
@@ -130,23 +137,24 @@
                 <h1 th:text="#{client.settings.password.header}"/>
                 <form th:method="PATCH"
                       th:action="@{/client/settings/edit-password}"
-                      th:object="${applicationUser}">
+                      th:object="${registrationRequest}">
                     <table>
                         <tr>
                             <td>
-                                <input type="hidden" th:field="*{name}" th:value="*{name}"/>
-                                <input type="hidden" th:field="*{surname}" th:value="*{surname}"/>
-                                <input type="hidden" th:field="*{phone}" th:value="*{phone}"/>
-                                <input type="hidden" th:field="*{email}" th:value="*{email}"/>
+                                <input type="hidden" th:field="${applicationUserToBeUpdated.name}"/>
+                                <input type="hidden" th:field="${applicationUserToBeUpdated.surname}"/>
+                                <input type="hidden" th:field="${applicationUserToBeUpdated.phone1}"/>
+                                <input type="hidden" th:field="${applicationUserToBeUpdated.email}"/>
                             </td>
                         </tr>
                         <tr>
                             <td th:text="#{client.settings.info.password} + ': '"/>
                             <td>
                                 <label for="input-password"></label>
-                                <input id="input-password" style="width:250px" type="password" th:field="*{password}"/>
-                                <div class="validation-message"
-                                     th:if="${#fields.hasErrors()}" th:errors="*{password}">
+                                <input id="input-password" style="width:250px" type="password"
+                                       th:placeholder="#{client.settings.info.password}"
+                                       th:field="${applicationUserToBeUpdated.password}"/>
+                                <div class="validation-message" th:if="${#fields.hasErrors()}" th:errors="*{password}">
                                 </div>
                             </td>
                         </tr>

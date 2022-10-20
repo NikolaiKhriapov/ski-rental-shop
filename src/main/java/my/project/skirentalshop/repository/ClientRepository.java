@@ -13,7 +13,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findAllByOrderById();
 
     // ----- search -----
-    List<Client> findAllBySurnameContainingIgnoreCaseOrPhone1ContainingIgnoreCaseOrPhone2ContainingIgnoreCase(
+    List<Client> findAllByNameContainingIgnoreCaseOrPhone1ContainingIgnoreCaseOrPhone2ContainingIgnoreCase(
             String search1, String search2, String search3
     );
 

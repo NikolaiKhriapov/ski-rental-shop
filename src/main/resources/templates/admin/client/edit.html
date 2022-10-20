@@ -117,11 +117,11 @@
                         <tr>
                             <td th:text="#{client.edit.field.name} + ': '"/>
                             <td>
-                                <label for="input-surname"></label>
-                                <input id="input-surname"
-                                       type="text" th:field="*{surname}" th:placeholder="#{client.edit.field.name}"/>
+                                <label for="input-name"></label>
+                                <input id="input-name"
+                                       type="text" th:field="*{name}" th:placeholder="#{client.edit.field.name}"/>
                                 <div class="validation-message"
-                                     th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                                     th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
                                 </div>
                             </td>
                         </tr>

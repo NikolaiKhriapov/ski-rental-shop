@@ -2,6 +2,7 @@ package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.Client;
 import my.project.skirentalshop.repository.ClientRepository;
+import my.project.skirentalshop.security.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ClientService {
     public void updateClientById(Long id, Client updatedClient) {
         Client clientToBeUpdated = showOneClientById(id);
 
-        clientToBeUpdated.setSurname(updatedClient.getSurname());
+        clientToBeUpdated.setName(updatedClient.getName());
         clientToBeUpdated.setPhone1(updatedClient.getPhone1());
         clientToBeUpdated.setPhone2(updatedClient.getPhone2());
 
@@ -51,7 +52,7 @@ public class ClientService {
 
     // ----- search -----
     public List<Client> showClientsBySearch(String search) {
-        return clientRepository.findAllBySurnameContainingIgnoreCaseOrPhone1ContainingIgnoreCaseOrPhone2ContainingIgnoreCase(
+        return clientRepository.findAllByNameContainingIgnoreCaseOrPhone1ContainingIgnoreCaseOrPhone2ContainingIgnoreCase(
                 search, search, search);
     }
 
@@ -65,5 +66,16 @@ public class ClientService {
     // ----- show client by email -----
     public Client showOneClientByEmail(String email) {
         return clientRepository.findByEmail(email);
+    }
+
+    // ----- update user (CLIENT) info -----
+    public void updateUserInfo(Client clientToBeUpdated, RegistrationRequest registrationRequest) {
+
+        clientToBeUpdated.setName(registrationRequest.getName() + ' ' + registrationRequest.getSurname());
+        clientToBeUpdated.setPhone1(registrationRequest.getPhone1());
+        clientToBeUpdated.setPhone2(registrationRequest.getPhone2());
+        clientToBeUpdated.setEmail(registrationRequest.getEmail());
+
+        clientRepository.save(clientToBeUpdated);
     }
 }

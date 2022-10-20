@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class AssignedEquipment {
+public class AssignedEquipment { //TODO: change to RiderEquipment
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")

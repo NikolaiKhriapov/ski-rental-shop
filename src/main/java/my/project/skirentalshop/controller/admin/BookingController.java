@@ -80,7 +80,7 @@ public class BookingController {
         if (bindingResult.hasErrors()) {
             return "admin/booking/add_new";
         }
-        Client newClient = new Client(newBooking.getClient().getSurname(),
+        Client newClient = new Client(newBooking.getClient().getName(),
                 newBooking.getClient().getPhone1(), newBooking.getClient().getPhone2());
         clientService.addNewClientToDB(newClient);
         bookingService.addNewBookingToDB(newBooking);

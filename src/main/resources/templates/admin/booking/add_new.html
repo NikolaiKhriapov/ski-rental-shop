@@ -115,12 +115,12 @@
                         <tr>
                             <td th:text="#{booking.add_new.field.client} + ': '"/>
                             <td>
-                                <label for="input-surname"></label>
-                                <input id="input-surname"
-                                       type="text" th:field="*{client.surname}"
+                                <label for="input-name"></label>
+                                <input id="input-name"
+                                       type="text" th:field="*{client.name}"
                                        th:placeholder="#{booking.add_new.field.client.placeholder}"/>
                                 <div class="validation-message"
-                                     th:if="${#fields.hasErrors('client.surname')}" th:errors="*{client.surname}">
+                                     th:if="${#fields.hasErrors('client.name')}" th:errors="*{client.name}">
                                 </div>
                             </td>
                         </tr>

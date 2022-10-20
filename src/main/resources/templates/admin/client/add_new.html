@@ -43,7 +43,7 @@
 <div class="main">
 
     <div class="sidebar">
-        <button type="button"> <!-- TODO: Consider different approach for buttons -->
+        <button type="button">
             <a href="/admin" th:text="#{side_bar.admin.home}"/>
         </button>
         <br>
@@ -115,11 +115,11 @@
                         <tr>
                             <td th:text="#{client.add_new.field.name} + ': '"/>
                             <td>
-                                <label for="input-surname"></label>
-                                <input id="input-surname"
-                                       type="text" th:field="*{surname}" th:placeholder="#{client.add_new.field.name}"/>
+                                <label for="input-name"></label>
+                                <input id="input-name"
+                                       type="text" th:field="*{name}" th:placeholder="#{client.add_new.field.name}"/>
                                 <div class="validation-message"
-                                     th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                                     th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
                                 </div>
                             </td>
                         </tr>
