@@ -2,11 +2,7 @@
 
 ### Technologies: 
 - Java
-- Spring Core
-- Spring Boot
-- Spring MVC
-- Spring Data JPA
-- Spring Security
+- Spring Framework
 - PostgreSQL
 - HTML
 - Thymeleaf
