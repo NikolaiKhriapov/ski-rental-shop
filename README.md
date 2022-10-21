@@ -4,10 +4,7 @@
 - Java
 - Spring Framework
 - PostgreSQL
-- HTML
-- Thymeleaf
-- CSS
-- Git
+- HTML, Thymeleaf, CSS
 
 Description:
 - Maintenance of database of all equipment and its characteristics;
