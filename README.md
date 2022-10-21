@@ -6,7 +6,7 @@
 - PostgreSQL
 - HTML, Thymeleaf, CSS
 
-Description:
+### Description:
 - Maintenance of database of all equipment and its characteristics;
 - Registration and management of bookings (client, riders, needed equipment, assigned equipment);
 - Support for multiple languages;
