@@ -14,13 +14,17 @@ public class Jacket {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
     @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
+
     private EquipmentCondition condition;
+
     private Size size;
+
     @OneToMany(mappedBy = "jacket")
-    private List<AssignedEquipment> listOfAssignedEquipment;
+    private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public Jacket() {
     }
@@ -58,7 +62,10 @@ public class Jacket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Jacket jacket = (Jacket) o;
-        return Objects.equals(id, jacket.id) && Objects.equals(name, jacket.name) && condition == jacket.condition && size == jacket.size;
+        return Objects.equals(id, jacket.id) &&
+                Objects.equals(name, jacket.name) &&
+                condition == jacket.condition &&
+                size == jacket.size;
     }
 
     @Override
@@ -71,8 +78,8 @@ public class Jacket {
         return "Jacket{" +
                 "id=" + id +
                 ", name='" + name +
-                ", condition=" + condition.name() +
-                ", size=" + size.name() +
+                ", condition=" + condition +
+                ", size=" + size +
                 '}';
     }
 }

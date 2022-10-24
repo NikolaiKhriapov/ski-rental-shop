@@ -25,17 +25,17 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-clients/edit/' + ${id} + '?theme=theme_1'"
+                    <a th:href="'/admin/info-clients/edit/' + ${clientId} + '?theme=theme_1'"
                        th:text="#{top_nav.theme.theme_1}"/>
-                    <a th:href="'/admin/info-clients/edit/' + ${id} + '?theme=theme_2'"
+                    <a th:href="'/admin/info-clients/edit/' + ${clientId} + '?theme=theme_2'"
                        th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-clients/edit/' + ${id} + '?lang=en'">English</a>
-                    <a th:href="'/admin/info-clients/edit/' + ${id} + '?lang=ru'">Russian</a>
+                    <a th:href="'/admin/info-clients/edit/' + ${clientId} + '?lang=en'">English</a>
+                    <a th:href="'/admin/info-clients/edit/' + ${clientId} + '?lang=ru'">Russian</a>
                 </div>
             </li>
         </ul>
@@ -111,7 +111,7 @@
 
                 <!--Input parameters-->
                 <form th:method="PATCH"
-                      th:action="@{/admin/info-clients/edit/{id}(id=${id})}"
+                      th:action="@{/admin/info-clients/edit/{clientId}(clientId=${clientId})}"
                       th:object="${clientToUpdate}">
                     <table>
                         <tr>

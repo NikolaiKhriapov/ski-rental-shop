@@ -1,21 +1,21 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.AssignedEquipment;
+import my.project.skirentalshop.model.RiderAssignedEquipment;
 import my.project.skirentalshop.repository.AssignedEquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AssignedEquipmentService {
+public class RiderAssignedEquipmentService {
 
     private final AssignedEquipmentRepository assignedEquipmentRepository;
 
     @Autowired
-    public AssignedEquipmentService(AssignedEquipmentRepository assignedEquipmentRepository) {
+    public RiderAssignedEquipmentService(AssignedEquipmentRepository assignedEquipmentRepository) {
         this.assignedEquipmentRepository = assignedEquipmentRepository;
     }
 
-    public void addNewAssignedEquipmentToDB(AssignedEquipment assignedEquipment) {
-        assignedEquipmentRepository.save(assignedEquipment);
+    public void delete(RiderAssignedEquipment riderAssignedEquipment) {
+        assignedEquipmentRepository.delete(riderAssignedEquipment);
     }
 }

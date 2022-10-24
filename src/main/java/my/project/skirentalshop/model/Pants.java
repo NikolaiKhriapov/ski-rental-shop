@@ -14,13 +14,17 @@ public class Pants {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
     @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
-    private Size size;
+
     private EquipmentCondition condition;
+
+    private Size size;
+
     @OneToMany(mappedBy = "pants")
-    private List<AssignedEquipment> listOfAssignedEquipment;
+    private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public Pants() {
     }
@@ -37,14 +41,6 @@ public class Pants {
         this.name = name;
     }
 
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
     public EquipmentCondition getCondition() {
         return condition;
     }
@@ -53,17 +49,28 @@ public class Pants {
         this.condition = condition;
     }
 
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pants pants = (Pants) o;
-        return Objects.equals(id, pants.id) && Objects.equals(name, pants.name) && size == pants.size && condition == pants.condition;
+        return Objects.equals(id, pants.id) &&
+                Objects.equals(name, pants.name) &&
+                condition == pants.condition &&
+                size == pants.size;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, size, condition);
+        return Objects.hash(id, name, condition, size);
     }
 
     @Override
@@ -71,8 +78,8 @@ public class Pants {
         return "Pants{" +
                 "id=" + id +
                 ", name='" + name +
-                ", condition=" + condition.name() +
-                ", size=" + size.name() +
+                ", condition=" + condition +
+                ", size=" + size +
                 '}';
     }
 }

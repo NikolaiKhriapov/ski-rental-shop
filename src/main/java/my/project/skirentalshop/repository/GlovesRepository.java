@@ -15,6 +15,6 @@ public interface GlovesRepository extends JpaRepository<Gloves, Long> {
     // ----- search -----
     List<Gloves> findAllByNameContainingIgnoreCase(String partOfName);
 
-    //// ----- edit booking info / assign equipment to riders -----
+    // ----- edit booking info / assign equipment to riders -----
     List<Gloves> findAllByOrderBySize();
 }

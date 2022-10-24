@@ -2,10 +2,7 @@ package my.project.skirentalshop.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Entity
 public class Rider {
@@ -62,26 +59,26 @@ public class Rider {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotEmpty(message = "{validation.rider.name}")
     private String name;
+
     private Sex sex;
+
     @DecimalMin(value = "60", message = "{validation.rider.height}")
     @DecimalMax(value = "220", message = "{validation.rider.height}")
     @NotNull(message = "{validation.rider.height}")
     private Double height; //TODO: handle java.lang.NumberFormatException
+
     @NotNull(message = "{validation.rider.weight}")
     @DecimalMin(value = "50", message = "{validation.rider.weight}")
     @DecimalMax(value = "160", message = "{validation.rider.weight}")
     private Double weight; //TODO: handle java.lang.NumberFormatException
+
     private Size footSize;
-    @ManyToMany(mappedBy = "listOfRiders")
-    private List<Booking> listOfBookings;
-    @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "rider_types_of_equipment", joinColumns = {@JoinColumn(name = "rider_id")})
-    private List<TypesOfEquipment> equipmentNeededIds;
-    @OneToOne(cascade = CascadeType.ALL) // TODO: Change to @OneToMany
-    @JoinColumn(name = "assigned_equipment_id", referencedColumnName = "id")
-    private AssignedEquipment assignedEquipment;
+
+    @OneToMany(mappedBy = "rider")
+    private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
 
     public Rider() {
     }
@@ -130,36 +127,22 @@ public class Rider {
         this.footSize = footSize;
     }
 
-    public List<TypesOfEquipment> getEquipmentNeededIds() {
-        return equipmentNeededIds;
-    }
-
-    public void setEquipmentNeededIds(List<TypesOfEquipment> equipmentNeededIds) {
-        this.equipmentNeededIds = equipmentNeededIds;
-    }
-
-    public AssignedEquipment getAssignedEquipment() {
-        if (assignedEquipment == null) {
-            return new AssignedEquipment();
-        }
-        return assignedEquipment;
-    }
-
-    public void setAssignedEquipment(AssignedEquipment assignedEquipment) {
-        this.assignedEquipment = assignedEquipment;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Rider rider)) return false;
-        return id.equals(rider.id) && name.equals(rider.name) && sex == rider.sex && height.equals(rider.height) &&
-                weight.equals(rider.weight) && footSize == rider.footSize && equipmentNeededIds.equals(rider.equipmentNeededIds);
+        if (o == null || getClass() != o.getClass()) return false;
+        Rider rider = (Rider) o;
+        return Objects.equals(id, rider.id) &&
+                Objects.equals(name, rider.name) &&
+                sex == rider.sex &&
+                Objects.equals(height, rider.height) &&
+                Objects.equals(weight, rider.weight) &&
+                footSize == rider.footSize;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, height, weight, footSize, equipmentNeededIds);
+        return Objects.hash(id, name, sex, height, weight, footSize);
     }
 
     @Override
@@ -167,12 +150,10 @@ public class Rider {
         return "Rider{" +
                 "id=" + id +
                 ", name='" + name +
-                ", sex=" + sex.name() +
+                ", sex=" + sex +
                 ", height=" + height +
                 ", weight=" + weight +
-                ", footSize=" + footSize.name() +
-                ", equipmentNeededIds=" + Arrays.toString(equipmentNeededIds.toArray()) +
-                ", assignedEquipment=" + assignedEquipment.toString() +
+                ", footSize=" + footSize +
                 '}';
     }
 }

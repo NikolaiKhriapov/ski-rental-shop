@@ -25,17 +25,17 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-riders/edit?id=' + ${riderId} + '&theme=theme_1'"
+                    <a th:href="'/admin/info-riders/edit?riderId=' + ${riderId} + '&theme=theme_1'"
                        th:text="#{top_nav.theme.theme_1}"/>
-                    <a th:href="'/admin/info-riders/edit?id=' + ${riderId} + '&theme=theme_2'"
+                    <a th:href="'/admin/info-riders/edit?riderId=' + ${riderId} + '&theme=theme_2'"
                        th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-riders/edit?id=' + ${riderId} + '&lang=en'">English</a>
-                    <a th:href="'/admin/info-riders/edit?id=' + ${riderId} + '&lang=ru'">Russian</a>
+                    <a th:href="'/admin/info-riders/edit?riderId=' + ${riderId} + '&lang=en'">English</a>
+                    <a th:href="'/admin/info-riders/edit?riderId=' + ${riderId} + '&lang=ru'">Russian</a>
                 </div>
             </li>
         </ul>
@@ -174,6 +174,18 @@
                                 </select>
                             </td>
                         </tr>
+                    </table>
+
+                    <br>
+
+                    <input class="button" type="submit" th:value="#{rider.edit.button.save}"/>
+                </form>
+
+                <form th:if="${bookingId} != null"
+                      th:method="PATCH"
+                      th:action="@{'/admin/info-booking/edit-equipment/' + ${riderId} + '?bookingId=' + ${bookingId}}"
+                      th:object="${link}">
+                    <table>
                         <tr>
                             <td th:text="#{rider.edit.equipment} + ': '" th:align="top"/>
                             <td>
@@ -181,12 +193,15 @@
                                     <label for="input-equipment"></label>
                                     <input id="input-equipment"
                                            type="checkbox"
-                                           th:field="*{equipmentNeededIds}"
+                                           th:field="*{riderRequestedEquipment}"
                                            th:value="${i.name}"/>
                                     <span th:text="#{${'equipment.type.' + i}}"/>
                                 </div>
                             </td>
                         </tr>
+
+                        <br>
+
                     </table>
 
                     <br>
@@ -199,7 +214,7 @@
                 <!--Return to order -->
                 <div th:if="${bookingId != null}">
                     <form th:method="GET"
-                          th:action="@{/admin/info-booking/edit/{id}(id=${bookingId})}">
+                          th:action="@{/admin/info-booking/edit/{bookingId}(bookingId=${bookingId})}">
                         <input class="button" type="submit" th:value="#{rider.edit.button.go_to_order}"/>
                     </form>
                 </div>

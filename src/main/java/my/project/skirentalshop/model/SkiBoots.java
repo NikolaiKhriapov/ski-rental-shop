@@ -64,14 +64,19 @@ public class SkiBoots {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
     @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
+
     private EquipmentCondition condition;
+
     private Size size;
+
     private Stiffness stiffness;
+
     @OneToMany(mappedBy = "skiBoots")
-    private List<AssignedEquipment> listOfAssignedEquipment;
+    private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public SkiBoots() {
     }
@@ -117,8 +122,11 @@ public class SkiBoots {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SkiBoots skiBoots = (SkiBoots) o;
-        return Objects.equals(id, skiBoots.id) && Objects.equals(name, skiBoots.name) &&
-                condition == skiBoots.condition && size == skiBoots.size && stiffness == skiBoots.stiffness;
+        return Objects.equals(id, skiBoots.id) &&
+                Objects.equals(name, skiBoots.name) &&
+                condition == skiBoots.condition &&
+                size == skiBoots.size &&
+                stiffness == skiBoots.stiffness;
     }
 
     @Override
@@ -131,9 +139,9 @@ public class SkiBoots {
         return "SkiBoots{" +
                 "id=" + id +
                 ", name='" + name +
-                ", condition=" + condition.name() +
-                ", size=" + size.name() +
-                ", stiffness=" + stiffness.name() +
+                ", condition=" + condition +
+                ", size=" + size +
+                ", stiffness=" + stiffness +
                 '}';
     }
 }

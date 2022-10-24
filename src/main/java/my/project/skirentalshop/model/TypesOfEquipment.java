@@ -7,12 +7,12 @@ public enum TypesOfEquipment {
     SKI,
     SNOWBOARD_BOOTS,
     SKI_BOOTS,
-    JACKET,
-    PANTS,
-    KNEE_PROTECTION,
-    PROTECTIVE_SHORTS,
     HELMET,
-    GLOVES;
+    JACKET,
+    GLOVES,
+    PANTS,
+    PROTECTIVE_SHORTS,
+    KNEE_PROTECTION;
 
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
@@ -20,5 +20,4 @@ public enum TypesOfEquipment {
     public String toString() {
         return resourceBundle.getString("equipment.type." + name());
     }
-
 }

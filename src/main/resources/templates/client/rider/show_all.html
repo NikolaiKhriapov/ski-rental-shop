@@ -79,7 +79,6 @@
                         <th><a th:text="#{rider.show_all.table.header.sex}"/></th>
                         <th><a th:text="#{rider.show_all.table.header.foot}"/></th>
                         <th></th>
-                        <th></th>
                     </tr>
                     <tr th:each="oneRider : ${allRidersForClient}">
                         <td th:text="${oneRider.id}"/>
@@ -89,24 +88,12 @@
                         <td th:text="#{${'rider.sex.' + oneRider.sex}}"/>
                         <td th:text="#{${'rider.size.' + oneRider.footSize}}"/>
                         <td th:width="1">
-                            <a th:href="@{'/client/info-riders/edit?id=' + ${oneRider.id}}">
+                            <a th:href="@{'/client/info-riders/edit?riderId=' + ${oneRider.id}}">
                                 <button class="button" th:text="#{rider.show_all.table.button.edit}"/>
                             </a>
                         </td>
-                        <td th:width="1">
-                            <form th:method="DELETE" th:action="@{/client/info-riders/{id}(id=${oneRider.id})}">
-                                <input class="button" type="submit" th:value="#{rider.show_all.table.button.delete}"/>
-                            </form>
-                        </td>
                     </tr>
                 </table>
-
-                <br>
-
-                <!--Add new-->
-                <a href="/client/info-riders/add-new">
-                    <button class="button" th:text="#{rider.show_all.button.add_new}"/>
-                </a>
             </div>
         </div>
 

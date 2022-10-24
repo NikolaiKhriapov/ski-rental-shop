@@ -1,17 +1,18 @@
 package my.project.skirentalshop.controller.client;
 
-import my.project.skirentalshop.model.Client;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
-import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
 import my.project.skirentalshop.service.BookingService;
-import my.project.skirentalshop.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
@@ -20,15 +21,10 @@ import javax.validation.Valid;
 public class ClientHomeController {
 
     private final BookingService bookingService;
-    private final ApplicationUserService applicationUserService;
-    private final ClientService clientService;
 
-    public ClientHomeController(BookingService bookingService,
-                                ApplicationUserService applicationUserService,
-                                ClientService clientService) {
+    @Autowired
+    public ClientHomeController(BookingService bookingService) {
         this.bookingService = bookingService;
-        this.applicationUserService = applicationUserService;
-        this.clientService = clientService;
     }
 
     // ----- client home page -----
@@ -58,17 +54,13 @@ public class ClientHomeController {
     @PatchMapping("/settings/edit-info")
     public String updateApplicationUserInfo(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
                                             @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
-                                            BindingResult bindingResult, Model model) {
+                                            BindingResult bindingResult,
+                                            Model model)    {
         if (bindingResult.hasErrors()) {
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }
-        boolean emailExists = applicationUserService.checkIfExists(registrationRequest.getEmail());
-        if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
-            applicationUserService.updateApplicationUserInfo(applicationUserToBeUpdated, registrationRequest);
-            Client clientToBeUpdated = clientService.showOneClientByEmail(applicationUserToBeUpdated.getEmail());
-            clientService.updateUserInfo(clientToBeUpdated, registrationRequest);
-        }
+        bookingService.updateApplicationUserInfo(applicationUserToBeUpdated, registrationRequest);
         return "redirect:/client/settings";
     }
 
@@ -80,7 +72,7 @@ public class ClientHomeController {
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }
-        applicationUserService.updateApplicationUserPassword(applicationUserToBeUpdated, registrationRequest.getPassword());
+        bookingService.updateApplicationUserPassword(applicationUserToBeUpdated, registrationRequest.getPassword());
         return "redirect:/client/settings";
     }
 }

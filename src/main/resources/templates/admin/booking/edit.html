@@ -25,17 +25,17 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-booking/edit/' + ${id} + '?theme=theme_1'"
+                    <a th:href="'/admin/info-booking/edit/' + ${bookingId} + '?theme=theme_1'"
                        th:text="#{top_nav.theme.theme_1}"/>
-                    <a th:href="'/admin/info-booking/edit/' + ${id} + '?theme=theme_2'"
+                    <a th:href="'/admin/info-booking/edit/' + ${bookingId} + '?theme=theme_2'"
                        th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/info-booking/edit/' + ${id} + '?lang=en'">English</a>
-                    <a th:href="'/admin/info-booking/edit/' + ${id} + '?lang=ru'">Russian</a>
+                    <a th:href="'/admin/info-booking/edit/' + ${bookingId} + '?lang=en'">English</a>
+                    <a th:href="'/admin/info-booking/edit/' + ${bookingId} + '?lang=ru'">Russian</a>
                 </div>
             </li>
         </ul>
@@ -112,12 +112,12 @@
                     <h1 th:text="#{booking.edit.header}"/>
 
                     <form th:method="PATCH"
-                          th:action="@{/admin/info-booking/edit/{id}(id=${id})}"
+                          th:action="@{/admin/info-booking/edit/{bookingId}(bookingId=${bookingId})}"
                           th:object="${bookingToBeUpdated}">
                         <table>
                             <tr>
                                 <td th:text="#{booking.edit.field.id} + ': '"/>
-                                <td th:text="${id}"/>
+                                <td th:text="*{id}"/>
                             </tr>
                             <tr>
                                 <td th:text="#{booking.edit.field.client} + ': '"/>
@@ -181,286 +181,286 @@
 
                 <!--Edit list of riders-->
                 <div class="booking-edit-rider">
-                    <div th:if="${bookingToBeUpdated.listOfRiders.size > 0}">
+                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
-                            <tr th:each="oneRider : ${bookingToBeUpdated.listOfRiders}">
-                                <td th:text="${oneRider.id}" style="vertical-align:top"/>
+                            <tr th:each="oneLink : ${bookingToBeUpdated.listOfBookingRiderEquipmentLinks}">
+                                <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
                                 <td style="vertical-align:top" th:align="left">
-                                    <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.name}"/>
-                                    <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}"/>
-                                    <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.height}"/>
-                                    <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.weight}"/>
-                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.footSize}}"/>
+                                    <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneLink.rider.name}"/>
+                                    <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneLink.rider.sex}}"/>
+                                    <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneLink.rider.height}"/>
+                                    <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneLink.rider.weight}"/>
+                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneLink.rider.footSize}}"/>
                                 </td>
                                 <td th:width="190" th:align="left">
-                                    <div th:each="oneEquipmentId : ${oneRider.equipmentNeededIds}">
-                                        <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}"/>
+                                    <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
+                                        <div th:text="#{'equipment.type.' + ${oneEquipment.name}}"/>
                                     </div>
                                 </td>
                                 <form th:method="PATCH"
-                                      th:action="@{'/admin/info-booking/edit/assign-equipment?bid=' + ${id} + '&rid=' + ${oneRider.id}}"
-                                      th:object="${oneRider.assignedEquipment}">
+                                      th:action="@{'/admin/info-booking/edit/assign-equipment?bookingId=' + ${bookingId} + '&riderId=' + ${oneLink.rider.id}}"
+                                      th:object="${oneLink.riderAssignedEquipment}">
                                     <td th:width="10" style="vertical-align:center" th:align="left">
-                                        <div th:each="oneEquipmentId : ${oneRider.equipmentNeededIds}">
-                                            <div th:if="${oneEquipmentId.name} == SNOWBOARD">
+                                        <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
+                                            <div th:if="${oneEquipment.name} == SNOWBOARD">
                                                 <label for="select-snowboard"></label>
                                                 <select name="snowboard" id="select-snowboard" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.snowboard.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboard.id} == null"
-                                                            th:each="oneSnowboard : ${allSnowboardsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} == null"
+                                                            th:each="oneSnowboard : ${allAvailableSnowboards}"
                                                             th:value="${oneSnowboard.id}"
                                                             th:text="${oneSnowboard.size} + ' ' + ${oneSnowboard.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboard.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.snowboard.id}"
-                                                            th:text="${oneRider.assignedEquipment.snowboard.size} + ' ' + ${oneRider.assignedEquipment.snowboard.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.snowboard.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.snowboard.size} + ' ' + ${oneLink.riderAssignedEquipment.snowboard.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboard.id} != null"
-                                                            th:each="oneSnowboard : ${allSnowboardsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
+                                                            th:each="oneSnowboard : ${allAvailableSnowboards}"
                                                             th:value="${oneSnowboard.id}"
                                                             th:text="${oneSnowboard.size} + ' ' + ${oneSnowboard.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboard.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == SNOWBOARD_BOOTS">
+                                            <div th:if="${oneEquipment.name} == SNOWBOARD_BOOTS">
                                                 <label for="select-snowboard-boots"></label>
                                                 <select name="snowboardBoots" id="select-snowboard-boots"
                                                         style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.snowboardBoots.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboardBoots.id} == null"
-                                                            th:each="oneSnowboardBoots : ${allSnowboardBootsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} == null"
+                                                            th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
                                                             th:text="#{${'snowboard_boots.size.' + oneSnowboardBoots.size}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboardBoots.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.snowboardBoots.id}"
-                                                            th:text="#{${'snowboard_boots.size.' + oneRider.assignedEquipment.snowboardBoots.size}} + ' ' + ${oneRider.assignedEquipment.snowboardBoots.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.snowboardBoots.id}"
+                                                            th:text="#{${'snowboard_boots.size.' + oneLink.riderAssignedEquipment.snowboardBoots.size}} + ' ' + ${oneLink.riderAssignedEquipment.snowboardBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboardBoots.id} != null"
-                                                            th:each="oneSnowboardBoots : ${allSnowboardBootsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
+                                                            th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
                                                             th:text="#{${'snowboard_boots.size.' + oneSnowboardBoots.size}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.snowboardBoots.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == SKI">
+                                            <div th:if="${oneEquipment.name} == SKI">
                                                 <label for="select-ski"></label>
                                                 <select name="ski" id="select-ski" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.ski.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.ski.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.ski.id} == null"
-                                                            th:each="oneSki : ${allSkiAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.ski.id} == null"
+                                                            th:each="oneSki : ${allAvailableSki}"
                                                             th:value="${oneSki.id}"
                                                             th:text="${oneSki.size} + ' ' + ${oneSki.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.ski.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.ski.id}"
-                                                            th:text="${oneRider.assignedEquipment.ski.size} + ' ' + ${oneRider.assignedEquipment.ski.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.ski.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.ski.size} + ' ' + ${oneLink.riderAssignedEquipment.ski.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.ski.id} != null"
-                                                            th:each="oneSki : ${allSkiAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
+                                                            th:each="oneSki : ${allAvailableSki}"
                                                             th:value="${oneSki.id}"
                                                             th:text="${oneSki.size} + ', ' + ${oneSki.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.ski.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == SKI_BOOTS">
+                                            <div th:if="${oneEquipment.name} == SKI_BOOTS">
                                                 <label for="select-ski-boots"></label>
                                                 <select name="skiBoots" id="select-ski-boots" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.skiBoots.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.skiBoots.id} == null"
-                                                            th:each="oneSkiBoots : ${allSkiBootsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} == null"
+                                                            th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
                                                             th:text="#{${'ski_boots.size.' + oneSkiBoots.size}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.skiBoots.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.skiBoots.id}"
-                                                            th:text="#{${'ski_boots.size.' + oneRider.assignedEquipment.skiBoots.size}} + ' ' + ${oneRider.assignedEquipment.skiBoots.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.skiBoots.id}"
+                                                            th:text="#{${'ski_boots.size.' + oneLink.riderAssignedEquipment.skiBoots.size}} + ' ' + ${oneLink.riderAssignedEquipment.skiBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.skiBoots.id} != null"
-                                                            th:each="oneSkiBoots : ${allSkiBootsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
+                                                            th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
                                                             th:text="#{${'ski_boots.size.' + oneSkiBoots.size}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.skiBoots.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == JACKET">
+                                            <div th:if="${oneEquipment.name} == JACKET">
                                                 <label for="select-jacket"></label>
                                                 <select name="jacket" id="select-jacket" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.jacket.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.jacket.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.jacket.id} == null"
-                                                            th:each="oneJacket : ${allJacketsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.jacket.id} == null"
+                                                            th:each="oneJacket : ${allAvailableJackets}"
                                                             th:value="${oneJacket.id}"
                                                             th:text="${oneJacket.size} + ' ' + ${oneJacket.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.jacket.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.jacket.id}"
-                                                            th:text="${oneRider.assignedEquipment.jacket.size} + ' ' + ${oneRider.assignedEquipment.jacket.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.jacket.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.jacket.size} + ' ' + ${oneLink.riderAssignedEquipment.jacket.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.jacket.id} != null"
-                                                            th:each="oneJacket : ${allJacketsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
+                                                            th:each="oneJacket : ${allAvailableJackets}"
                                                             th:value="${oneJacket.id}"
                                                             th:text="${oneJacket.size} + ' ' + ${oneJacket.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.jacket.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == KNEE_PROTECTION">
+                                            <div th:if="${oneEquipment.name} == KNEE_PROTECTION">
                                                 <label for="select-knee-protection"></label>
                                                 <select name="kneeProtection" id="select-knee-protection"
                                                         style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.kneeProtection.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.kneeProtection.id} == null"
-                                                            th:each="oneKneeProtection : ${allKneeProtectionAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} == null"
+                                                            th:each="oneKneeProtection : ${allAvailableKneeProtection}"
                                                             th:value="${oneKneeProtection.id}"
                                                             th:text="${oneKneeProtection.size} + ' ' + ${oneKneeProtection.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.kneeProtection.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.kneeProtection.id}"
-                                                            th:text="${oneRider.assignedEquipment.kneeProtection.size} + ' ' + ${oneRider.assignedEquipment.kneeProtection.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.kneeProtection.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.kneeProtection.size} + ' ' + ${oneLink.riderAssignedEquipment.kneeProtection.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.kneeProtection.id} != null"
-                                                            th:each="oneKneeProtection : ${allKneeProtectionAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
+                                                            th:each="oneKneeProtection : ${allAvailableKneeProtection}"
                                                             th:value="${oneKneeProtection.id}"
                                                             th:text="${oneKneeProtection.size} + ' ' + ${oneKneeProtection.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.kneeProtection.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == PROTECTIVE_SHORTS">
+                                            <div th:if="${oneEquipment.name} == PROTECTIVE_SHORTS">
                                                 <label for="select-protective-shorts"></label>
                                                 <select name="protectiveShorts" id="select-protective-shorts"
                                                         style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.protectiveShorts.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.protectiveShorts.id} == null"
-                                                            th:each="oneProtectiveShorts : ${allProtectiveShortsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} == null"
+                                                            th:each="oneProtectiveShorts : ${allAvailableProtectiveShorts}"
                                                             th:value="${oneProtectiveShorts.id}"
                                                             th:text="${oneProtectiveShorts.size} + ' ' + ${oneProtectiveShorts.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.protectiveShorts.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.protectiveShorts.id}"
-                                                            th:text="${oneRider.assignedEquipment.protectiveShorts.size} + ' ' + ${oneRider.assignedEquipment.protectiveShorts.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.protectiveShorts.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.protectiveShorts.size} + ' ' + ${oneLink.riderAssignedEquipment.protectiveShorts.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.protectiveShorts.id} != null"
-                                                            th:each="oneProtectiveShorts : ${allProtectiveShortsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
+                                                            th:each="oneProtectiveShorts : ${allAvailableProtectiveShorts}"
                                                             th:value="${oneProtectiveShorts.id}"
                                                             th:text="${oneProtectiveShorts.size} + ' ' + ${oneProtectiveShorts.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.protectiveShorts.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == HELMET">
+                                            <div th:if="${oneEquipment.name} == HELMET">
                                                 <label for="select-helmet"></label>
                                                 <select name="helmet" id="select-helmet" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.helmet.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.helmet.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.helmet.id} == null"
-                                                            th:each="oneHelmet : ${allHelmetsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.helmet.id} == null"
+                                                            th:each="oneHelmet : ${allAvailableHelmets}"
                                                             th:value="${oneHelmet.id}"
                                                             th:text="${oneHelmet.size} + ' ' + ${oneHelmet.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.helmet.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.helmet.id}"
-                                                            th:text="${oneRider.assignedEquipment.helmet.size} + ' ' + ${oneRider.assignedEquipment.helmet.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.helmet.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.helmet.size} + ' ' + ${oneLink.riderAssignedEquipment.helmet.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.helmet.id} != null"
-                                                            th:each="oneHelmet : ${allHelmetsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
+                                                            th:each="oneHelmet : ${allAvailableHelmets}"
                                                             th:value="${oneHelmet.id}"
                                                             th:text="${oneHelmet.size} + ' ' + ${oneHelmet.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.helmet.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == GLOVES">
+                                            <div th:if="${oneEquipment.name} == GLOVES">
                                                 <label for="select-gloves"></label>
                                                 <select name="gloves" id="select-gloves" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.gloves.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.gloves.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.gloves.id} == null"
-                                                            th:each="oneGloves : ${allGlovesAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.gloves.id} == null"
+                                                            th:each="oneGloves : ${allAvailableGloves}"
                                                             th:value="${oneGloves.id}"
                                                             th:text="${oneGloves.size} + ' ' + ${oneGloves.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.gloves.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.gloves.id}"
-                                                            th:text="${oneRider.assignedEquipment.gloves.size} + ' ' + ${oneRider.assignedEquipment.gloves.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.gloves.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.gloves.size} + ' ' + ${oneLink.riderAssignedEquipment.gloves.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.gloves.id} != null"
-                                                            th:each="oneGloves : ${allGlovesAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
+                                                            th:each="oneGloves : ${allAvailableGloves}"
                                                             th:value="${oneGloves.id}"
                                                             th:text="${oneGloves.size} + ' ' + ${oneGloves.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.gloves.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div th:if="${oneEquipmentId.name} == PANTS">
+                                            <div th:if="${oneEquipment.name} == PANTS">
                                                 <label for="select-pants"></label>
                                                 <select name="pants" id="select-pants" style="width:300px">
-                                                    <option th:if="${oneRider.assignedEquipment.pants.id} == null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.pants.id} == null"
                                                             value="" th:disabled="false"
                                                             th:selected="selected">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.pants.id} == null"
-                                                            th:each="onePants : ${allPantsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.pants.id} == null"
+                                                            th:each="onePants : ${allAvailablePants}"
                                                             th:value="${onePants.id}"
                                                             th:text="${onePants.size} + ' ' + ${onePants.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.pants.id} != null"
-                                                            th:value="${oneRider.assignedEquipment.pants.id}"
-                                                            th:text="${oneRider.assignedEquipment.pants.size} + ' ' + ${oneRider.assignedEquipment.pants.name}">
+                                                    <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
+                                                            th:value="${oneLink.riderAssignedEquipment.pants.id}"
+                                                            th:text="${oneLink.riderAssignedEquipment.pants.size} + ' ' + ${oneLink.riderAssignedEquipment.pants.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.pants.id} != null"
-                                                            th:each="onePants : ${allPantsAvailable}"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
+                                                            th:each="onePants : ${allAvailablePants}"
                                                             th:value="${onePants.id}"
                                                             th:text="${onePants.size} + ' ' + ${onePants.name}">
                                                     </option>
-                                                    <option th:if="${oneRider.assignedEquipment.pants.id} != null"
+                                                    <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
                                                             value="" th:disabled="false">
                                                     </option>
                                                 </select>
@@ -473,55 +473,48 @@
                                     </td>
                                 </form>
                                 <td th:width="10">
-                                    <a th:href="'/admin/info-riders/edit?id=' + ${oneRider.id} + '&bookingId=' + ${bookingToBeUpdated.id}">
+                                    <a th:href="'/admin/info-riders/edit?riderId=' + ${oneLink.rider.id} + '&bookingId=' + ${bookingToBeUpdated.id}">
                                         <button class="button" th:text="#{booking.edit.table.button.edit}"/>
                                     </a>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="@{'/admin/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.id} + '&rid=' + ${oneRider.id}}">
+                                    <a th:href="@{'/admin/info-booking/edit/remove-rider?bookingId=' + ${bookingToBeUpdated.id} + '&riderId=' + ${oneLink.rider.id}}">
                                         <button class="button" th:text="#{booking.edit.table.button.remove}"/>
                                     </a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div th:unless="${bookingToBeUpdated.listOfRiders.size > 0}"
+                    <div th:unless="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size > 0}"
                          th:text="#{booking.edit.table.empty}"/>
                 </div>
 
                 <br>
 
                 <!--Add existing Rider to Booking-->
-                <div>
+                <div th:if="${allAvailableRidersForClient.size > 0}">
                     <form th:method="PATCH"
-                          th:action="@{/admin/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.id})}"
+                          th:action="@{/admin/info-booking/edit/add-existing-rider/{bookingId}(bookingId=${bookingId})}"
                           th:object="${existingRiderToBeAddedId}">
                         <label for="select-existing-rider-id"></label>
                         <select id="select-existing-rider-id" name="existingRiderToBeAddedId">
-                            <option th:each="oneRider : ${allRiders}"
+                            <option th:each="oneRider : ${allAvailableRidersForClient}"
                                     th:value="${oneRider.id}"
                                     th:text="${oneRider.name}">
                             </option>
                         </select>
                         <input class="button" type="submit" th:value="#{booking.edit.button.add_existing}"/>
                     </form>
-                </div>
 
-                <br>
+                    <br>
+                </div>
 
                 <!--Add new rider-->
                 <div>
-                    <a th:href="@{'/admin/info-riders/add-new?id=' + ${bookingToBeUpdated.id}}">
+                    <a th:href="@{'/admin/info-riders/add-new?bookingId=' + ${bookingToBeUpdated.id}}">
                         <button class="button" th:text="#{booking.edit.button.add_new}"/>
                     </a>
                 </div>
-
-                <br>
-
-                <!--Return to "/admin/info-booking"-->
-                <a href="/admin/info-booking">
-                    <button class="button" th:text="#{booking.edit.button.return}"/>
-                </a>
             </div>
         </div>
 

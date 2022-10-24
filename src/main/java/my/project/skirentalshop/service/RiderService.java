@@ -1,11 +1,13 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.AssignedEquipment;
 import my.project.skirentalshop.model.Booking;
+import my.project.skirentalshop.model.BookingRiderEquipmentLink;
 import my.project.skirentalshop.model.Rider;
+import my.project.skirentalshop.model.RiderAssignedEquipment;
 import my.project.skirentalshop.repository.RiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,15 +17,31 @@ import java.util.List;
 public class RiderService {
 
     private final RiderRepository riderRepository;
+    private final BookingRiderEquipmentLinkService bookingRiderEquipmentLinkService;
 
     @Autowired
-    public RiderService(RiderRepository riderRepository) {
+    public RiderService(RiderRepository riderRepository,
+                        BookingRiderEquipmentLinkService bookingRiderEquipmentLinkService) {
         this.riderRepository = riderRepository;
+        this.bookingRiderEquipmentLinkService = bookingRiderEquipmentLinkService;
     }
 
     // ----- show all -----
     public List<Rider> showAllRiders() {
         return riderRepository.findAllByOrderById();
+    }
+
+    public List<Booking> showAllBookings() {
+        return bookingRiderEquipmentLinkService.showAllBookings();
+    }
+
+    public void addRiderToBooking(Long bookingId, Rider rider) {
+        bookingRiderEquipmentLinkService.save(new BookingRiderEquipmentLink(
+                showOneBookingById(bookingId),
+                rider,
+                new ArrayList<>(),
+                new RiderAssignedEquipment())
+        );
     }
 
     // ----- add new -----
@@ -37,6 +55,14 @@ public class RiderService {
                 new IllegalStateException("Rider with id = " + id + " not found!"));
     }
 
+    public Booking showOneBookingById(Long id) {
+        return bookingRiderEquipmentLinkService.showOneBookingById(id);
+    }
+
+    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Rider rider) {
+        return bookingRiderEquipmentLinkService.getBookingRiderEquipmentLink(booking, rider);
+    }
+
     public void updateRiderById(Long id, Rider updatedRider) {
         Rider riderToBeUpdated = showOneRiderById(id);
 
@@ -45,7 +71,6 @@ public class RiderService {
         riderToBeUpdated.setSex(updatedRider.getSex());
         riderToBeUpdated.setHeight(updatedRider.getHeight());
         riderToBeUpdated.setWeight(updatedRider.getWeight());
-        riderToBeUpdated.setEquipmentNeededIds(updatedRider.getEquipmentNeededIds());
 
         riderRepository.save(riderToBeUpdated);
     }
@@ -62,48 +87,20 @@ public class RiderService {
         return riderRepository.findAll(sort);
     }
 
-    //// ----- edit booking info / assign equipment to riders -----
-    public void assignEquipmentToRider(Rider rider, AssignedEquipment assignedEquipment) {
-        rider.setAssignedEquipment(assignedEquipment);
-        riderRepository.save(rider);
-    }
 
-    public void removeAssignedEquipment(Rider rider) {
-        rider.getAssignedEquipment().setSnowboard(null);
-        rider.getAssignedEquipment().setSnowboardBoots(null);
-        rider.getAssignedEquipment().setSki(null);
-        rider.getAssignedEquipment().setSkiBoots(null);
-        rider.getAssignedEquipment().setJacket(null);
-        rider.getAssignedEquipment().setPants(null);
-        rider.getAssignedEquipment().setKneeProtection(null);
-        rider.getAssignedEquipment().setProtectiveShorts(null);
-        rider.getAssignedEquipment().setHelmet(null);
-        rider.getAssignedEquipment().setGloves(null);
+    // ----- ClientRiderController / show all -----
+    public List<Rider> showAllRidersForCurrentClient() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(username);
 
-        riderRepository.save(rider);
-    }
-
-    // ----- show available existing riders for client for booking -----
-    public List<Rider> showAvailableExistingRidersForClientForBooking(Booking bookingToBeUpdated,
-                                                                      BookingService bookingService) {
         List<Rider> allRidersForClient = new ArrayList<>();
-
-        List<Booking> allBookingsForClient = bookingService.showAllBookingsForClient(bookingToBeUpdated.getClient().getEmail());
-        List<Booking> allBookingsForClientForTheSameTime = bookingService.showBookingsForTheDate(
-                bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
-
         for (Booking oneBooking : allBookingsForClient) {
-            for (Rider oneRider : oneBooking.getListOfRiders()) {
+            for (Rider oneRider : bookingRiderEquipmentLinkService.getListOfRiders(oneBooking.getId())) {
                 if (!allRidersForClient.contains(oneRider)) {
                     allRidersForClient.add(oneRider);
                 }
             }
         }
-        for (Booking oneBooking : allBookingsForClientForTheSameTime) {
-            allRidersForClient.removeAll(oneBooking.getListOfRiders());
-        }
-        allRidersForClient.removeAll(bookingToBeUpdated.getListOfRiders());
-
         return allRidersForClient;
     }
 }

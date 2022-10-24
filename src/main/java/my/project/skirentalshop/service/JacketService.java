@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -60,29 +59,5 @@ public class JacketService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return jacketRepository.findAll(sort);
-    }
-
-    //// ----- edit booking info / assign equipment to riders -----
-    public List<Jacket> showAllAvailableJackets(Date dateOfArrival, Date dateOfReturn, List<Booking> allBookings) {
-        //get all jackets
-        List<Jacket> listOfAvailableJackets = jacketRepository.findAllByOrderBySize();
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableJackets.removeIf(oneJacket ->
-                oneJacket.getCondition().equals(EquipmentCondition.BROKEN) ||
-                oneJacket.getCondition().equals(EquipmentCondition.SERVICE) ||
-                oneJacket.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking booking : allBookings) {
-            if (((dateOfArrival.after(booking.getDateOfArrival()) || dateOfArrival.equals(booking.getDateOfArrival())) &&
-                    (dateOfArrival.before(booking.getDateOfReturn()) || dateOfArrival.equals(booking.getDateOfReturn()))) ||
-                    ((dateOfReturn.after(booking.getDateOfArrival()) || dateOfReturn.equals(booking.getDateOfArrival())) &&
-                            (dateOfReturn.before(booking.getDateOfReturn()) || dateOfReturn.equals(booking.getDateOfReturn()))) ||
-                    (dateOfArrival.before(booking.getDateOfArrival()) && dateOfReturn.after(booking.getDateOfReturn()))) {
-                for (Rider rider : booking.getListOfRiders()) {
-                    listOfAvailableJackets.remove(rider.getAssignedEquipment().getJacket());
-                }
-            }
-        }
-        return listOfAvailableJackets;
     }
 }

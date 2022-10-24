@@ -39,27 +39,30 @@ public class Snowboard {
         }
     }
 
-    enum BindingSize {
-        S,
-        M,
-        L
-    }
+    enum BindingSize {S, M, L}
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
     @Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
+
     private EquipmentCondition condition;
+
     @Pattern(regexp = "(1[0-6][0-9]|170)([w|W]?)", message = "{validation.snowboard.invalid_size}")
     private String size;
+
     private Stiffness stiffness;
+
     private Arch arch;
+
     private BindingSize bindingSize;
+
     @OneToMany(mappedBy = "snowboard")
-    private List<AssignedEquipment> listOfAssignedEquipment;
+    private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public Snowboard() {
     }
@@ -121,9 +124,13 @@ public class Snowboard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Snowboard snowboard = (Snowboard) o;
-        return Objects.equals(id, snowboard.id) && Objects.equals(name, snowboard.name) &&
-                condition == snowboard.condition && Objects.equals(size, snowboard.size) &&
-                stiffness == snowboard.stiffness && arch == snowboard.arch && bindingSize == snowboard.bindingSize;
+        return Objects.equals(id, snowboard.id) &&
+                Objects.equals(name, snowboard.name) &&
+                condition == snowboard.condition &&
+                Objects.equals(size, snowboard.size) &&
+                stiffness == snowboard.stiffness &&
+                arch == snowboard.arch &&
+                bindingSize == snowboard.bindingSize;
     }
 
     @Override
@@ -136,11 +143,11 @@ public class Snowboard {
         return "Snowboard{" +
                 "id=" + id +
                 ", name='" + name +
-                ", condition=" + condition.name() +
+                ", condition=" + condition +
                 ", size='" + size +
-                ", stiffness=" + stiffness.name() +
-                ", arch=" + arch.name() +
-                ", bindingSize=" + bindingSize.name() +
+                ", stiffness=" + stiffness +
+                ", arch=" + arch +
+                ", bindingSize=" + bindingSize +
                 '}';
     }
 }

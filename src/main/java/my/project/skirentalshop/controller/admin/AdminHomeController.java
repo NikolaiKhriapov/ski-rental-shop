@@ -19,7 +19,7 @@ public class AdminHomeController {
         this.bookingService = bookingService;
     }
 
-    // admin home page
+    // ----- admin home page -----
     @GetMapping()
     public String showAdminMainPage(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
@@ -52,16 +52,16 @@ public class AdminHomeController {
     }
 
     // ----- mark booking completed -----
-    @GetMapping("/change-booking-completed/{id}")
-    public String changeBookingCompleted(@PathVariable("id") Long bookingId) {
+    @GetMapping("/change-completed/{bookingId}")
+    public String changeBookingCompleted(@PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);
         return "redirect:/admin";
     }
 
     // ----- delete booking -----
-    @DeleteMapping("/delete-booking/{id}")
-    public String deleteBooking(@PathVariable("id") Long id) {
-        bookingService.deleteBookingById(id);
+    @DeleteMapping("/delete-booking/{bookingId}")
+    public String deleteBooking(@PathVariable("bookingId") Long bookingId) {
+        bookingService.deleteBookingById(bookingId);
         return "redirect:/admin";
     }
 }

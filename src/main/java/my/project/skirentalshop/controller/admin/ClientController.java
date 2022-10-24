@@ -45,26 +45,27 @@ public class ClientController {
     }
 
     // ----- edit -----
-    @GetMapping("/edit/{id}")
-    public String showOneClient(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("clientToUpdate", clientService.showOneClientById(id));
+    @GetMapping("/edit/{clientId}")
+    public String showOneClient(@PathVariable("clientId") Long clientId, Model model) {
+        model.addAttribute("clientToUpdate", clientService.showOneClientById(clientId));
         return "admin/client/edit";
     }
 
-    @PatchMapping("/edit/{id}")
-    public String updateClient(@PathVariable("id") Long id,
-                               @ModelAttribute("clientToUpdate") @Valid Client updatedClient, BindingResult bindingResult) {
+    @PatchMapping("/edit/{clientId}")
+    public String updateClient(@PathVariable("clientId") Long clientId,
+                               @ModelAttribute("clientToUpdate") @Valid Client updatedClient,
+                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/client/edit";
         }
-        clientService.updateClientById(id, updatedClient);
+        clientService.updateClientById(clientId, updatedClient);
         return "redirect:/admin/info-clients";
     }
 
     // ----- delete -----
-    @DeleteMapping("/{id}")
-    public String deleteClient(@PathVariable("id") Long id) {
-        clientService.deleteClientById(id);
+    @DeleteMapping("/{clientId}")
+    public String deleteClient(@PathVariable("clientId") Long clientId) {
+        clientService.deleteClientById(clientId);
         return "redirect:/admin/info-clients";
     }
 

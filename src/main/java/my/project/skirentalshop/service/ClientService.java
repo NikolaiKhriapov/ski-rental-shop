@@ -35,12 +35,12 @@ public class ClientService {
                 new IllegalStateException("Client with id = " + id + " not found!"));
     }
 
-    public void updateClientById(Long id, Client updatedClient) {
-        Client clientToBeUpdated = showOneClientById(id);
+    public void updateClientById(Long clientId, Client updatedClientInfo) {
+        Client clientToBeUpdated = showOneClientById(clientId);
 
-        clientToBeUpdated.setName(updatedClient.getName());
-        clientToBeUpdated.setPhone1(updatedClient.getPhone1());
-        clientToBeUpdated.setPhone2(updatedClient.getPhone2());
+        clientToBeUpdated.setName(updatedClientInfo.getName());
+        clientToBeUpdated.setPhone1(updatedClientInfo.getPhone1());
+        clientToBeUpdated.setPhone2(updatedClientInfo.getPhone2());
 
         clientRepository.save(clientToBeUpdated);
     }
@@ -68,8 +68,9 @@ public class ClientService {
         return clientRepository.findByEmail(email);
     }
 
-    // ----- update user (CLIENT) info -----
-    public void updateUserInfo(Client clientToBeUpdated, RegistrationRequest registrationRequest) {
+    // ----- ClientHomeController / update applicationUser info -----
+    public void updateClientById(Long clientToBeUpdatedId, RegistrationRequest registrationRequest) {
+        Client clientToBeUpdated = showOneClientById(clientToBeUpdatedId);
 
         clientToBeUpdated.setName(registrationRequest.getName() + ' ' + registrationRequest.getSurname());
         clientToBeUpdated.setPhone1(registrationRequest.getPhone1());

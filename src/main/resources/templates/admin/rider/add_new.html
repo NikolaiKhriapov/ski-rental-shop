@@ -109,7 +109,7 @@
 
                 <!--Input parameters-->
                 <form th:method="POST"
-                      th:action="${bookingId == null} ? '/admin/info-riders/add' : '/admin/info-riders/add?id=' + ${bookingId}"
+                      th:action="${bookingId == null} ? '/admin/info-riders/add-new' : '/admin/info-riders/add-new?bookingId=' + ${bookingId}"
                       th:object="${newRider}">
                     <table>
                         <tr>
@@ -169,19 +169,6 @@
                                 </select>
                             </td>
                         </tr>
-                        <tr>
-                            <td th:align="top" th:text="#{rider.add_new.table.header.equipment} + ': '"/>
-                            <td>
-                                <div th:each="i : ${T(my.project.skirentalshop.model.TypesOfEquipment).values}">
-                                    <label for="input-equipment"></label>
-                                    <input id="input-equipment"
-                                           type="checkbox"
-                                           th:field="*{equipmentNeededIds}"
-                                           th:value="${i.name}"/>
-                                    <span th:text="#{${'equipment.type.' + i}}"/>
-                                </div>
-                            </td>
-                        </tr>
                     </table>
 
                     <br>
@@ -197,14 +184,9 @@
                           th:action="@{/admin/info-booking/edit/{id}(id=${bookingId})}">
                         <input class="button" type="submit" th:value="#{rider.add_new.button.go_to_order}"/>
                     </form>
-
-                    <br>
-
-                    <form th:method="GET"
-                          th:action="@{/admin/info-booking}">
-                        <input class="button" type="submit" th:value="#{rider.add_new.button.go_to_bookings}"/>
-                    </form>
                 </div>
+
+                <!--Return to "admin/rider/show_all"-->
                 <div th:if="${bookingId == null}">
                     <form th:method="GET"
                           th:action="@{/admin/info-riders}">

@@ -32,7 +32,7 @@ public class ApplicationUserService implements UserDetailsService {
     public void signUpUser(ApplicationUser applicationUser) {
         boolean userExists = checkIfExists(applicationUser.getEmail());
         if (userExists) {
-            throw new IllegalStateException("Email already taken");
+            throw new IllegalStateException("Email already taken!");
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(applicationUser.getPassword());

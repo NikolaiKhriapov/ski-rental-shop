@@ -23,8 +23,8 @@ public class ApplicationUser implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private ApplicationUserRole applicationUserRole;
-    private Boolean locked = false;
-    private Boolean enabled = true;
+    private boolean locked = false;
+    private boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -70,11 +70,6 @@ public class ApplicationUser implements UserDetails {
         this.applicationUserRole = applicationUserRole;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     public Long getId() {
         return id;
     }
@@ -115,28 +110,17 @@ public class ApplicationUser implements UserDetails {
         this.password = password;
     }
 
-    public ApplicationUserRole getApplicationUserRole() {
-        return applicationUserRole;
-    }
-
-    public void setApplicationUserRole(ApplicationUserRole applicationUserRole) {
-        this.applicationUserRole = applicationUserRole;
-    }
-
-    public Boolean getLocked() {
+    public boolean isLocked() {
         return locked;
     }
 
-    public void setLocked(Boolean locked) {
+    public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
-    public Boolean getEnabled() {
+    @Override
+    public boolean isEnabled() {
         return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     @Override
@@ -144,7 +128,15 @@ public class ApplicationUser implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ApplicationUser that = (ApplicationUser) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(phone1, that.phone1) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && applicationUserRole == that.applicationUserRole && Objects.equals(locked, that.locked) && Objects.equals(enabled, that.enabled);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(surname, that.surname) &&
+                Objects.equals(phone1, that.phone1) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(password, that.password) &&
+                applicationUserRole == that.applicationUserRole &&
+                Objects.equals(locked, that.locked) &&
+                Objects.equals(enabled, that.enabled);
     }
 
     @Override

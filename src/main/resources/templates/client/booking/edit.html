@@ -26,17 +26,17 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/client/info-booking/edit/' + ${id} + '?theme=theme_1'"
+                    <a th:href="'/client/info-booking/edit/' + ${bookingId} + '?theme=theme_1'"
                        th:text="#{top_nav.theme.theme_1}"/>
-                    <a th:href="'/client/info-booking/edit/' + ${id} + '?theme=theme_2'"
+                    <a th:href="'/client/info-booking/edit/' + ${bookingId} + '?theme=theme_2'"
                        th:text="#{top_nav.theme.theme_2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/client/info-booking/edit/' + ${id} + '?lang=en'">English</a>
-                    <a th:href="'/client/info-booking/edit/' + ${id} + '?lang=ru'">Russian</a>
+                    <a th:href="'/client/info-booking/edit/' + ${bookingId} + '?lang=en'">English</a>
+                    <a th:href="'/client/info-booking/edit/' + ${bookingId} + '?lang=ru'">Russian</a>
                 </div>
             </li>
         </ul>
@@ -74,12 +74,12 @@
                     <h1 th:text="#{booking.edit.header}"/>
 
                     <form th:method="PATCH"
-                          th:action="@{/client/info-booking/edit/{id}(id=${id})}"
+                          th:action="@{/client/info-booking/edit/{bookingId}(bookingId=${bookingId})}"
                           th:object="${bookingToBeUpdated}">
                         <table>
                             <tr>
                                 <td th:text="#{booking.edit.field.id} + ': '"/>
-                                <td th:text="${id}"/>
+                                <td th:text="*{id}"/>
                             </tr>
                             <tr>
                                 <td th:text="#{booking.edit.field.client} + ': '"/>
@@ -143,36 +143,36 @@
 
                 <!--Edit list of riders-->
                 <div class="booking-edit-rider">
-                    <div th:if="${bookingToBeUpdated.listOfRiders.size > 0}">
+                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
-                            <tr th:each="oneRider : ${bookingToBeUpdated.listOfRiders}">
-                                <td th:text="${oneRider.id}" style="vertical-align:top"/>
+                            <tr th:each="oneLink : ${bookingToBeUpdated.listOfBookingRiderEquipmentLinks}">
+                                <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
                                 <td style="vertical-align:top" th:align="left">
-                                    <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneRider.name}"/>
-                                    <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneRider.sex}}"/>
-                                    <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneRider.height}"/>
-                                    <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneRider.weight}"/>
-                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneRider.footSize}}"/>
+                                    <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneLink.rider.name}"/>
+                                    <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneLink.rider.sex}}"/>
+                                    <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneLink.rider.height}"/>
+                                    <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneLink.rider.weight}"/>
+                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneLink.rider.footSize}}"/>
                                 </td>
                                 <td th:align="left">
-                                    <div th:each="oneEquipmentId : ${oneRider.equipmentNeededIds}">
-                                        <div th:text="#{'equipment.type.' + ${oneEquipmentId.name}}"/>
+                                    <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
+                                        <div th:text="#{'equipment.type.' + ${oneEquipment.name}}"/>
                                     </div>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="'/client/info-riders/edit?id=' + ${oneRider.id} + '&bookingId=' + ${bookingToBeUpdated.id}">
+                                    <a th:href="'/client/info-riders/edit?riderId=' + ${oneLink.rider.id} + '&bookingId=' + ${bookingToBeUpdated.id}">
                                         <button class="button" th:text="#{booking.edit.table.button.edit}"/>
                                     </a>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="@{'/client/info-booking/edit/remove?bid=' + ${bookingToBeUpdated.id} + '&rid=' + ${oneRider.id}}">
+                                    <a th:href="@{'/client/info-booking/edit/remove-rider?bookingId=' + ${bookingToBeUpdated.id} + '&riderId=' + ${oneLink.rider.id}}">
                                         <button class="button" th:text="#{booking.edit.table.button.remove}"/>
                                     </a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div th:if="${bookingToBeUpdated.listOfRiders.size <= 0}"
+                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size <= 0}"
                          th:text="#{booking.edit.table.empty}">
                     </div>
                 </div>
@@ -180,36 +180,29 @@
                 <br>
 
                 <!--Add existing Rider to Booking-->
-                <div>
+                <div th:if="${allAvailableRidersForClient.size > 0}">
                     <form th:method="PATCH"
-                          th:action="@{/client/info-booking/edit/add-existing-rider/{id}(id=${bookingToBeUpdated.id})}"
+                          th:action="@{/client/info-booking/edit/add-existing-rider/{bookingId}(bookingId=${bookingId})}"
                           th:object="${existingRiderToBeAddedId}">
                         <label for="select-rider-id"></label>
                         <select id="select-rider-id" name="existingRiderToBeAddedId">
-                            <option th:each="oneRider : ${allRidersForClient}"
+                            <option th:each="oneRider : ${allAvailableRidersForClient}"
                                     th:value="${oneRider.id}"
                                     th:text="${oneRider.name}">
                             </option>
                         </select>
                         <input class="button" type="submit" th:value="#{booking.edit.button.add_existing}"/>
                     </form>
-                </div>
 
-                <br>
+                    <br>
+                </div>
 
                 <!--Add new rider-->
                 <div>
-                    <a th:href="@{'/client/info-riders/add-new?id=' + ${bookingToBeUpdated.id}}">
+                    <a th:href="@{'/client/info-riders/add-new?bookingId=' + ${bookingToBeUpdated.id}}">
                         <button class="button" th:text="#{booking.edit.button.add_new}"/>
                     </a>
                 </div>
-
-                <br>
-
-                <!--Return to "/client"-->
-                <a href="/client">
-                    <button class="button" th:text="#{booking.edit.button.return}"/>
-                </a>
             </div>
         </div>
 

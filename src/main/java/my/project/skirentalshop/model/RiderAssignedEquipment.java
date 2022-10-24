@@ -4,14 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class AssignedEquipment { //TODO: change to RiderEquipment
+public class RiderAssignedEquipment {
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
-
-    @OneToOne(mappedBy = "assignedEquipment")
-    private Rider rider;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
@@ -31,19 +28,15 @@ public class AssignedEquipment { //TODO: change to RiderEquipment
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
+    private Helmet helmet;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     private Jacket jacket;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private KneeProtection kneeProtection;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private ProtectiveShorts protectiveShorts;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private Helmet helmet;
+    private Gloves gloves;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
@@ -51,24 +44,20 @@ public class AssignedEquipment { //TODO: change to RiderEquipment
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Gloves gloves;
+    private ProtectiveShorts protectiveShorts;
 
-    public AssignedEquipment() {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private KneeProtection kneeProtection;
+
+    @OneToOne(mappedBy = "riderAssignedEquipment")
+    private BookingRiderEquipmentLink bookingRiderEquipmentLink;
+
+    public RiderAssignedEquipment() {
     }
 
     public Long getId() {
         return id;
-    }
-
-    public Rider getRider() {
-        if (rider == null) {
-            return new Rider();
-        }
-        return rider;
-    }
-
-    public void setRider(Rider rider) {
-        this.rider = rider;
     }
 
     public Snowboard getSnowboard() {
@@ -115,6 +104,17 @@ public class AssignedEquipment { //TODO: change to RiderEquipment
         this.skiBoots = skiBoots;
     }
 
+    public Helmet getHelmet() {
+        if (helmet == null) {
+            return new Helmet();
+        }
+        return helmet;
+    }
+
+    public void setHelmet(Helmet helmet) {
+        this.helmet = helmet;
+    }
+
     public Jacket getJacket() {
         if (jacket == null) {
             return new Jacket();
@@ -126,15 +126,26 @@ public class AssignedEquipment { //TODO: change to RiderEquipment
         this.jacket = jacket;
     }
 
-    public KneeProtection getKneeProtection() {
-        if (kneeProtection == null) {
-            return new KneeProtection();
+    public Gloves getGloves() {
+        if (gloves == null) {
+            return new Gloves();
         }
-        return kneeProtection;
+        return gloves;
     }
 
-    public void setKneeProtection(KneeProtection kneeProtection) {
-        this.kneeProtection = kneeProtection;
+    public void setGloves(Gloves gloves) {
+        this.gloves = gloves;
+    }
+
+    public Pants getPants() {
+        if (pants == null) {
+            return new Pants();
+        }
+        return pants;
+    }
+
+    public void setPants(Pants pants) {
+        this.pants = pants;
     }
 
     public ProtectiveShorts getProtectiveShorts() {
@@ -148,72 +159,55 @@ public class AssignedEquipment { //TODO: change to RiderEquipment
         this.protectiveShorts = protectiveShorts;
     }
 
-    public Helmet getHelmet() {
-        if(helmet == null){
-            return new Helmet();
+    public KneeProtection getKneeProtection() {
+        if (kneeProtection == null) {
+            return new KneeProtection();
         }
-        return helmet;
+        return kneeProtection;
     }
 
-    public void setHelmet(Helmet helmet) {
-        this.helmet = helmet;
-    }
-
-    public Pants getPants() {
-        if(pants == null){
-            return new Pants();
-        }
-        return pants;
-    }
-
-    public void setPants(Pants pants) {
-        this.pants = pants;
-    }
-
-    public Gloves getGloves() {
-        if(gloves == null){
-            return new Gloves();
-        }
-        return gloves;
-    }
-
-    public void setGloves(Gloves gloves) {
-        this.gloves = gloves;
+    public void setKneeProtection(KneeProtection kneeProtection) {
+        this.kneeProtection = kneeProtection;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AssignedEquipment that = (AssignedEquipment) o;
-        return Objects.equals(id, that.id) && Objects.equals(rider, that.rider) && Objects.equals(snowboard, that.snowboard) &&
-                Objects.equals(snowboardBoots, that.snowboardBoots) && Objects.equals(ski, that.ski) &&
-                Objects.equals(skiBoots, that.skiBoots) && Objects.equals(jacket, that.jacket) &&
-                Objects.equals(kneeProtection, that.kneeProtection) && Objects.equals(protectiveShorts, that.protectiveShorts) &&
-                Objects.equals(helmet, that.helmet) && Objects.equals(pants, that.pants) && Objects.equals(gloves, that.gloves);
+        RiderAssignedEquipment that = (RiderAssignedEquipment) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(snowboard, that.snowboard) &&
+                Objects.equals(snowboardBoots, that.snowboardBoots) &&
+                Objects.equals(ski, that.ski) &&
+                Objects.equals(skiBoots, that.skiBoots) &&
+                Objects.equals(helmet, that.helmet) &&
+                Objects.equals(jacket, that.jacket) &&
+                Objects.equals(gloves, that.gloves) &&
+                Objects.equals(pants, that.pants) &&
+                Objects.equals(protectiveShorts, that.protectiveShorts) &&
+                Objects.equals(kneeProtection, that.kneeProtection);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rider, snowboard, snowboardBoots, ski, skiBoots, jacket, kneeProtection,
-                protectiveShorts, helmet, pants, gloves);
+        return Objects.hash(id, snowboard, snowboardBoots, ski, skiBoots,
+                helmet, jacket, gloves, pants, protectiveShorts, kneeProtection);
     }
 
     @Override
     public String toString() {
-        return "AssignedEquipment{" +
+        return "RiderAssignedEquipment{" +
                 "id=" + id +
-                ", rider=" + rider.toString() +
-                ", snowboard=" + snowboard.toString() +
-                ", snowboardBoots=" + snowboardBoots.toString() +
-                ", ski=" + ski.toString() +
-                ", skiBoots=" + skiBoots.toString() +
-                ", jacket=" + jacket.toString() +
-                ", kneeProtection=" + kneeProtection.toString() +
-                ", protectiveShorts=" + protectiveShorts.toString() +
-                ", helmet=" + helmet.toString() +
-                ", pants=" + pants.toString() +
-                ", gloves=" + gloves.toString() +
+                ", snowboard=" + snowboard +
+                ", snowboardBoots=" + snowboardBoots +
+                ", ski=" + ski +
+                ", skiBoots=" + skiBoots +
+                ", helmet=" + helmet +
+                ", jacket=" + jacket +
+                ", gloves=" + gloves +
+                ", pants=" + pants +
+                ", protectiveShorts=" + protectiveShorts +
+                ", kneeProtection=" + kneeProtection +
                 '}';
     }
 }

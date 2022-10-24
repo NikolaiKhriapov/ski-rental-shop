@@ -9,31 +9,30 @@ import java.util.*;
 
 @Entity
 public class Booking {
-
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "client_id")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
     @Valid
     private Client client;
+
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "{validation.booking.invalid_date}")
     private Date dateOfArrival;
+
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "{validation.booking.invalid_date}")
     private Date dateOfReturn;
+
     private boolean completed;
-    @ManyToMany
-    @JoinTable(
-            name = "booking_rider",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "rider_id")
-    )
-    private List<Rider> listOfRiders;
+
+    @OneToMany(mappedBy = "booking")
+    private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
 
     public Booking() {
     }
@@ -80,15 +79,15 @@ public class Booking {
         this.completed = completed;
     }
 
-    public List<Rider> getListOfRiders() {
-        if (listOfRiders == null) {
+    public List<BookingRiderEquipmentLink> getListOfBookingRiderEquipmentLinks() {
+        if (listOfBookingRiderEquipmentLinks == null) {
             return new ArrayList<>();
         }
-        return listOfRiders;
+        return listOfBookingRiderEquipmentLinks;
     }
 
-    public void setListOfRiders(List<Rider> listOfRiders) {
-        this.listOfRiders = listOfRiders;
+    public void setListOfBookingRiderEquipmentLinks(List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks) {
+        this.listOfBookingRiderEquipmentLinks = listOfBookingRiderEquipmentLinks;
     }
 
     @Override
@@ -96,25 +95,26 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return completed == booking.completed && Objects.equals(id, booking.id) &&
-                Objects.equals(client, booking.client) && Objects.equals(dateOfArrival, booking.dateOfArrival) &&
-                Objects.equals(dateOfReturn, booking.dateOfReturn) && Objects.equals(listOfRiders, booking.listOfRiders);
+        return completed == booking.completed &&
+                Objects.equals(id, booking.id) &&
+                Objects.equals(client, booking.client) &&
+                Objects.equals(dateOfArrival, booking.dateOfArrival) &&
+                Objects.equals(dateOfReturn, booking.dateOfReturn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, dateOfArrival, dateOfReturn, completed, listOfRiders);
+        return Objects.hash(id, client, dateOfArrival, dateOfReturn, completed);
     }
 
     @Override
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-                ", client=" + client.toString() +
+                ", client=" + client +
                 ", dateOfArrival=" + dateOfArrival +
                 ", dateOfReturn=" + dateOfReturn +
                 ", completed=" + completed +
-                ", listOfRiders=" + Arrays.toString(listOfRiders.toArray()) +
                 '}';
     }
 }

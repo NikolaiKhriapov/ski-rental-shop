@@ -15,49 +15,10 @@ import javax.validation.Valid;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final ClientService clientService;
-    private final RiderService riderService;
-    private final AssignedEquipmentService assignedEquipmentService;
-    private final SnowboardService snowboardService;
-    private final SnowboardBootsService snowboardBootsService;
-    private final SkiService skiService;
-    private final SkiBootsService skiBootsService;
-    private final JacketService jacketService;
-    private final KneeProtectionService kneeProtectionService;
-    private final ProtectiveShortsService protectiveShortsService;
-    private final PantsService pantsService;
-    private final HelmetService helmetService;
-    private final GlovesService glovesService;
 
     @Autowired
-    public BookingController(BookingService bookingService,
-                             ClientService clientService,
-                             RiderService riderService,
-                             AssignedEquipmentService assignedEquipmentService,
-                             SnowboardService snowboardService,
-                             SnowboardBootsService snowboardBootsService,
-                             SkiService skiService,
-                             SkiBootsService skiBootsService,
-                             JacketService jacketService,
-                             KneeProtectionService kneeProtectionService,
-                             ProtectiveShortsService protectiveShortsService,
-                             PantsService pantsService,
-                             HelmetService helmetService,
-                             GlovesService glovesService) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
-        this.clientService = clientService;
-        this.riderService = riderService;
-        this.assignedEquipmentService = assignedEquipmentService;
-        this.snowboardService = snowboardService;
-        this.snowboardBootsService = snowboardBootsService;
-        this.skiService = skiService;
-        this.skiBootsService = skiBootsService;
-        this.jacketService = jacketService;
-        this.kneeProtectionService = kneeProtectionService;
-        this.protectiveShortsService = protectiveShortsService;
-        this.pantsService = pantsService;
-        this.helmetService = helmetService;
-        this.glovesService = glovesService;
     }
 
     // ----- show all bookings -----
@@ -74,165 +35,96 @@ public class BookingController {
         return "admin/booking/add_new";
     }
 
-    @PostMapping()
+    @PostMapping("/add-new")
     public String addNewClientAndBookingToDB(@ModelAttribute("newBooking") @Valid Booking newBooking,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/booking/add_new";
         }
-        Client newClient = new Client(newBooking.getClient().getName(),
-                newBooking.getClient().getPhone1(), newBooking.getClient().getPhone2());
-        clientService.addNewClientToDB(newClient);
         bookingService.addNewBookingToDB(newBooking);
-        return "redirect:/admin/info-riders/add-new?id=" + newBooking.getId();
+        return "redirect:/admin/info-riders/add-new?bookingId=" + newBooking.getId();
     }
 
     // ----- edit booking info -----
-    @GetMapping("/edit/{id}")
-    public String showOneBooking(@PathVariable("id") Long bookingToBeUpdatedId, Model model) {
+    @GetMapping("/edit/{bookingId}")
+    public String showOneBooking(@PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
         Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
 
-        model.addAttribute("bookingToBeUpdated", bookingService.showOneBookingById(bookingToBeUpdatedId));
+        model.addAttribute("bookingToBeUpdated", bookingToBeUpdated);
         model.addAttribute("existingRiderToBeAddedId", 0L);
-        model.addAttribute("allRiders", riderService.showAllRiders());
+        model.addAttribute("allAvailableRidersForClient",
+                bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
 
-        model.addAttribute("allSnowboardsAvailable",
-                snowboardService.showAllAvailableSnowboards(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allSnowboardBootsAvailable",
-                snowboardBootsService.showAllAvailableSnowboardBoots(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allSkiAvailable",
-                skiService.showAllAvailableSki(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allSkiBootsAvailable",
-                skiBootsService.showAllAvailableSkiBoots(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allJacketsAvailable",
-                jacketService.showAllAvailableJackets(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allKneeProtectionAvailable",
-                kneeProtectionService.showAllAvailableKneeProtection(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allProtectiveShortsAvailable",
-                protectiveShortsService.showAllAvailableProtectiveShorts(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allGlovesAvailable",
-                glovesService.showAllAvailableGloves(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allPantsAvailable",
-                pantsService.showAllAvailablePants(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
-        model.addAttribute("allHelmetsAvailable",
-                helmetService.showAllAvailableHelmets(bookingToBeUpdated.getDateOfArrival(),
-                        bookingToBeUpdated.getDateOfReturn(), bookingService.showAllBookings()));
+        model.addAttribute("allAvailableSnowboards", bookingService.showAllAvailableSnowboards(bookingToBeUpdated));
+        model.addAttribute("allAvailableSnowboardBoots", bookingService.showAllAvailableSnowboardBoots(bookingToBeUpdated));
+        model.addAttribute("allAvailableSki", bookingService.showAllAvailableSki(bookingToBeUpdated));
+        model.addAttribute("allAvailableSkiBoots", bookingService.showAllAvailableSkiBoots(bookingToBeUpdated));
+        model.addAttribute("allAvailableJackets", bookingService.showAllAvailableJackets(bookingToBeUpdated));
+        model.addAttribute("allAvailableKneeProtection", bookingService.showAllAvailableKneeProtection(bookingToBeUpdated));
+        model.addAttribute("allAvailableProtectiveShorts", bookingService.showAllAvailableProtectiveShorts(bookingToBeUpdated));
+        model.addAttribute("allAvailableGloves", bookingService.showAllAvailableGloves(bookingToBeUpdated));
+        model.addAttribute("allAvailablePants", bookingService.showAllAvailablePants(bookingToBeUpdated));
+        model.addAttribute("allAvailableHelmets", bookingService.showAllAvailableHelmets(bookingToBeUpdated));
         return "admin/booking/edit";
     }
 
-    @PatchMapping("/edit/{id}")
-    public String updateBookingAndClientInfo(@PathVariable("id") Long bookingToBeUpdatedId,
+    @PatchMapping("/edit/{bookingId}")
+    public String updateBookingAndClientInfo(@PathVariable("bookingId") Long bookingToBeUpdatedId,
                                              @ModelAttribute("bookingToBeUpdated") @Valid Booking updatedBookingInfo,
-                                             BindingResult bindingResult, Model model) {
-        Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
+                                             BindingResult bindingResult,
+                                             Model model) {
         if (bindingResult.hasErrors()) {
-            updatedBookingInfo.setListOfRiders(bookingToBeUpdated.getListOfRiders());
+            bookingService.setListOfRiders(updatedBookingInfo, bookingService.getListOfRiders(bookingToBeUpdatedId));
             model.addAttribute("bookingToBeUpdated", updatedBookingInfo);
             model.addAttribute("existingRiderToBeAddedId", 0L);
-            model.addAttribute("allRiders", riderService.showAllRiders());
+            model.addAttribute("allAvailableRidersForClient",
+                    bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
             return "admin/booking/edit";
         }
-        clientService.updateClientById(bookingToBeUpdated.getClient().getId(), updatedBookingInfo.getClient());
-        bookingService.updateBookingById(bookingToBeUpdatedId, new Booking(bookingToBeUpdated.getClient(),
-                updatedBookingInfo.getDateOfArrival(), updatedBookingInfo.getDateOfReturn()));
-        return "redirect:/admin/info-booking/edit/{id}";
+        bookingService.updateBookingById(bookingToBeUpdatedId, updatedBookingInfo);
+       return "redirect:/admin/info-booking/edit/{bookingId}";
     }
 
-    @PatchMapping("/edit/assign-equipment")
-    public String assignEquipmentToOneRider(@RequestParam("bid") Long bookingToBeUpdatedId,
-                                            @RequestParam("rid") Long riderToBeUpdatedId,
-                                            @ModelAttribute("oneRider.assignedEquipment") AssignedEquipment assignedEquipment) {
-        Rider updatedRider = riderService.showOneRiderById(riderToBeUpdatedId);
-        AssignedEquipment newAssignedEquipment = new AssignedEquipment();
-
-        if (assignedEquipment.getSnowboard().getId() != null) {
-            Snowboard newSnowboard = snowboardService.showOneSnowboardById(assignedEquipment.getSnowboard().getId());
-            newAssignedEquipment.setSnowboard(newSnowboard);
-        }
-        if (assignedEquipment.getSnowboardBoots().getId() != null) {
-            SnowboardBoots newSnowboardBoots = snowboardBootsService.showOneSnowboardBootsById(assignedEquipment.getSnowboardBoots().getId());
-            newAssignedEquipment.setSnowboardBoots(newSnowboardBoots);
-        }
-        if (assignedEquipment.getSki().getId() != null) {
-            Ski newSki = skiService.showOneSkiById(assignedEquipment.getSki().getId());
-            newAssignedEquipment.setSki(newSki);
-        }
-        if (assignedEquipment.getSkiBoots().getId() != null) {
-            SkiBoots newSkiBoots = skiBootsService.showOneSkiBootsById(assignedEquipment.getSkiBoots().getId());
-            newAssignedEquipment.setSkiBoots(newSkiBoots);
-        }
-        if (assignedEquipment.getJacket().getId() != null) {
-            Jacket newJacket = jacketService.showOneJacketById(assignedEquipment.getJacket().getId());
-            newAssignedEquipment.setJacket(newJacket);
-        }
-        if (assignedEquipment.getKneeProtection().getId() != null) {
-            KneeProtection newKneeProtection = kneeProtectionService.showOneKneeProtectionById(assignedEquipment.getKneeProtection().getId());
-            newAssignedEquipment.setKneeProtection(newKneeProtection);
-        }
-        if (assignedEquipment.getProtectiveShorts().getId() != null) {
-            ProtectiveShorts newProtectiveShorts = protectiveShortsService.showOneProtectiveShortsById(assignedEquipment.getProtectiveShorts().getId());
-            newAssignedEquipment.setProtectiveShorts(newProtectiveShorts);
-        }
-        if (assignedEquipment.getHelmet().getId() != null) {
-            Helmet newHelmet = helmetService.showOneHelmetById(assignedEquipment.getHelmet().getId());
-            newAssignedEquipment.setHelmet(newHelmet);
-        }
-        if (assignedEquipment.getPants().getId() != null) {
-            Pants newPants = pantsService.showOnePantsById(assignedEquipment.getPants().getId());
-            newAssignedEquipment.setPants(newPants);
-        }
-        if (assignedEquipment.getGloves().getId() != null) {
-            Gloves newGloves = glovesService.showOneGlovesById(assignedEquipment.getGloves().getId());
-            newAssignedEquipment.setGloves(newGloves);
-        }
-
-        assignedEquipmentService.addNewAssignedEquipmentToDB(newAssignedEquipment);
-        riderService.assignEquipmentToRider(updatedRider, newAssignedEquipment);
+    @PatchMapping("/edit-equipment/{riderId}")
+    public String updateRiderRequestedEquipment(@PathVariable("riderId") Long riderToBeUpdatedId,
+                                                @RequestParam("bookingId") Long bookingToBeUpdatedId,
+                                                @ModelAttribute("link") BookingRiderEquipmentLink updatedLink) {
+        bookingService.updateRiderRequestedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, updatedLink);
         return "redirect:/admin/info-booking/edit/" + bookingToBeUpdatedId;
     }
 
-    @PatchMapping("/edit/add-existing-rider/{id}")
-    public String addExistingRiderToBooking(@PathVariable("id") Long bookingToBeUpdatedId,
-                                            @ModelAttribute("existingRiderToBeAddedId") Long existingRiderToBeAddedId) {
-        Rider existingRiderToBeAdded = riderService.showOneRiderById(existingRiderToBeAddedId);
-        Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
-        bookingService.addExistingRiderToBooking(bookingToBeUpdated, existingRiderToBeAdded);
-        return "redirect:/admin/info-booking/edit/{id}";
+    @PatchMapping("/edit/assign-equipment")
+    public String assignEquipmentToOneRider(@RequestParam("bookingId") Long bookingToBeUpdatedId,
+                                            @RequestParam("riderId") Long riderToBeUpdatedId,
+                                            @ModelAttribute("oneBookingRiderEquipmentLink.assignedEquipment") RiderAssignedEquipment riderAssignedEquipment) {
+        bookingService.setRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipment);
+        return "redirect:/admin/info-booking/edit/" + bookingToBeUpdatedId;
     }
 
-    @GetMapping("/edit/remove")
-    public String removeRiderFromBooking(@RequestParam("bid") Long bookingToBeUpdatedId,
-                                         @RequestParam("rid") Long riderToBeRemovedId) {
-        Rider riderToBoUpdated = riderService.showOneRiderById(riderToBeRemovedId);
-        Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
+    @GetMapping("/edit/remove-rider")
+    public String removeRiderFromBooking(@RequestParam("bookingId") Long bookingToBeUpdatedId,
+                                         @RequestParam("riderId") Long riderToBeRemovedId) {
+        bookingService.removeRiderFromBooking(bookingToBeUpdatedId, riderToBeRemovedId);
+        return "redirect:/admin/info-booking/edit/" + bookingToBeUpdatedId;
+    }
 
-        riderService.removeAssignedEquipment(riderToBoUpdated);
-        bookingService.removeRiderFromBooking(bookingToBeUpdated, riderToBoUpdated);
+    @PatchMapping("/edit/add-existing-rider/{bookingId}")
+    public String addExistingRiderToBooking(@PathVariable("bookingId") Long bookingToBeUpdatedId,
+                                            @ModelAttribute("existingRiderToBeAddedId") Long existingRiderToBeAddedId) {
+        bookingService.addRiderToBooking(bookingToBeUpdatedId, existingRiderToBeAddedId);
         return "redirect:/admin/info-booking/edit/" + bookingToBeUpdatedId;
     }
 
     // ----- delete booking -----
-    @DeleteMapping("/{id}")
-    public String deleteBooking(@PathVariable("id") Long id) {
-        for (Rider rider : bookingService.showOneBookingById(id).getListOfRiders()) {
-            riderService.removeAssignedEquipment(rider);
-        }
-        bookingService.deleteBookingById(id);
+    @DeleteMapping("/{bookingId}")
+    public String deleteBooking(@PathVariable("bookingId") Long bookingId) {
+        bookingService.deleteBookingById(bookingId);
         return "redirect:/admin/info-booking";
     }
 
     // ----- mark booking completed -----
-    @GetMapping("/change-booking-completed/{id}")
-    public String changeBookingCompleted(@PathVariable("id") Long bookingId) {
+    @GetMapping("/change-booking-completed/{bookingId}")
+    public String changeBookingCompleted(@PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);
         return "redirect:/admin/info-booking";
     }

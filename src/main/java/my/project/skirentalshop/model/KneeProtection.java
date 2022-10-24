@@ -8,25 +8,23 @@ import java.util.Objects;
 @Entity
 public class KneeProtection {
 
-    enum Size {
-        XS,
-        S,
-        M,
-        L,
-        XL
-    }
+    enum Size {XS, S, M, L, XL}
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
+
     @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
     @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
     private String name;
+
     private EquipmentCondition condition;
+
     private Size size;
+
     @OneToMany(mappedBy = "kneeProtection")
-    private List<AssignedEquipment> listOfAssignedEquipment;
+    private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public KneeProtection() {
     }
@@ -64,7 +62,10 @@ public class KneeProtection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KneeProtection that = (KneeProtection) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && condition == that.condition && size == that.size;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                condition == that.condition &&
+                size == that.size;
     }
 
     @Override
@@ -77,8 +78,8 @@ public class KneeProtection {
         return "KneeProtection{" +
                 "id=" + id +
                 ", name='" + name +
-                ", condition=" + condition.name() +
-                ", size=" + size.name() +
+                ", condition=" + condition +
+                ", size=" + size +
                 '}';
     }
 }

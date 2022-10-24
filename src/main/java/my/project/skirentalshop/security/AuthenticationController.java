@@ -1,9 +1,7 @@
 package my.project.skirentalshop.security;
 
-import my.project.skirentalshop.model.Client;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
 import my.project.skirentalshop.security.registration.RegistrationService;
-import my.project.skirentalshop.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,12 +19,10 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     private final RegistrationService registrationService;
-    private final ClientService clientService;
 
     @Autowired
-    public AuthenticationController(RegistrationService registrationService, ClientService clientService) {
+    public AuthenticationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
-        this.clientService = clientService;
     }
 
     @GetMapping("/sign-in")
@@ -41,18 +37,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    public String addNewUserToDB(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
-                                 BindingResult bindingResult) {
+    public String signUpAndAddNewClientToDB(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
+                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "authentication/sign_up";
         }
         registrationService.register(registrationRequest);
-
-        Client newClient = new Client(registrationRequest.getName() + " " + registrationRequest.getSurname(),
-                registrationRequest.getPhone1(), null);
-        newClient.setEmail(registrationRequest.getEmail());
-        clientService.addNewClientToDB(newClient);
-
         return "redirect:/sign-in";
     }
 
