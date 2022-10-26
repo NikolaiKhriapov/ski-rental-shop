@@ -1,5 +1,7 @@
 package my.project.skirentalshop.model;
 
+import my.project.skirentalshop.model.enums.TypesOfEquipment;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

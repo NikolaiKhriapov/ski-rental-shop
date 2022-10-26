@@ -17,23 +17,23 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="/client/settings" th:text="#{top_nav.settings}"/>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
+                    <a href="/client/settings" th:text="#{top-nav.settings}"/>
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
                     <a th:href="'/client/info-riders/edit?riderId=' + ${riderId} + '&theme=theme_1'"
-                       th:text="#{top_nav.theme.theme_1}"/>
+                       th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="'/client/info-riders/edit?riderId=' + ${riderId} + '&theme=theme_2'"
-                       th:text="#{top_nav.theme.theme_2}"/>
+                       th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
                     <a th:href="'/client/info-riders/edit?riderId=' + ${riderId} + '&lang=en'">English</a>
                     <a th:href="'/client/info-riders/edit?riderId=' + ${riderId} + '&lang=ru'">Russian</a>
@@ -47,19 +47,19 @@
 
     <div class="sidebar">
         <button type="button">
-            <a href="/client" th:text="#{side_bar.client.home}"/>
+            <a href="/client" th:text="#{side-bar.client.home}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-booking/add-new" th:text="#{side_bar.client.new_booking}"/>
+            <a href="/client/info-booking/add-new" th:text="#{side-bar.client.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/history" th:text="#{side_bar.client.history}"/>
+            <a href="/client/history" th:text="#{side-bar.client.history}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-riders" th:text="#{side_bar.client.riders}"/>
+            <a href="/client/info-riders" th:text="#{side-bar.client.riders}"/>
         </button>
     </div>
 
@@ -125,11 +125,11 @@
                         <tr>
                             <td th:text="#{rider.edit.foot} + ': '"/>
                             <td>
-                                <label for="select-foot-size"></label>
-                                <select id="select-foot-size" th:field="*{footSize}">
+                                <label for="select-foot-clothesSize"></label>
+                                <select id="select-foot-clothesSize" th:field="*{footSize}">
                                     <option th:each="i : ${T(my.project.skirentalshop.model.Rider.Size).values}"
                                             th:value="${i.name}"
-                                            th:text="#{${'rider.size.' + i}}"
+                                            th:text="#{${'rider.clothesSize.' + i}}"
                                             th:selected="${riderToUpdate.footSize}">
                                     </option>
                                 </select>
@@ -178,7 +178,7 @@
                 <div th:if="${bookingId != null}">
                     <form th:method="GET"
                           th:action="@{/client/info-booking/edit/{bookingId}(bookingId=${bookingId})}">
-                        <input class="button" type="submit" th:value="#{rider.edit.button.go_to_order}"/>
+                        <input class="button" type="submit" th:value="#{rider.edit.button.go-to-order}"/>
                     </form>
                 </div>
 
@@ -194,7 +194,7 @@
 
         <div class="footer">
             <div class="text-block">
-                <div class="center" th:text="#{top_nav.contact_us}"/>
+                <div class="center" th:text="#{top-nav.contact-us}"/>
             </div>
         </div>
 

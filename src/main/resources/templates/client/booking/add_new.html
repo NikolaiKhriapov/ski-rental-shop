@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="#{booking.add_new.title}"/>
+    <title th:text="#{booking.add-new.title}"/>
     <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -17,21 +17,21 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="/client/settings" th:text="#{top_nav.settings}"/>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
+                    <a href="/client/settings" th:text="#{top-nav.settings}"/>
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/client/info-booking/add-new?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
-                    <a href="/client/info-booking/add-new?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
+                    <a href="/client/info-booking/add-new?theme=theme_1" th:text="#{top-nav.theme.theme-1}"/>
+                    <a href="/client/info-booking/add-new?theme=theme_2" th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/client/info-booking/add-new?lang=en">English</a>
                     <a href="/client/info-booking/add-new?lang=ru">Russian</a>
@@ -46,19 +46,19 @@
     <div class="sidebar">
 
         <button type="button">
-            <a href="/client" th:text="#{side_bar.client.home}"/>
+            <a href="/client" th:text="#{side-bar.client.home}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-booking/add-new" th:text="#{side_bar.client.new_booking}"/>
+            <a href="/client/info-booking/add-new" th:text="#{side-bar.client.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/history" th:text="#{side_bar.client.history}"/>
+            <a href="/client/history" th:text="#{side-bar.client.history}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-riders" th:text="#{side_bar.client.riders}"/>
+            <a href="/client/info-riders" th:text="#{side-bar.client.riders}"/>
         </button>
     </div>
 
@@ -67,7 +67,7 @@
         <div class="content">
             <div class="new-edit">
                 <!--Header-->
-                <h1 th:text="#{booking.add_new.header}"/>
+                <h1 th:text="#{booking.add-new.header}"/>
 
                 <!--Input parameters-->
                 <form th:method="POST"
@@ -75,19 +75,19 @@
                       th:object="${newBooking}">
                     <table>
                         <tr>
-                            <td th:text="#{booking.add_new.field.client} + ': '"/>
+                            <td th:text="#{booking.add-new.field.client} + ': '"/>
                             <td>
                                 <label for="input-name"></label>
                                 <input id="input-name" type="text"
                                        th:field="*{client.name}"
-                                       th:placeholder="#{booking.add_new.field.client.placeholder}"/>
+                                       th:placeholder="#{booking.add-new.field.client.placeholder}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('client.name')}" th:errors="*{client.name}">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{booking.add_new.field.phone1} + ': '"/>
+                            <td th:text="#{booking.add-new.field.phone1} + ': '"/>
                             <td>
                                 <label for="input-phone1"></label>
                                 <input id="input-phone1"
@@ -98,7 +98,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{booking.add_new.field.phone2} + ': '"/>
+                            <td th:text="#{booking.add-new.field.phone2} + ': '"/>
                             <td>
                                 <label for="input-phone2"></label>
                                 <input id="input-phone2"
@@ -106,7 +106,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{booking.add_new.field.date_of_arrival} + ': '"/>
+                            <td th:text="#{booking.add-new.field.date-of-arrival} + ': '"/>
                             <td>
                                 <label for="input-doa"></label>
                                 <input id="input-doa" type="datetime-local" th:field="*{dateOfArrival}"/>
@@ -116,7 +116,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{booking.add_new.field.date_of_return} + ': '"/>
+                            <td th:text="#{booking.add-new.field.date-of-return} + ': '"/>
                             <td>
                                 <label for="input-dor"></label>
                                 <input id="input-dor" type="datetime-local" th:field="*{dateOfReturn}"/>
@@ -129,7 +129,7 @@
 
                     <br>
 
-                    <input class="button" type="submit" th:value="#{booking.add_new.button.create}"/>
+                    <input class="button" type="submit" th:value="#{booking.add-new.button.create}"/>
                 </form>
 
                 <br>
@@ -143,7 +143,7 @@
 
         <div class="footer">
             <div class="text-block">
-                <div class="center" th:text="#{top_nav.contact_us}"/>
+                <div class="center" th:text="#{top-nav.contact-us}"/>
             </div>
         </div>
 

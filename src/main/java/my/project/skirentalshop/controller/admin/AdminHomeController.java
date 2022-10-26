@@ -1,5 +1,6 @@
 package my.project.skirentalshop.controller.admin;
 
+import my.project.skirentalshop.model.Equipment;
 import my.project.skirentalshop.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +11,12 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminHomeController {
+public class AdminHomeController<T extends Equipment> {
 
-    private final BookingService bookingService;
+    private final BookingService<T> bookingService;
 
     @Autowired
-    public AdminHomeController(BookingService bookingService) {
+    public AdminHomeController(BookingService<T> bookingService) {
         this.bookingService = bookingService;
     }
 

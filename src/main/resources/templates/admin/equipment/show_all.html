@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{${typeOfEquipment + '.title'}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="dropdown-content">
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_1'}"
+                       th:text="#{top-nav.theme.theme-1}"/>
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_2'}"
+                       th:text="#{top-nav.theme.theme-2}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=en'}">English</a>
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=ru'}">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{side-bar.admin.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{side-bar.admin.new-booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{side-bar.admin.list-of-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{side-bar.admin.list-of-clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{side-bar.admin.list-of-riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{side-bar.admin.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{side-bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
+        </button>
+    </div>
+
+    <div class="main-screen">
+
+        <div class="content">
+
+            <div class="table">
+                <!--Header-->
+                <h1 th:text="#{${typeOfEquipment + '.header.show-all'}}"/>
+
+                <!--Search-->
+                <form th:method="GET"
+                      th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search'}">
+                    <label for="input-search"></label>
+                    <input id="input-search" style="width:200px"
+                           type="text" th:name="search" th:placeholder="#{equipment.search-placeholder}"/>
+                    <input class="button" type="submit" th:value="#{equipment.search-button}"/>
+                </form>
+
+                <br>
+
+                <!-- Table -->
+                <table>
+                    <tr>
+                        <!-- id -->
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.id}"/>
+                        </th>
+                        <!-- name -->
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.name}"/>
+                        </th>
+                        <!-- condition -->
+                        <th>
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.condition}"/>
+                        </th>
+                        <!-- snowboardSize -->
+                        <th th:if="${typeOfEquipment == 'snowboard'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=snowboardSize&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.size}"/>
+                        </th>
+                        <!-- skiSize -->
+                        <th th:if="${typeOfEquipment == 'ski'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=skiSize&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{ski.parameter.size}"/>
+                        </th>
+                        <!-- bootsSize -->
+                        <th th:if="${typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=bootsSize&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard-boots.parameter.size}"/>
+                        </th>
+                        <!-- clothesSize -->
+                        <th th:if="${typeOfEquipment == 'helmet'            || typeOfEquipment == 'jacket' ||
+                                     typeOfEquipment == 'gloves'            || typeOfEquipment == 'pants' ||
+                                     typeOfEquipment == 'protective-shorts' || typeOfEquipment == 'knee-protection'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=clothesSize&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{helmet.parameter.size}"/>
+                        </th>
+                        <!-- stiffness -->
+                        <th th:if="${typeOfEquipment == 'snowboard' || typeOfEquipment == 'snowboard-boots' ||
+                                     typeOfEquipment == 'ski'       || typeOfEquipment == 'ski-boots'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.stiffness}"/>
+                        </th>
+                        <!-- arch -->
+                        <th th:if="${typeOfEquipment == 'snowboard'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.arch}"/>
+                        </th>
+                        <!-- bindingSize -->
+                        <th th:if="${typeOfEquipment == 'snowboard'}">
+                            <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"
+                               th:text="#{snowboard.parameter.binding-size}"/>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <div th:switch="${typeOfEquipment}">
+                        <div th:case="'snowboard'">
+                            <tr th:each="oneSnowboard : ${allSnowboards}">
+                                <td th:text="${oneSnowboard.id}"/>
+                                <td th:text="${oneSnowboard.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneSnowboard.condition}}"/>
+                                <td th:text="${oneSnowboard.snowboardSize}"/>
+                                <td th:text="#{${'snowboard.stiffness.' + oneSnowboard.stiffness}}"/>
+                                <td th:text="#{${'snowboard.arch.' + oneSnowboard.arch}}"/>
+                                <td th:text="${oneSnowboard.bindingSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneSnowboard.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneSnowboard.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'snowboard-boots'">
+                            <tr th:each="oneSnowboardBoots : ${allSnowboardBoots}">
+                                <td th:text="${oneSnowboardBoots.id}"/>
+                                <td th:text="${oneSnowboardBoots.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneSnowboardBoots.condition}}"/>
+                                <td th:text="#{${'snowboard-boots.size.' + oneSnowboardBoots.bootsSize}}"/>
+                                <td th:text="#{${'snowboard-boots.stiffness.' + oneSnowboardBoots.stiffness}}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneSnowboardBoots.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneSnowboardBoots.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'ski'">
+                            <tr th:each="oneSki : ${allSki}">
+                                <td th:text="${oneSki.id}"/>
+                                <td th:text="${oneSki.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneSki.condition}}"/>
+                                <td th:text="${oneSki.skiSize}"/>
+                                <td th:text="#{${'ski.stiffness.' + oneSki.stiffness}}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneSki.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneSki.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'ski-boots'">
+                            <tr th:each="oneSkiBoots : ${allSkiBoots}">
+                                <td th:text="${oneSkiBoots.id}"/>
+                                <td th:text="${oneSkiBoots.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneSkiBoots.condition}}"/>
+                                <td th:text="#{${'ski-boots.size.' + oneSkiBoots.bootsSize}}"/>
+                                <td th:text="#{${'ski-boots.stiffness.' + oneSkiBoots.stiffness}}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneSkiBoots.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneSkiBoots.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'helmet'">
+                            <tr th:each="oneHelmet : ${allHelmets}">
+                                <td th:text="${oneHelmet.id}"/>
+                                <td th:text="${oneHelmet.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneHelmet.condition}}"/>
+                                <td th:text="${oneHelmet.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneHelmet.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneHelmet.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'jacket'">
+                            <tr th:each="oneJacket : ${allJackets}">
+                                <td th:text="${oneJacket.id}"/>
+                                <td th:text="${oneJacket.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneJacket.condition}}"/>
+                                <td th:text="${oneJacket.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneJacket.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneJacket.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'gloves'">
+                            <tr th:each="oneGloves : ${allGloves}">
+                                <td th:text="${oneGloves.id}"/>
+                                <td th:text="${oneGloves.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneGloves.condition}}"/>
+                                <td th:text="${oneGloves.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneGloves.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneGloves.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'pants'">
+                            <tr th:each="onePants : ${allPants}">
+                                <td th:text="${onePants.id}"/>
+                                <td th:text="${onePants.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + onePants.condition}}"/>
+                                <td th:text="${onePants.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${onePants.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${onePants.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'protective-shorts'">
+                            <tr th:each="oneProtectiveShorts : ${allProtectiveShorts}">
+                                <td th:text="${oneProtectiveShorts.id}"/>
+                                <td th:text="${oneProtectiveShorts.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneProtectiveShorts.condition}}"/>
+                                <td th:text="${oneProtectiveShorts.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneProtectiveShorts.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneProtectiveShorts.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                        <div th:case="'knee-protection'">
+                            <tr th:each="oneKneeProtection : ${allKneeProtection}">
+                                <td th:text="${oneKneeProtection.id}"/>
+                                <td th:text="${oneKneeProtection.name}" th:align="left"/>
+                                <td th:text="#{${'equipment-condition.' + oneKneeProtection.condition}}"/>
+                                <td th:text="${oneKneeProtection.clothesSize}"/>
+                                <td th:width="1">
+                                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${oneKneeProtection.id}}">
+                                        <button class="button" th:text="#{equipment.button.edit}"/>
+                                    </a>
+                                </td>
+                                <td th:width="1">
+                                    <form th:method="DELETE"
+                                          th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/' + ${oneKneeProtection.id}}">
+                                        <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+                </table>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <!--Add new-->
+        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} +'/add-new'}">
+            <button class="button" th:text="#{snowboard.button.show-all.add-new}"/>
+        </a>
+    </div>
+
+</div>
+
+</body>
+
+</html>

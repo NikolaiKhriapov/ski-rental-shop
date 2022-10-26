@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="#{booking.show_all.title}"/>
+    <title th:text="#{booking.show-all.title}"/>
     <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -17,20 +17,20 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/admin/info-booking?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
-                    <a href="/admin/info-booking?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
+                    <a href="/admin/info-booking?theme=theme_1" th:text="#{top-nav.theme.theme-1}"/>
+                    <a href="/admin/info-booking?theme=theme_2" th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/admin/info-booking?lang=en">English</a>
                     <a href="/admin/info-booking?lang=ru">Русский</a>
@@ -44,59 +44,59 @@
 
     <div class="sidebar">
         <button type="button">
-            <a href="/admin" th:text="#{side_bar.admin.home}"/>
+            <a href="/admin" th:text="#{side-bar.admin.home}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/info-booking/add-new" th:text="#{side_bar.admin.new_booking}"/>
+            <a href="/admin/info-booking/add-new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side_bar.admin.today_bookings}"/>
+            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side_bar.admin.tomorrow_bookings}"/>
-        </button>
-        <br>
-        <button type="button">
-            <a href="/admin/info-booking" th:text="#{side_bar.admin.list_of_bookings}"/>
-        </button>
-        <button type="button">
-            <a href="/admin/info-clients" th:text="#{side_bar.admin.list_of_clients}"/>
-        </button>
-        <button type="button">
-            <a href="/admin/info-riders" th:text="#{side_bar.admin.list_of_riders}"/>
+            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/info-equipment/snowboard" th:text="#{side_bar.admin.snowboard}"/>
+            <a href="/admin/info-booking" th:text="#{side-bar.admin.list-of-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side_bar.admin.snowboard_boots}"/>
+            <a href="/admin/info-clients" th:text="#{side-bar.admin.list-of-clients}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/ski" th:text="#{side_bar.admin.ski}"/>
+            <a href="/admin/info-riders" th:text="#{side-bar.admin.list-of-riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/ski-boots" th:text="#{side_bar.admin.ski_boots}"/>
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/helmet" th:text="#{side_bar.admin.helmet}"/>
+            <a href="/admin/info-equipment/ski" th:text="#{side-bar.admin.ski}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/jacket" th:text="#{side_bar.admin.jacket}"/>
+            <a href="/admin/info-equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/gloves" th:text="#{side_bar.admin.gloves}"/>
+            <a href="/admin/info-equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/pants" th:text="#{side_bar.admin.pants}"/>
+            <a href="/admin/info-equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/protective-shorts" th:text="#{side_bar.admin.protective_shorts}"/>
+            <a href="/admin/info-equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/knee-protection" th:text="#{side_bar.admin.knee_protection}"/>
+            <a href="/admin/info-equipment/pants" th:text="#{side-bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
         </button>
     </div>
 
@@ -105,15 +105,15 @@
         <div class="content">
             <div class="table">
                 <!--Header-->
-                <h1 th:text="#{booking.show_all.header}"/>
+                <h1 th:text="#{booking.show-all.header}"/>
 
                 <!--Search-->
                 <form th:method="GET"
                       th:action="@{/admin/info-booking/search}">
                     <label for="search"></label>
                     <input th:type="text" th:name="search" id="search"
-                           th:placeholder="#{booking.show_all.search_placeholder}" style="width:200px"/>
-                    <input class="button" type="submit" th:value="#{booking.show_all.search_button}"/>
+                           th:placeholder="#{booking.show-all.search-placeholder}" style="width:200px"/>
+                    <input class="button" type="submit" th:value="#{booking.show-all.search-button}"/>
                 </form>
 
                 <br>
@@ -123,23 +123,23 @@
                     <tr>
                         <th>
                             <a th:href="@{'/admin/info-booking/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"
-                               th:text="#{booking.show_all.table.header.id}"/>
+                               th:text="#{booking.show-all.table.header.id}"/>
                         </th>
                         <th>
                             <a th:href="@{'/admin/info-booking/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"
-                               th:text="#{booking.show_all.table.header.client}"/>
+                               th:text="#{booking.show-all.table.header.client}"/>
                         </th>
-                        <th><a th:text="#{booking.show_all.table.header.phone1}"/></th>
-                        <th><a th:text="#{booking.show_all.table.header.phone2}"/></th>
+                        <th><a th:text="#{booking.show-all.table.header.phone1}"/></th>
+                        <th><a th:text="#{booking.show-all.table.header.phone2}"/></th>
                         <th>
                             <a th:href="@{'/admin/info-booking/sort?parameter=dateOfArrival&sortDirection=' + ${reverseSortDirection}}"
-                               th:text="#{booking.show_all.table.header.date_of_arrival}"/>
+                               th:text="#{booking.show-all.table.header.date-of-arrival}"/>
                         </th>
                         <th>
                             <a th:href="@{'/admin/info-booking/sort?parameter=dateOfReturn&sortDirection=' + ${reverseSortDirection}}"
-                               th:text="#{booking.show_all.table.header.date_of_return}"/>
+                               th:text="#{booking.show-all.table.header.date-of-return}"/>
                         </th>
-                        <th><a th:text="#{booking.show_all.table.header.number_of_riders}"/></th>
+                        <th><a th:text="#{booking.show-all.table.header.number-of-riders}"/></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -156,26 +156,26 @@
                         <td></td>
                         <td th:width="1">
                             <form th:method="GET"
-                                  th:action="@{/admin/info-booking/change-booking-completed/{id}(id=${oneBooking.id})}">
+                                  th:action="@{/admin/info-booking/change-booking-completed/{bookingId}(id=${oneBooking.id})}">
                                 <span th:if="${oneBooking.completed == false}">
                                     <input class="button" type="submit"
-                                           th:value="#{booking.main_page.table.button.mark_completed}"/>
+                                           th:value="#{booking.main-page.table.button.mark-completed}"/>
                                 </span>
                                 <span th:unless="${oneBooking.completed == false}">
                                     <input class="button" type="submit"
-                                           th:value="#{booking.main_page.table.button.mark_uncompleted}"/>
+                                           th:value="#{booking.main-page.table.button.mark-uncompleted}"/>
                                 </span>
                             </form>
                         </td>
                         <td th:width="1">
                             <form th:method="GET"
-                                  th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.id})}">
-                                <input class="button" type="submit" th:value="#{booking.show_all.table.button.edit}"/>
+                                  th:action="@{/admin/info-booking/edit/{bookingId}(id=${oneBooking.id})}">
+                                <input class="button" type="submit" th:value="#{booking.show-all.table.button.edit}"/>
                             </form>
                         </td>
                         <td th:width="1">
-                            <form th:method="DELETE" th:action="@{/admin/info-booking/{id}(id=${oneBooking.id})}">
-                                <input class="button" type="submit" th:value="#{booking.show_all.table.button.delete}"/>
+                            <form th:method="DELETE" th:action="@{/admin/info-booking/{bookingId}(id=${oneBooking.id})}">
+                                <input class="button" type="submit" th:value="#{booking.show-all.table.button.delete}"/>
                             </form>
                         </td>
                     </tr>
@@ -185,7 +185,7 @@
 
                 <!--Add new-->
                 <a href="/admin/info-booking/add-new">
-                    <button class="button" th:text="#{booking.show_all.button.add_new}"/>
+                    <button class="button" th:text="#{booking.show-all.button.add-new}"/>
                 </a>
             </div>
         </div>

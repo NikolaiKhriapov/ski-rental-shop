@@ -21,7 +21,7 @@ public class RiderController {
         this.riderService = riderService;
     }
 
-    //show all
+    // ----- show all -----
     @GetMapping()
     public String showAllRiders(Model model) {
         model.addAttribute("allRiders", riderService.showAllRiders());

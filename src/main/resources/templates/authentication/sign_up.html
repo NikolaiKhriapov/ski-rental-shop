@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="#{auth.sign_up.title}"/>
+    <title th:text="#{auth.sign-up.title}"/>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
@@ -34,12 +34,12 @@
             justify-content: center;
 
             list-style: none;
-            font-size: 18px;
+            font-clothesSize: 18px;
         }
 
         .footer .text-block {
             padding: 15px;
-            font-size: 14px;
+            font-clothesSize: 14px;
         }
     </style>
 </head>
@@ -53,50 +53,50 @@
               th:method="POST"
               th:action="@{/sign-up}"
               th:object="${registrationRequest}">
-            <h2 class="form-signin-heading" th:text="#{auth.sign_up.header}"/>
+            <h2 class="form-signin-heading" th:text="#{auth.sign-up.header}"/>
 
             <span>
                 <label for="input-name"></label>
                 <input id="input-name" class="form-control"
-                       type="text" th:field="*{name}" th:placeholder="#{auth.sign_up.placeholder.name}"/>
+                       type="text" th:field="*{name}" th:placeholder="#{auth.sign-up.placeholder.name}"/>
                 <a style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></a>
                 <!-- TODO: change style to CSS class -->
             </span>
             <span>
                 <label for="input-surname"></label>
                 <input id="input-surname" class="form-control"
-                       type="text" th:field="*{surname}" th:placeholder="#{auth.sign_up.placeholder.surname}">
+                       type="text" th:field="*{surname}" th:placeholder="#{auth.sign-up.placeholder.surname}">
                 <a style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></a>
             </span>
             <span>
                 <label for="input-phone1"></label>
                 <input id="input-phone1" class="form-control"
-                       type="text" th:field="*{phone1}" th:placeholder="#{auth.sign_up.placeholder.phone}">
+                       type="text" th:field="*{phone1}" th:placeholder="#{auth.sign-up.placeholder.phone}">
                 <a style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}"></a>
             </span>
             <span>
                 <label for="input-email"></label>
                 <input id="input-email" class="form-control"
-                       type="text" th:field="*{email}" th:placeholder="#{auth.sign_up.placeholder.email}">
+                       type="text" th:field="*{email}" th:placeholder="#{auth.sign-up.placeholder.email}">
                 <a style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></a>
             </span>
             <span>
                 <label for="input-password"></label>
                 <input id="input-password" class="form-control"
-                       type="password" th:field="*{password}" th:placeholder="#{auth.sign_up.placeholder.password}">
+                       type="password" th:field="*{password}" th:placeholder="#{auth.sign-up.placeholder.password}">
                 <a style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></a>
             </span>
 
             <br>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{auth.sign_up.button.sign_up}"/>
-            <a class="btn btn-lg btn-primary btn-block" href="/sign-in" th:text="#{auth.sign_up.button.back}"/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{auth.sign-up.button.sign-up}"/>
+            <a class="btn btn-lg btn-primary btn-block" href="/sign-in" th:text="#{auth.sign-up.button.back}"/>
         </form>
     </div>
 
     <div class="footer">
         <div class="text-block">
-            <div class="center" th:text="#{auth.footer.contact_us}"/>
+            <div class="center" th:text="#{auth.footer.contact-us}"/>
         </div>
     </div>
 
