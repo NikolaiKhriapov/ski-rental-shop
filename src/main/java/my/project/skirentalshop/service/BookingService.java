@@ -1,6 +1,7 @@
 package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.model.enums.EquipmentCondition;
 import my.project.skirentalshop.repository.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
@@ -15,22 +16,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+
 @Service
-public class BookingService {
+public class BookingService<T extends Equipment> {
 
     private final BookingRepository bookingRepository;
     private final BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository;
     private final RiderRepository riderRepository;
-    private final SnowboardRepository snowboardRepository;
-    private final SnowboardBootsRepository snowboardBootsRepository;
-    private final SkiRepository skiRepository;
-    private final SkiBootsRepository skiBootsRepository;
-    private final HelmetRepository helmetRepository;
-    private final JacketRepository jacketRepository;
-    private final GlovesRepository glovesRepository;
-    private final PantsRepository pantsRepository;
-    private final ProtectiveShortsRepository protectiveShortsRepository;
-    private final KneeProtectionRepository kneeProtectionRepository;
+    private final EquipmentRepository<T> equipmentRepository;
 
     private final ApplicationUserService applicationUserService;
     private final ClientService clientService;
@@ -39,31 +33,13 @@ public class BookingService {
     public BookingService(BookingRepository bookingRepository,
                           BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository,
                           RiderRepository riderRepository,
-                          SnowboardRepository snowboardRepository,
-                          SnowboardBootsRepository snowboardBootsRepository,
-                          SkiRepository skiRepository,
-                          SkiBootsRepository skiBootsRepository,
-                          HelmetRepository helmetRepository,
-                          JacketRepository jacketRepository,
-                          GlovesRepository glovesRepository,
-                          PantsRepository pantsRepository,
-                          ProtectiveShortsRepository protectiveShortsRepository,
-                          KneeProtectionRepository kneeProtectionRepository,
+                          EquipmentRepository<T> equipmentRepository,
                           ApplicationUserService applicationUserService,
                           ClientService clientService) {
         this.bookingRepository = bookingRepository;
         this.bookingRiderEquipmentLinkRepository = bookingRiderEquipmentLinkRepository;
         this.riderRepository = riderRepository;
-        this.snowboardRepository = snowboardRepository;
-        this.snowboardBootsRepository = snowboardBootsRepository;
-        this.skiRepository = skiRepository;
-        this.skiBootsRepository = skiBootsRepository;
-        this.helmetRepository = helmetRepository;
-        this.jacketRepository = jacketRepository;
-        this.glovesRepository = glovesRepository;
-        this.pantsRepository = pantsRepository;
-        this.protectiveShortsRepository = protectiveShortsRepository;
-        this.kneeProtectionRepository = kneeProtectionRepository;
+        this.equipmentRepository = equipmentRepository;
         this.applicationUserService = applicationUserService;
         this.clientService = clientService;
     }
@@ -117,13 +93,15 @@ public class BookingService {
         return ((booking1.getDateOfArrival().after(booking2.getDateOfArrival()) || booking1.getDateOfArrival().equals(booking2.getDateOfArrival())) &&
                 (booking1.getDateOfArrival().before(booking2.getDateOfReturn()) || booking1.getDateOfArrival().equals(booking2.getDateOfReturn()))) ||
                 ((booking1.getDateOfReturn().after(booking2.getDateOfArrival()) || booking1.getDateOfReturn().equals(booking2.getDateOfArrival())) &&
-                (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
+                        (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
                 (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
     }
 
+    @SuppressWarnings("unchecked")
     public List<Snowboard> showAllAvailableSnowboards(Booking booking) {
         //get all snowboards
-        List<Snowboard> listOfAvailableSnowboards = snowboardRepository.findAllByOrderBySize();
+        List<Snowboard> listOfAvailableSnowboards =
+                (List<Snowboard>) equipmentRepository.findAllByTypeOrderBySnowboardSize(SNOWBOARD);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableSnowboards.removeIf(oneSnowboard ->
                 oneSnowboard.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -142,9 +120,11 @@ public class BookingService {
         return listOfAvailableSnowboards;
     }
 
+    @SuppressWarnings("unchecked")
     public List<SnowboardBoots> showAllAvailableSnowboardBoots(Booking booking) {
         //get all snowboard boots
-        List<SnowboardBoots> listOfAvailableSnowboardBoots = snowboardBootsRepository.findAllByOrderBySize();
+        List<SnowboardBoots> listOfAvailableSnowboardBoots =
+                (List<SnowboardBoots>) equipmentRepository.findAllByTypeOrderByBootsSize(SNOWBOARD_BOOTS);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableSnowboardBoots.removeIf(oneSnowboardBoots ->
                 oneSnowboardBoots.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -163,9 +143,10 @@ public class BookingService {
         return listOfAvailableSnowboardBoots;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Ski> showAllAvailableSki(Booking booking) {
         //get all ski
-        List<Ski> listOfAvailableSki = skiRepository.findAllByOrderBySize();
+        List<Ski> listOfAvailableSki = (List<Ski>) equipmentRepository.findAllByTypeOrderBySkiSize(SKI);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableSki.removeIf(oneSki ->
                 oneSki.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -184,9 +165,11 @@ public class BookingService {
         return listOfAvailableSki;
     }
 
+    @SuppressWarnings("unchecked")
     public List<SkiBoots> showAllAvailableSkiBoots(Booking booking) {
         //get all ski boots
-        List<SkiBoots> listOfAvailableSkiBoots = skiBootsRepository.findAllByOrderBySize();
+        List<SkiBoots> listOfAvailableSkiBoots =
+                (List<SkiBoots>) equipmentRepository.findAllByTypeOrderByBootsSize(SKI_BOOTS);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableSkiBoots.removeIf(oneSkiBoots ->
                 oneSkiBoots.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -205,9 +188,10 @@ public class BookingService {
         return listOfAvailableSkiBoots;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Helmet> showAllAvailableHelmets(Booking booking) {
         //get all helmets
-        List<Helmet> listOfAvailableHelmets = helmetRepository.findAllByOrderBySize();
+        List<Helmet> listOfAvailableHelmets = (List<Helmet>) equipmentRepository.findAllByTypeOrderByClothesSize(HELMET);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableHelmets.removeIf(oneHelmet ->
                 oneHelmet.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -226,9 +210,10 @@ public class BookingService {
         return listOfAvailableHelmets;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Jacket> showAllAvailableJackets(Booking booking) {
         //get all jackets
-        List<Jacket> listOfAvailableJackets = jacketRepository.findAllByOrderBySize();
+        List<Jacket> listOfAvailableJackets = (List<Jacket>) equipmentRepository.findAllByTypeOrderByClothesSize(JACKET);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableJackets.removeIf(oneJacket ->
                 oneJacket.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -247,9 +232,10 @@ public class BookingService {
         return listOfAvailableJackets;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Gloves> showAllAvailableGloves(Booking booking) {
         //get all gloves
-        List<Gloves> listOfAvailableGloves = glovesRepository.findAllByOrderBySize();
+        List<Gloves> listOfAvailableGloves = (List<Gloves>) equipmentRepository.findAllByTypeOrderByClothesSize(GLOVES);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableGloves.removeIf(oneGloves ->
                 oneGloves.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -268,9 +254,10 @@ public class BookingService {
         return listOfAvailableGloves;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Pants> showAllAvailablePants(Booking booking) {
         //get all pants
-        List<Pants> listOfAvailablePants = pantsRepository.findAllByOrderBySize();
+        List<Pants> listOfAvailablePants = (List<Pants>) equipmentRepository.findAllByTypeOrderByClothesSize(PANTS);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailablePants.removeIf(onePants ->
                 onePants.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -289,9 +276,11 @@ public class BookingService {
         return listOfAvailablePants;
     }
 
+    @SuppressWarnings("unchecked")
     public List<ProtectiveShorts> showAllAvailableProtectiveShorts(Booking booking) {
         //get all protective shorts
-        List<ProtectiveShorts> listOfAvailableProtectiveShorts = protectiveShortsRepository.findAllByOrderBySize();
+        List<ProtectiveShorts> listOfAvailableProtectiveShorts =
+                (List<ProtectiveShorts>) equipmentRepository.findAllByTypeOrderByClothesSize(PROTECTIVE_SHORTS);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableProtectiveShorts.removeIf(oneProtectiveShorts ->
                 oneProtectiveShorts.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -310,9 +299,11 @@ public class BookingService {
         return listOfAvailableProtectiveShorts;
     }
 
+    @SuppressWarnings("unchecked")
     public List<KneeProtection> showAllAvailableKneeProtection(Booking booking) {
         //get all knee protection
-        List<KneeProtection> listOfAvailableKneeProtection = kneeProtectionRepository.findAllByOrderBySize();
+        List<KneeProtection> listOfAvailableKneeProtection =
+                (List<KneeProtection>) equipmentRepository.findAllByTypeOrderByClothesSize(KNEE_PROTECTION);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableKneeProtection.removeIf(oneKneeProtection ->
                 oneKneeProtection.getCondition().equals(EquipmentCondition.BROKEN) ||

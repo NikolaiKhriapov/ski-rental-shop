@@ -1,7 +1,8 @@
 package my.project.skirentalshop.controller.admin;
 
+import my.project.skirentalshop.model.Equipment;
 import my.project.skirentalshop.model.ProtectiveShorts;
-import my.project.skirentalshop.service.ProtectiveShortsService;
+import my.project.skirentalshop.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,81 +11,98 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
+import static my.project.skirentalshop.model.enums.TypesOfEquipment.PROTECTIVE_SHORTS;
+
 @Controller
 @RequestMapping("/admin/info-equipment/protective-shorts")
-public class ProtectiveShortsController {
+public class ProtectiveShortsController<T extends Equipment> {
 
-    private final ProtectiveShortsService protectiveShortsService;
+    private final EquipmentService<T> equipmentService;
+    private final String typeOfEquipment = PROTECTIVE_SHORTS.name().toLowerCase().replace('_', '-');
 
     @Autowired
-    public ProtectiveShortsController(ProtectiveShortsService protectiveShortsService) {
-        this.protectiveShortsService = protectiveShortsService;
+    public ProtectiveShortsController(EquipmentService<T> equipmentService) {
+        this.equipmentService = equipmentService;
+    }
+
+    @ModelAttribute
+    public void addToModel(Model model) {
+        model.addAttribute("typeOfEquipment", typeOfEquipment);
     }
 
     // ----- show all -----
     @GetMapping()
+    @SuppressWarnings("unchecked")
     public String showAllProtectiveShorts(Model model) {
-        model.addAttribute("allProtectiveShorts", protectiveShortsService.showAllProtectiveShorts());
-        return "admin/protective_shorts/show_all";
+        model.addAttribute("allEquipment", (List<ProtectiveShorts>) equipmentService.showAllEquipment(PROTECTIVE_SHORTS));
+        return "admin/equipment/show_all";
     }
 
     // ----- add new -----
     @GetMapping("/add-new")
     public String createNewProtectiveShorts(Model model) {
-        model.addAttribute("newProtectiveShorts", new ProtectiveShorts());
-        return "admin/protective_shorts/add_new";
+        model.addAttribute("newEquipment", new ProtectiveShorts());
+        return "admin/equipment/add_new";
     }
 
-    @PostMapping()
-    public String addNewProtectiveShortsToDB(@ModelAttribute("newProtectiveShorts") @Valid ProtectiveShorts protectiveShorts,
+    @PostMapping("/add-new")
+    @SuppressWarnings("unchecked")
+    public String addNewProtectiveShortsToDB(@ModelAttribute("newEquipment") @Valid ProtectiveShorts protectiveShorts,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/protective_shorts/add_new";
+            return "admin/equipment/add_new";
         }
-        protectiveShortsService.addNewProtectiveShortsToDB(protectiveShorts);
+        equipmentService.addNewEquipmentToDB((T) protectiveShorts, PROTECTIVE_SHORTS);
         return "redirect:/admin/info-equipment/protective-shorts";
     }
 
     // ----- edit -----
-    @GetMapping("/edit/{id}")
-    public String showOneProtectiveShorts(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("protectiveShortsToUpdate", protectiveShortsService.showOneProtectiveShortsById(id));
-        return "admin/protective_shorts/edit";
+    @GetMapping("/edit/{equipmentId}")
+    public String showOneProtectiveShorts(@PathVariable("equipmentId") Long equipmentId, Model model) {
+        model.addAttribute("equipmentToUpdate", equipmentService.showOneEquipmentById(equipmentId));
+        return "admin/equipment/edit";
     }
 
-    @PatchMapping("/edit/{id}")
-    public String updateProtectiveShorts(@PathVariable("id") Long id,
-                                         @ModelAttribute("protectiveShortsToUpdate") @Valid ProtectiveShorts updatedProtectiveShorts,
+    @PatchMapping("/edit/{equipmentId}")
+    @SuppressWarnings("unchecked")
+    public String updateProtectiveShorts(@PathVariable("equipmentId") Long equipmentId,
+                                         @ModelAttribute("equipmentToUpdate") @Valid ProtectiveShorts updatedProtectiveShorts,
                                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/protective_shorts/edit";
+            return "admin/equipment/edit";
         }
-        protectiveShortsService.updateProtectiveShortsById(id, updatedProtectiveShorts);
+        equipmentService.updateEquipmentById(equipmentId, (T) updatedProtectiveShorts, PROTECTIVE_SHORTS);
         return "redirect:/admin/info-equipment/protective-shorts";
     }
 
     // ----- delete -----
-    @DeleteMapping("/{id}")
-    public String deleteProtectiveShorts(@PathVariable("id") Long id) {
-        protectiveShortsService.deleteProtectiveShortsById(id);
+    @DeleteMapping("/{equipmentId}")
+    public String deleteProtectiveShorts(@PathVariable("equipmentId") Long equipmentId) {
+        equipmentService.deleteEquipmentById(equipmentId);
         return "redirect:/admin/info-equipment/protective-shorts";
     }
 
     // ----- search -----
     @GetMapping("/search")
+    @SuppressWarnings("unchecked")
     public String showProtectiveShortsBySearch(@RequestParam("search") String search, Model model) {
-        model.addAttribute("protectiveShortsBySearch", protectiveShortsService.showProtectiveShortsBySearch(search));
+        model.addAttribute("equipmentBySearch",
+                (List<ProtectiveShorts>) equipmentService.showEquipmentBySearch(search, PROTECTIVE_SHORTS));
         model.addAttribute("search", search);
-        return "admin/protective_shorts/search";
+        return "admin/equipment/search";
     }
 
     // ----- sort -----
     @GetMapping("/sort")
+    @SuppressWarnings("unchecked")
     public String sortAllProtectiveShortsByParameter(@RequestParam("parameter") String parameter,
                                                      @RequestParam("sortDirection") String sortDirection,
                                                      Model model) {
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("allProtectiveShorts", protectiveShortsService.sortAllProtectiveShortsByParameter(parameter, sortDirection));
-        return "admin/protective_shorts/show_all";
+        model.addAttribute("allEquipment",
+                (List<ProtectiveShorts>) equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, PROTECTIVE_SHORTS));
+        return "admin/equipment/show_all";
     }
 }

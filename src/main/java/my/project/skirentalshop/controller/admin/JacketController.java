@@ -1,7 +1,9 @@
 package my.project.skirentalshop.controller.admin;
 
+import my.project.skirentalshop.model.Equipment;
 import my.project.skirentalshop.model.Jacket;
-import my.project.skirentalshop.service.JacketService;
+import my.project.skirentalshop.model.Snowboard;
+import my.project.skirentalshop.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,82 +11,98 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
+import static my.project.skirentalshop.model.enums.TypesOfEquipment.JACKET;
 
 @Controller
 @RequestMapping("/admin/info-equipment/jacket")
-public class JacketController {
+public class JacketController<T extends Equipment> {
 
-    private final JacketService jacketService;
+    private final EquipmentService<T> equipmentService;
+    private final String typeOfEquipment = JACKET.name().toLowerCase().replace('_', '-');
 
     @Autowired
-    public JacketController(JacketService jacketService) {
-        this.jacketService = jacketService;
+    public JacketController(EquipmentService<T> equipmentService) {
+        this.equipmentService = equipmentService;
+    }
+
+    @ModelAttribute
+    public void addToModel(Model model) {
+        model.addAttribute("typeOfEquipment", typeOfEquipment);
     }
 
     // ----- show all -----
     @GetMapping()
+    @SuppressWarnings("unchecked")
     public String showAllJackets(Model model) {
-        model.addAttribute("allJackets", jacketService.showAllJackets());
-        return "admin/jacket/show_all";
+        model.addAttribute("allEquipment", (List<Jacket>) equipmentService.showAllEquipment(JACKET));
+        return "admin/equipment/show_all";
     }
 
     // ----- add new -----
     @GetMapping("/add-new")
     public String createNewJacket(Model model) {
-        model.addAttribute("newJacket", new Jacket());
-        return "admin/jacket/add_new";
+        model.addAttribute("newEquipment", new Jacket());
+        return "admin/equipment/add_new";
     }
 
-    @PostMapping()
-    public String addNewJacketToDB(@ModelAttribute("newJacket") @Valid Jacket jacket,
+    @PostMapping("/add-new")
+    @SuppressWarnings("unchecked")
+    public String addNewJacketToDB(@ModelAttribute("newEquipment") @Valid Jacket jacket,
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/jacket/add_new";
+            return "admin/equipment/add_new";
         }
-        jacketService.addNewJacketToDB(jacket);
+        equipmentService.addNewEquipmentToDB((T) jacket, JACKET);
         return "redirect:/admin/info-equipment/jacket";
     }
 
     // ----- edit -----
-    @GetMapping("/edit/{id}")
-    public String showOneJacket(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("jacketToUpdate", jacketService.showOneJacketById(id));
-        return "admin/jacket/edit";
+    @GetMapping("/edit/{equipmentId}")
+    public String showOneJacket(@PathVariable("equipmentId") Long equipmentId, Model model) {
+        model.addAttribute("equipmentToUpdate", equipmentService.showOneEquipmentById(equipmentId));
+        return "admin/equipment/edit";
     }
 
-    @PatchMapping("/edit/{id}")
-    public String updateJacket(@PathVariable("id") Long id,
-                               @ModelAttribute("jacketToUpdate") @Valid Jacket updatedJacket,
+    @PatchMapping("/edit/{equipmentId}")
+    @SuppressWarnings("unchecked")
+    public String updateJacket(@PathVariable("equipmentId") Long equipmentId,
+                               @ModelAttribute("equipmentToUpdate") @Valid Jacket updatedJacket,
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/jacket/edit";
+            return "admin/equipment/edit";
         }
-        jacketService.updateJacketById(id, updatedJacket);
+        equipmentService.updateEquipmentById(equipmentId, (T) updatedJacket, JACKET);
         return "redirect:/admin/info-equipment/jacket";
     }
 
     // ----- delete -----
-    @DeleteMapping("/{id}")
-    public String deleteJacket(@PathVariable("id") Long id) {
-        jacketService.deleteJacketById(id);
+    @DeleteMapping("/{equipmentId}")
+    public String deleteJacket(@PathVariable("equipmentId") Long equipmentId) {
+        equipmentService.deleteEquipmentById(equipmentId);
         return "redirect:/admin/info-equipment/jacket";
     }
 
     // ----- search -----
     @GetMapping("/search")
+    @SuppressWarnings("unchecked")
     public String showJacketsBySearch(@RequestParam("search") String search, Model model) {
-        model.addAttribute("jacketsBySearch", jacketService.showJacketsBySearch(search));
+        model.addAttribute("equipmentBySearch",
+                (List<Jacket>) equipmentService.showEquipmentBySearch(search, JACKET));
         model.addAttribute("search", search);
-        return "admin/jacket/search";
+        return "admin/equipment/search";
     }
 
     // ----- sort -----
     @GetMapping("/sort")
+    @SuppressWarnings("unchecked")
     public String sortAllJacketsByParameter(@RequestParam("parameter") String parameter,
                                             @RequestParam("sortDirection") String sortDirection,
                                             Model model) {
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("allJackets", jacketService.sortAllJacketsByParameter(parameter, sortDirection));
-        return "admin/jacket/show_all";
+        model.addAttribute("allJackets",
+                (List<Jacket>) equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, JACKET));
+        return "admin/equipment/show_all";
     }
 }

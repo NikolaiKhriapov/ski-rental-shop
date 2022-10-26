@@ -12,12 +12,12 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/info-booking")
-public class BookingController {
+public class BookingController<T extends Equipment> {
 
-    private final BookingService bookingService;
+    private final BookingService<T> bookingService;
 
     @Autowired
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService<T> bookingService) {
         this.bookingService = bookingService;
     }
 

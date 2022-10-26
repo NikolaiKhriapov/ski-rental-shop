@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{${typeOfEquipment + '.title'}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="dropdown-content">
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?theme=theme_1'}"
+                       th:text="#{top-nav.theme.theme-1}"/>
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?theme=theme_2'}"
+                       th:text="#{top-nav.theme.theme-2}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?lang=en'}">English</a>
+                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?lang=ru'}">Russian</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{side-bar.admin.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking/add-new" th:text="#{side-bar.admin.new-booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-booking" th:text="#{side-bar.admin.list-of-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-clients" th:text="#{side-bar.admin.list-of-clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-riders" th:text="#{side-bar.admin.list-of-riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski" th:text="#{side-bar.admin.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/pants" th:text="#{side-bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/info-equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
+        </button>
+    </div>
+
+    <div class="main-screen">
+
+        <div class="content">
+
+            <div class="new-edit">
+                <!--Header-->
+                <h1 th:text="#{${typeOfEquipment + '.header.edit'}}"/>
+
+                <!--Input parameters-->
+                <form th:method="PATCH"
+                      th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId}}"
+                      th:object="${equipmentToUpdate}">
+                    <div th:switch="${typeOfEquipment}">
+                        <table>
+                            <!-- name -->
+                            <tr>
+                                <td th:text="#{equipment.parameter.name} + ': '"/>
+                                <td>
+                                    <label for="input-name"></label>
+                                    <input id="input-name" type="text"
+                                           th:field="*{name}" th:placeholder="#{equipment.parameter.name}"/>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- condition -->
+                            <tr>
+                                <td th:text="#{equipment.parameter.condition} + ': '"/>
+                                <td>
+                                    <label for="select-condition"></label>
+                                    <select id="select-condition" name="condition">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.condition.' + i}}"
+                                                th:selected="${equipmentToUpdate.condition}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <!-- snowboardSize -->
+                            <tr th:if="${typeOfEquipment == 'snowboard'}">
+                                <td th:text="#{equipment.parameter.snowboard-size} + ': '"/>
+                                <td>
+                                    <label for="input-snowboard-size"></label>
+                                    <input id="input-snowboard-size"
+                                           type="text" th:field="*{snowboardSize}"
+                                           th:placeholder="#{equipment.parameter.snowboard-size}"/>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('snowboardSize')}" th:errors="*{snowboardSize}">
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- skiSize -->
+                            <tr th:if="${typeOfEquipment == 'ski'}">
+                                <td th:text="#{equipment.parameter.ski-size} + ': '"/>
+                                <td>
+                                    <label for="input-ski-size"></label>
+                                    <input id="input-ski-size"
+                                           type="text" th:field="*{skiSize}" th:placeholder="#{equipment.parameter.ski-size}"/>
+                                </td>
+                            </tr>
+                            <!-- bootsSize -->
+                            <tr th:if="${typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots'}">
+                                <td th:text="#{equipment.parameter.boots-size} + ': '"/>
+                                <td>
+                                    <label for="select-boots-size"></label>
+                                    <select id="select-boots-size" name="bootsSize">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.BootsSize).values}"
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.boots-size.' + i}}"
+                                                th:selected="${equipmentToUpdate.bootsSize}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <!-- clothesSize -->
+                            <tr th:if="${typeOfEquipment == 'helmet'            || typeOfEquipment == 'jacket' ||
+                                         typeOfEquipment == 'gloves'            || typeOfEquipment == 'pants'  ||
+                                         typeOfEquipment == 'protective-shorts' || typeOfEquipment == 'knee-protection'}">
+                                <td th:text="#{equipment.parameter.clothes-size} + ': '"/>
+                                <td>
+                                    <label for="select-clothes-size"></label>
+                                    <select id="select-clothes-size" name="clothesSize">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.ClothesSize).values}"
+                                                th:value="${i.name}"
+                                                th:text="${i}"
+                                                th:selected="${equipmentToUpdate.clothesSize}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <!-- stiffness -->
+                            <tr th:if="${typeOfEquipment == 'snowboard' || typeOfEquipment == 'snowboard-boots' ||
+                                         typeOfEquipment == 'ski'       || typeOfEquipment == 'ski-boots'}">
+                                <td th:text="#{equipment.parameter.stiffness} + ': '"/>
+                                <td>
+                                    <label for="select-stiffness"></label>
+                                    <select id="select-stiffness" name="stiffness">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Stiffness).values}"
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.stiffness.' + i}}"
+                                                th:selected="${equipmentToUpdate.stiffness}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <!-- arch -->
+                            <tr th:if="${typeOfEquipment == 'snowboard'}">
+                                <td th:text="#{equipment.parameter.arch} + ': '"/>
+                                <td>
+                                    <label for="select-arch"></label>
+                                    <select id="select-arch" name="arch">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Arch).values}"
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.arch.' + i}}"
+                                                th:selected="${equipmentToUpdate.arch}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <!-- bindingSize -->
+                            <tr th:if="${typeOfEquipment == 'snowboard'}">
+                                <td th:text="#{equipment.parameter.binding-size} + ': '"/>
+                                <td>
+                                    <label for="select-binding-size"></label>
+                                    <select id="select-binding-size" name="bindingSize">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.BindingSize).values}"
+                                                th:value="${i}"
+                                                th:text="${i}"
+                                                th:selected="${equipmentToUpdate.bindingSize}">
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <br>
+
+                    <input class="button" type="submit" th:value="#{equipment.button.save}"/>
+                </form>
+
+                <br>
+
+                <!-- Return to "show-all" -->
+                <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment}}">
+                    <button class="button" th:text="#{equipment.button.return}"/>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

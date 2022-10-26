@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{rider.add_new.title}"/>
+    <title th:text="#{rider.add-new.title}"/>
     <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -17,21 +17,21 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
                 <div class="dropdown-content">
-                    <a href="/client/settings" th:text="#{top_nav.settings}"/>
-                    <a href="/sign-out" th:text="#{top_nav.sign_out}"/>
+                    <a href="/client/settings" th:text="#{top-nav.settings}"/>
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.theme}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a href="/client/info-riders/add-new?theme=theme_1" th:text="#{top_nav.theme.theme_1}"/>
-                    <a href="/client/info-riders/add-new?theme=theme_2" th:text="#{top_nav.theme.theme_2}"/>
+                    <a href="/client/info-riders/add-new?theme=theme_1" th:text="#{top-nav.theme.theme-1}"/>
+                    <a href="/client/info-riders/add-new?theme=theme_2" th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top_nav.lang}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
                     <a href="/client/info-riders/add-new?lang=en">English</a>
                     <a href="/client/info-riders/add-new?lang=ru">Russian</a>
@@ -45,19 +45,19 @@
 
     <div class="sidebar">
         <button type="button">
-            <a href="/client" th:text="#{side_bar.client.home}"/>
+            <a href="/client" th:text="#{side-bar.client.home}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-booking/add-new" th:text="#{side_bar.client.new_booking}"/>
+            <a href="/client/info-booking/add-new" th:text="#{side-bar.client.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/history" th:text="#{side_bar.client.history}"/>
+            <a href="/client/history" th:text="#{side-bar.client.history}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/client/info-riders" th:text="#{side_bar.client.riders}"/>
+            <a href="/client/info-riders" th:text="#{side-bar.client.riders}"/>
         </button>
     </div>
 
@@ -66,7 +66,7 @@
         <div class="content">
             <div class="new-edit">
                 <!--Header-->
-                <h1 th:text="#{rider.add_new.header}"/>
+                <h1 th:text="#{rider.add-new.header}"/>
 
                 <!--Input parameters-->
                 <form th:method="POST"
@@ -74,18 +74,18 @@
                       th:object="${newRider}">
                     <table>
                         <tr>
-                            <td th:text="#{rider.add_new.table.header.name} + ': '"/>
+                            <td th:text="#{rider.add-new.table.header.name} + ': '"/>
                             <td>
                                 <label for="input-name"></label>
                                 <input id="input-name" type="text"
-                                       th:field="*{name}" th:placeholder="#{rider.add_new.table.header.name}"/>
+                                       th:field="*{name}" th:placeholder="#{rider.add-new.table.header.name}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{rider.add_new.table.header.sex} + ': '"/>
+                            <td th:text="#{rider.add-new.table.header.sex} + ': '"/>
                             <td>
                                 <label for="select-sex"></label>
                                 <select id="select-sex" name="sex">
@@ -97,29 +97,29 @@
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{rider.add_new.table.header.height} + ': '"/>
+                            <td th:text="#{rider.add-new.table.header.height} + ': '"/>
                             <td>
                                 <label for="input-height"></label>
                                 <input id="input-height" th:type="text" th:field="*{height}"
-                                       th:placeholder="#{rider.add_new.table.header.height}">
+                                       th:placeholder="#{rider.add-new.table.header.height}">
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('height')}" th:errors="*{height}">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{rider.add_new.table.header.weight} + ': '"/>
+                            <td th:text="#{rider.add-new.table.header.weight} + ': '"/>
                             <td>
                                 <label for="input-weight"></label>
                                 <input id="input-weight" th:type="text" th:field="*{weight}"
-                                       th:placeholder="#{rider.add_new.table.header.weight}"/>
+                                       th:placeholder="#{rider.add-new.table.header.weight}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td th:text="#{rider.add_new.table.header.foot} + ': '"/>
+                            <td th:text="#{rider.add-new.table.header.foot} + ': '"/>
                             <td>
                                 <label for="input-foot-size"></label>
                                 <select id="input-foot-size" name="footSize">
@@ -134,7 +134,7 @@
 
                     <br>
 
-                    <input class="button" type="submit" th:value="#{rider.add_new.button.create}"/>
+                    <input class="button" type="submit" th:value="#{rider.add-new.button.create}"/>
                 </form>
 
                 <br>
@@ -143,15 +143,15 @@
                 <div th:if="${bookingId != null}">
                     <form th:method="GET"
                           th:action="@{/client/info-booking/edit/{id}(id=${bookingId})}">
-                        <input class="button" type="submit" th:value="#{rider.add_new.button.go_to_order}"/>
+                        <input class="button" type="submit" th:value="#{rider.add-new.button.go-to-order}"/>
                     </form>
                 </div>
 
-                <!--Return to "client/rider/show_all"-->
+                <!--Return to "client/rider/show-all"-->
                 <div th:if="${bookingId == null}">
                     <form th:method="GET"
                           th:action="@{/client/info-riders}">
-                        <input class="button" type="submit" th:value="#{rider.add_new.button.return}"/>
+                        <input class="button" type="submit" th:value="#{rider.add-new.button.return}"/>
                     </form>
                 </div>
             </div>
@@ -159,7 +159,7 @@
 
         <div class="footer">
             <div class="text-block">
-                <div class="center" th:text="#{top_nav.contact_us}"/>
+                <div class="center" th:text="#{top-nav.contact-us}"/>
             </div>
         </div>
 

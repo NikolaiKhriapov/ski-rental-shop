@@ -1,60 +1,16 @@
 package my.project.skirentalshop.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Jacket {
-
-    enum Size {XS, S, M, L, XL}
-
-    @Id
-    @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    private Long id;
-
-    @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
-    @javax.validation.constraints.Size(message = "{validation.equipment.invalid_name.size}")
-    private String name;
-
-    private EquipmentCondition condition;
-
-    private Size size;
+public class Jacket extends Equipment {
 
     @OneToMany(mappedBy = "jacket")
     private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public Jacket() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public EquipmentCondition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(EquipmentCondition condition) {
-        this.condition = condition;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
     }
 
     @Override
@@ -65,12 +21,12 @@ public class Jacket {
         return Objects.equals(id, jacket.id) &&
                 Objects.equals(name, jacket.name) &&
                 condition == jacket.condition &&
-                size == jacket.size;
+                clothesSize == jacket.clothesSize;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, condition, size);
+        return Objects.hash(id, name, condition, clothesSize);
     }
 
     @Override
@@ -79,7 +35,7 @@ public class Jacket {
                 "id=" + id +
                 ", name='" + name +
                 ", condition=" + condition +
-                ", size=" + size +
+                ", clothesSize=" + clothesSize +
                 '}';
     }
 }

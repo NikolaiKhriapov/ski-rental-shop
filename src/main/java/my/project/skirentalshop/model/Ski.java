@@ -2,83 +2,16 @@ package my.project.skirentalshop.model;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 @Entity
-public class Ski {
-
-    enum Stiffness {
-        UNKNOWN,
-        SOFT,
-        MEDIUM,
-        HARD;
-
-        private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
-
-        public String toString() {
-            return resourceBundle.getString("ski.stiffness." + name());
-        }
-    }
-
-    @Id
-    @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    private Long id;
-
-    @NotBlank(message = "{validation.equipment.invalid_name.not_empty}")
-    @Size(message = "{validation.equipment.invalid_name.size}")
-    private String name;
-
-    private EquipmentCondition condition;
-
-    private String size;
-
-    private Stiffness stiffness;
+public class Ski extends Equipment {
 
     @OneToMany(mappedBy = "ski")
     private List<RiderAssignedEquipment> listOfRiderAssignedEquipment;
 
     public Ski() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public EquipmentCondition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(EquipmentCondition condition) {
-        this.condition = condition;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public Stiffness getStiffness() {
-        return stiffness;
-    }
-
-    public void setStiffness(Stiffness stiffness) {
-        this.stiffness = stiffness;
     }
 
     @Override
@@ -89,13 +22,13 @@ public class Ski {
         return Objects.equals(id, ski.id) &&
                 Objects.equals(name, ski.name) &&
                 condition == ski.condition &&
-                Objects.equals(size, ski.size) &&
+                Objects.equals(clothesSize, ski.clothesSize) &&
                 stiffness == ski.stiffness;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, condition, size, stiffness);
+        return Objects.hash(id, name, condition, clothesSize, stiffness);
     }
 
     @Override
@@ -104,7 +37,7 @@ public class Ski {
                 "id=" + id +
                 ", name='" + name +
                 ", condition=" + condition +
-                ", size='" + size +
+                ", clothesSize='" + clothesSize +
                 ", stiffness=" + stiffness +
                 '}';
     }
