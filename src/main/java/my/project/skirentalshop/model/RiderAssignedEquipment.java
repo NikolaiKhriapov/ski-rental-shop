@@ -3,6 +3,8 @@ package my.project.skirentalshop.model;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+
 @Entity
 public class RiderAssignedEquipment {
     @Id
@@ -12,43 +14,43 @@ public class RiderAssignedEquipment {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Snowboard snowboard;
+    private Equipment snowboard;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private SnowboardBoots snowboardBoots;
+    private Equipment snowboardBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Ski ski;
+    private Equipment ski;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private SkiBoots skiBoots;
+    private Equipment skiBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Helmet helmet;
+    private Equipment helmet;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Jacket jacket;
+    private Equipment jacket;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Gloves gloves;
+    private Equipment gloves;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private Pants pants;
+    private Equipment pants;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private ProtectiveShorts protectiveShorts;
+    private Equipment protectiveShorts;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private KneeProtection kneeProtection;
+    private Equipment kneeProtection;
 
     @OneToOne(mappedBy = "riderAssignedEquipment")
     private BookingRiderEquipmentLink bookingRiderEquipmentLink;
@@ -60,113 +62,133 @@ public class RiderAssignedEquipment {
         return id;
     }
 
-    public Snowboard getSnowboard() {
+    public Equipment getSnowboard() {
         if (snowboard == null) {
-            return new Snowboard();
+            Equipment snowboard = new Equipment();
+            snowboard.setType(SNOWBOARD);
+            return snowboard;
         }
         return snowboard;
     }
 
-    public void setSnowboard(Snowboard snowboard) {
+    public void setSnowboard(Equipment snowboard) {
         this.snowboard = snowboard;
     }
 
-    public SnowboardBoots getSnowboardBoots() {
+    public Equipment getSnowboardBoots() {
         if (snowboardBoots == null) {
-            return new SnowboardBoots();
+            Equipment snowboardBoots = new Equipment();
+            snowboardBoots.setType(SNOWBOARD_BOOTS);
+            return snowboardBoots;
         }
         return snowboardBoots;
     }
 
-    public void setSnowboardBoots(SnowboardBoots snowboardBoots) {
+    public void setSnowboardBoots(Equipment snowboardBoots) {
         this.snowboardBoots = snowboardBoots;
     }
 
-    public Ski getSki() {
+    public Equipment getSki() {
         if (ski == null) {
-            return new Ski();
+            Equipment ski = new Equipment();
+            ski.setType(SKI);
+            return ski;
         }
         return ski;
     }
 
-    public void setSki(Ski ski) {
+    public void setSki(Equipment ski) {
         this.ski = ski;
     }
 
-    public SkiBoots getSkiBoots() {
+    public Equipment getSkiBoots() {
         if (skiBoots == null) {
-            return new SkiBoots();
+            Equipment skiBoots = new Equipment();
+            skiBoots.setType(SKI_BOOTS);
+            return skiBoots;
         }
         return skiBoots;
     }
 
-    public void setSkiBoots(SkiBoots skiBoots) {
+    public void setSkiBoots(Equipment skiBoots) {
         this.skiBoots = skiBoots;
     }
 
-    public Helmet getHelmet() {
+    public Equipment getHelmet() {
         if (helmet == null) {
-            return new Helmet();
+            Equipment helmet = new Equipment();
+            helmet.setType(HELMET);
+            return helmet;
         }
         return helmet;
     }
 
-    public void setHelmet(Helmet helmet) {
+    public void setHelmet(Equipment helmet) {
         this.helmet = helmet;
     }
 
-    public Jacket getJacket() {
+    public Equipment getJacket() {
         if (jacket == null) {
-            return new Jacket();
+            Equipment jacket = new Equipment();
+            jacket.setType(JACKET);
+            return jacket;
         }
         return jacket;
     }
 
-    public void setJacket(Jacket jacket) {
+    public void setJacket(Equipment jacket) {
         this.jacket = jacket;
     }
 
-    public Gloves getGloves() {
+    public Equipment getGloves() {
         if (gloves == null) {
-            return new Gloves();
+            Equipment gloves = new Equipment();
+            gloves.setType(GLOVES);
+            return gloves;
         }
         return gloves;
     }
 
-    public void setGloves(Gloves gloves) {
+    public void setGloves(Equipment gloves) {
         this.gloves = gloves;
     }
 
-    public Pants getPants() {
+    public Equipment getPants() {
         if (pants == null) {
-            return new Pants();
+            Equipment pants = new Equipment();
+            pants.setType(PANTS);
+            return pants;
         }
         return pants;
     }
 
-    public void setPants(Pants pants) {
+    public void setPants(Equipment pants) {
         this.pants = pants;
     }
 
-    public ProtectiveShorts getProtectiveShorts() {
+    public Equipment getProtectiveShorts() {
         if (protectiveShorts == null) {
-            return new ProtectiveShorts();
+            Equipment protectiveShorts = new Equipment();
+            protectiveShorts.setType(PROTECTIVE_SHORTS);
+            return protectiveShorts;
         }
         return protectiveShorts;
     }
 
-    public void setProtectiveShorts(ProtectiveShorts protectiveShorts) {
+    public void setProtectiveShorts(Equipment protectiveShorts) {
         this.protectiveShorts = protectiveShorts;
     }
 
-    public KneeProtection getKneeProtection() {
+    public Equipment getKneeProtection() {
         if (kneeProtection == null) {
-            return new KneeProtection();
+            Equipment kneeProtection = new Equipment();
+            kneeProtection.setType(KNEE_PROTECTION);
+            return kneeProtection;
         }
         return kneeProtection;
     }
 
-    public void setKneeProtection(KneeProtection kneeProtection) {
+    public void setKneeProtection(Equipment kneeProtection) {
         this.kneeProtection = kneeProtection;
     }
 

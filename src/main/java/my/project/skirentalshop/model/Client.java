@@ -1,11 +1,17 @@
 package my.project.skirentalshop.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Client {
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
@@ -26,9 +32,6 @@ public class Client {
     @OneToMany(mappedBy = "client")
     private List<Booking> listOfBookings;
 
-    public Client() {
-    }
-
     public Client(String name, String phone1, String phone2) {
         this.name = name;
         this.phone1 = phone1;
@@ -40,68 +43,5 @@ public class Client {
         this.phone1 = phone1;
         this.phone2 = phone2;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone1() {
-        return phone1;
-    }
-
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1;
-    }
-
-    public String getPhone2() {
-        return phone2;
-    }
-
-    public void setPhone2(String phone2) {
-        this.phone2 = phone2;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return Objects.equals(id, client.id) &&
-                Objects.equals(name, client.name) &&
-                Objects.equals(phone1, client.phone1) &&
-                Objects.equals(phone2, client.phone2);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, phone1, phone2);
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name +
-                ", phone1='" + phone1 +
-                ", phone2='" + phone2 +
-                ", email='" + email +
-                '}';
     }
 }

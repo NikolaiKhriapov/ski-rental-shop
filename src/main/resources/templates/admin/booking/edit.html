@@ -240,16 +240,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} == null"
                                                             th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
-                                                            th:text="#{${'snowboard-boots.size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.snowboardBoots.id}"
-                                                            th:text="#{${'snowboard-boots.size.' + oneLink.riderAssignedEquipment.snowboardBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.snowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.snowboardBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.snowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
-                                                            th:text="#{${'snowboard-boots.size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             value="" th:disabled="false">
@@ -292,16 +292,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} == null"
                                                             th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
-                                                            th:text="#{${'ski-boots.size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.skiBoots.id}"
-                                                            th:text="#{${'ski-boots.size.' + oneLink.riderAssignedEquipment.skiBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.skiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.skiBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.skiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
-                                                            th:text="#{${'ski-boots.size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             value="" th:disabled="false">
@@ -517,6 +517,7 @@
                     </a>
                 </div>
             </div>
+
         </div>
 
     </div>

@@ -91,7 +91,7 @@
                             <td th:text="${oneBooking.client.phone2}"/>
                             <td th:text="${#dates.format(oneBooking.dateOfArrival, 'dd MMM yyyy HH:mm')}"/>
                             <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
-                            <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.clothesSize}"/>
+                            <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                             <td th:width="1">
                                 <form th:method="GET"
                                       th:action="@{/client/info-booking/edit/{id}(id=${oneBooking.id})}">

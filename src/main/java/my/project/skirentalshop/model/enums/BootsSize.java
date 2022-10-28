@@ -33,6 +33,6 @@ public enum BootsSize {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
     public String toString() {
-        return resourceBundle.getString("snowboard_boots.clothesSize." + name());
+        return resourceBundle.getString("equipment.boots-size." + name());
     }
 }

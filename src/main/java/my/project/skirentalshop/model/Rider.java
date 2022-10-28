@@ -39,7 +39,7 @@ public class Rider {
 
         @Override
         public String toString() {
-            return resourceBundle.getString("rider.clothesSize." + name());
+            return resourceBundle.getString("rider.size." + name());
         }
     }
 

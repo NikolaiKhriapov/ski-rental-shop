@@ -160,11 +160,11 @@
                         <tr>
                             <td th:text="#{rider.add-new.table.header.foot} + ': '"/>
                             <td>
-                                <label for="select-foot-clothesSize"></label>
-                                <select id="select-foot-clothesSize" name="footSize">
+                                <label for="select-foot-size"></label>
+                                <select id="select-foot-size" name="footSize">
                                     <option th:each="i : ${T(my.project.skirentalshop.model.Rider.Size).values}"
                                             th:value="${i.name}"
-                                            th:text="#{${'rider.clothesSize.' + i}}">
+                                            th:text="#{${'rider.size.' + i}}">
                                     </option>
                                 </select>
                             </td>

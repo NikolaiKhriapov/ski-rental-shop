@@ -11,6 +11,6 @@ public enum Stiffness {
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
     public String toString() {
-        return resourceBundle.getString("snowboard.stiffness." + name());
+        return resourceBundle.getString("equipment.stiffness." + name());
     }
 }

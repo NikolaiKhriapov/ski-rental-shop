@@ -2,7 +2,11 @@ package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.*;
 import my.project.skirentalshop.model.enums.EquipmentCondition;
-import my.project.skirentalshop.repository.*;
+import my.project.skirentalshop.model.enums.TypesOfEquipment;
+import my.project.skirentalshop.repository.BookingRepository;
+import my.project.skirentalshop.repository.BookingRiderEquipmentLinkRepository;
+import my.project.skirentalshop.repository.EquipmentRepository;
+import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
@@ -16,15 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
-
 @Service
-public class BookingService<T extends Equipment> {
+public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository;
     private final RiderRepository riderRepository;
-    private final EquipmentRepository<T> equipmentRepository;
+    private final EquipmentRepository equipmentRepository;
 
     private final ApplicationUserService applicationUserService;
     private final ClientService clientService;
@@ -33,7 +35,7 @@ public class BookingService<T extends Equipment> {
     public BookingService(BookingRepository bookingRepository,
                           BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository,
                           RiderRepository riderRepository,
-                          EquipmentRepository<T> equipmentRepository,
+                          EquipmentRepository equipmentRepository,
                           ApplicationUserService applicationUserService,
                           ClientService clientService) {
         this.bookingRepository = bookingRepository;
@@ -97,229 +99,54 @@ public class BookingService<T extends Equipment> {
                 (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Snowboard> showAllAvailableSnowboards(Booking booking) {
-        //get all snowboards
-        List<Snowboard> listOfAvailableSnowboards =
-                (List<Snowboard>) equipmentRepository.findAllByTypeOrderBySnowboardSize(SNOWBOARD);
+    public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
+        //get all equipment by type
+        List<Equipment> listOfAvailableEquipment =
+                findAllByTypeOrderByEquipmentSize(typeOfEquipment);
         //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableSnowboards.removeIf(oneSnowboard ->
-                oneSnowboard.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneSnowboard.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneSnowboard.getCondition().equals(EquipmentCondition.UNKNOWN));
+        listOfAvailableEquipment.removeIf(oneEquipment ->
+                oneEquipment.getCondition().equals(EquipmentCondition.BROKEN) ||
+                        oneEquipment.getCondition().equals(EquipmentCondition.SERVICE) ||
+                        oneEquipment.getCondition().equals(EquipmentCondition.UNKNOWN));
         //remove already assigned equipment
         for (Booking oneBooking : showAllBookings()) {
             if (checkIfBookingsOverlap(booking, oneBooking)) {
                 for (Rider rider : getListOfRiders(oneBooking.getId())) {
                     BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Snowboard snowboardToRemove = link.getRiderAssignedEquipment().getSnowboard();
-                    listOfAvailableSnowboards.remove(snowboardToRemove);
+                    switch (typeOfEquipment) {
+                        case SNOWBOARD -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboard());
+                        case SNOWBOARD_BOOTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboardBoots());
+                        case SKI -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSki());
+                        case SKI_BOOTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSkiBoots());
+                        case HELMET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getHelmet());
+                        case JACKET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getJacket());
+                        case GLOVES -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getGloves());
+                        case PANTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getPants());
+                        case PROTECTIVE_SHORTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getProtectiveShorts());
+                        case KNEE_PROTECTION -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getKneeProtection());
+                    }
                 }
             }
         }
-        return listOfAvailableSnowboards;
+        return listOfAvailableEquipment;
     }
 
-    @SuppressWarnings("unchecked")
-    public List<SnowboardBoots> showAllAvailableSnowboardBoots(Booking booking) {
-        //get all snowboard boots
-        List<SnowboardBoots> listOfAvailableSnowboardBoots =
-                (List<SnowboardBoots>) equipmentRepository.findAllByTypeOrderByBootsSize(SNOWBOARD_BOOTS);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableSnowboardBoots.removeIf(oneSnowboardBoots ->
-                oneSnowboardBoots.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneSnowboardBoots.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneSnowboardBoots.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    SnowboardBoots snowboardBootsToRemove = link.getRiderAssignedEquipment().getSnowboardBoots();
-                    listOfAvailableSnowboardBoots.remove(snowboardBootsToRemove);
-                }
+    public List<Equipment> findAllByTypeOrderByEquipmentSize(TypesOfEquipment typeOfEquipment) {
+        switch (typeOfEquipment) {
+            case SNOWBOARD -> {
+                return equipmentRepository.findAllByTypeOrderBySnowboardSize(typeOfEquipment);
             }
-        }
-        return listOfAvailableSnowboardBoots;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Ski> showAllAvailableSki(Booking booking) {
-        //get all ski
-        List<Ski> listOfAvailableSki = (List<Ski>) equipmentRepository.findAllByTypeOrderBySkiSize(SKI);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableSki.removeIf(oneSki ->
-                oneSki.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneSki.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneSki.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Ski skiToRemove = link.getRiderAssignedEquipment().getSki();
-                    listOfAvailableSki.remove(skiToRemove);
-                }
+            case SKI -> {
+                return equipmentRepository.findAllByTypeOrderBySkiSize(typeOfEquipment);
             }
-        }
-        return listOfAvailableSki;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<SkiBoots> showAllAvailableSkiBoots(Booking booking) {
-        //get all ski boots
-        List<SkiBoots> listOfAvailableSkiBoots =
-                (List<SkiBoots>) equipmentRepository.findAllByTypeOrderByBootsSize(SKI_BOOTS);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableSkiBoots.removeIf(oneSkiBoots ->
-                oneSkiBoots.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneSkiBoots.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneSkiBoots.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    SkiBoots skiBootsToRemove = link.getRiderAssignedEquipment().getSkiBoots();
-                    listOfAvailableSkiBoots.remove(skiBootsToRemove);
-                }
+            case SNOWBOARD_BOOTS, SKI_BOOTS -> {
+                return equipmentRepository.findAllByTypeOrderByBootsSize(typeOfEquipment);
             }
-        }
-        return listOfAvailableSkiBoots;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Helmet> showAllAvailableHelmets(Booking booking) {
-        //get all helmets
-        List<Helmet> listOfAvailableHelmets = (List<Helmet>) equipmentRepository.findAllByTypeOrderByClothesSize(HELMET);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableHelmets.removeIf(oneHelmet ->
-                oneHelmet.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneHelmet.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneHelmet.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Helmet helmetToRemove = link.getRiderAssignedEquipment().getHelmet();
-                    listOfAvailableHelmets.remove(helmetToRemove);
-                }
+            case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION -> {
+                return equipmentRepository.findAllByTypeOrderByClothesSize(typeOfEquipment);
             }
+            default -> throw new IllegalArgumentException("Equipment " + typeOfEquipment + " not found!");
         }
-        return listOfAvailableHelmets;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Jacket> showAllAvailableJackets(Booking booking) {
-        //get all jackets
-        List<Jacket> listOfAvailableJackets = (List<Jacket>) equipmentRepository.findAllByTypeOrderByClothesSize(JACKET);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableJackets.removeIf(oneJacket ->
-                oneJacket.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneJacket.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneJacket.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Jacket jacketToRemove = link.getRiderAssignedEquipment().getJacket();
-                    listOfAvailableJackets.remove(jacketToRemove);
-                }
-            }
-        }
-        return listOfAvailableJackets;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Gloves> showAllAvailableGloves(Booking booking) {
-        //get all gloves
-        List<Gloves> listOfAvailableGloves = (List<Gloves>) equipmentRepository.findAllByTypeOrderByClothesSize(GLOVES);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableGloves.removeIf(oneGloves ->
-                oneGloves.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneGloves.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneGloves.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Gloves glovesToRemove = link.getRiderAssignedEquipment().getGloves();
-                    listOfAvailableGloves.remove(glovesToRemove);
-                }
-            }
-        }
-        return listOfAvailableGloves;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Pants> showAllAvailablePants(Booking booking) {
-        //get all pants
-        List<Pants> listOfAvailablePants = (List<Pants>) equipmentRepository.findAllByTypeOrderByClothesSize(PANTS);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailablePants.removeIf(onePants ->
-                onePants.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        onePants.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        onePants.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    Pants pantsToRemove = link.getRiderAssignedEquipment().getPants();
-                    listOfAvailablePants.remove(pantsToRemove);
-                }
-            }
-        }
-        return listOfAvailablePants;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<ProtectiveShorts> showAllAvailableProtectiveShorts(Booking booking) {
-        //get all protective shorts
-        List<ProtectiveShorts> listOfAvailableProtectiveShorts =
-                (List<ProtectiveShorts>) equipmentRepository.findAllByTypeOrderByClothesSize(PROTECTIVE_SHORTS);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableProtectiveShorts.removeIf(oneProtectiveShorts ->
-                oneProtectiveShorts.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneProtectiveShorts.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneProtectiveShorts.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    ProtectiveShorts protectiveShortsToRemove = link.getRiderAssignedEquipment().getProtectiveShorts();
-                    listOfAvailableProtectiveShorts.remove(protectiveShortsToRemove);
-                }
-            }
-        }
-        return listOfAvailableProtectiveShorts;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<KneeProtection> showAllAvailableKneeProtection(Booking booking) {
-        //get all knee protection
-        List<KneeProtection> listOfAvailableKneeProtection =
-                (List<KneeProtection>) equipmentRepository.findAllByTypeOrderByClothesSize(KNEE_PROTECTION);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableKneeProtection.removeIf(oneKneeProtection ->
-                oneKneeProtection.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneKneeProtection.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneKneeProtection.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
-                    KneeProtection kneeProtectionToRemove = link.getRiderAssignedEquipment().getKneeProtection();
-                    listOfAvailableKneeProtection.remove(kneeProtectionToRemove);
-                }
-            }
-        }
-        return listOfAvailableKneeProtection;
     }
 
     public List<Rider> getListOfRiders(Long bookingId) {

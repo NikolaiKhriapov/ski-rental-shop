@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+
 @Controller
 @RequestMapping("/admin/info-booking")
-public class BookingController<T extends Equipment> {
+public class BookingController {
 
-    private final BookingService<T> bookingService;
+    private final BookingService bookingService;
 
     @Autowired
-    public BookingController(BookingService<T> bookingService) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
@@ -55,16 +57,16 @@ public class BookingController<T extends Equipment> {
         model.addAttribute("allAvailableRidersForClient",
                 bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
 
-        model.addAttribute("allAvailableSnowboards", bookingService.showAllAvailableSnowboards(bookingToBeUpdated));
-        model.addAttribute("allAvailableSnowboardBoots", bookingService.showAllAvailableSnowboardBoots(bookingToBeUpdated));
-        model.addAttribute("allAvailableSki", bookingService.showAllAvailableSki(bookingToBeUpdated));
-        model.addAttribute("allAvailableSkiBoots", bookingService.showAllAvailableSkiBoots(bookingToBeUpdated));
-        model.addAttribute("allAvailableJackets", bookingService.showAllAvailableJackets(bookingToBeUpdated));
-        model.addAttribute("allAvailableKneeProtection", bookingService.showAllAvailableKneeProtection(bookingToBeUpdated));
-        model.addAttribute("allAvailableProtectiveShorts", bookingService.showAllAvailableProtectiveShorts(bookingToBeUpdated));
-        model.addAttribute("allAvailableGloves", bookingService.showAllAvailableGloves(bookingToBeUpdated));
-        model.addAttribute("allAvailablePants", bookingService.showAllAvailablePants(bookingToBeUpdated));
-        model.addAttribute("allAvailableHelmets", bookingService.showAllAvailableHelmets(bookingToBeUpdated));
+        model.addAttribute("allAvailableSnowboards", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SNOWBOARD));
+        model.addAttribute("allAvailableSnowboardBoots", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SNOWBOARD_BOOTS));
+        model.addAttribute("allAvailableSki", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SKI));
+        model.addAttribute("allAvailableSkiBoots", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SKI_BOOTS));
+        model.addAttribute("allAvailableHelmets", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, HELMET));
+        model.addAttribute("allAvailableJackets", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, JACKET));
+        model.addAttribute("allAvailableGloves", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, GLOVES));
+        model.addAttribute("allAvailablePants", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PANTS));
+        model.addAttribute("allAvailableProtectiveShorts", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PROTECTIVE_SHORTS));
+        model.addAttribute("allAvailableKneeProtection", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, KNEE_PROTECTION));
         return "admin/booking/edit";
     }
 

@@ -143,7 +143,7 @@
 
                 <!--Edit list of riders-->
                 <div class="booking-edit-rider">
-                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.clothesSize > 0}">
+                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
                             <tr th:each="oneLink : ${bookingToBeUpdated.listOfBookingRiderEquipmentLinks}">
                                 <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
@@ -152,7 +152,7 @@
                                     <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneLink.rider.sex}}"/>
                                     <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneLink.rider.height}"/>
                                     <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneLink.rider.weight}"/>
-                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.clothesSize.' + oneLink.rider.footSize}}"/>
+                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneLink.rider.footSize}}"/>
                                 </td>
                                 <td th:align="left">
                                     <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
@@ -172,7 +172,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.clothesSize <= 0}"
+                    <div th:if="${bookingToBeUpdated.listOfBookingRiderEquipmentLinks.size <= 0}"
                          th:text="#{booking.edit.table.empty}">
                     </div>
                 </div>
@@ -180,7 +180,7 @@
                 <br>
 
                 <!--Add existing Rider to Booking-->
-                <div th:if="${allAvailableRidersForClient.clothesSize > 0}">
+                <div th:if="${allAvailableRidersForClient.size > 0}">
                     <form th:method="PATCH"
                           th:action="@{/client/info-booking/edit/add-existing-rider/{bookingId}(bookingId=${bookingId})}"
                           th:object="${existingRiderToBeAddedId}">

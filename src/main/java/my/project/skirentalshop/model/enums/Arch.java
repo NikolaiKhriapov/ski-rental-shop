@@ -12,6 +12,6 @@ public enum Arch {
 
     @Override
     public String toString() {
-        return resourceBundle.getString("snowboard.arch." + name());
+        return resourceBundle.getString("equipment.arch." + name());
     }
 }
