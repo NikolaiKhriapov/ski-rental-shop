@@ -56,8 +56,7 @@ public class EquipmentController {
 
     // ----- edit -----
     @GetMapping("/edit/{equipmentId}")
-    public String showOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                   @PathVariable("equipmentId") Long equipmentId, Model model) {
+    public String showOneEquipment(@PathVariable("equipmentId") Long equipmentId, Model model) {
         model.addAttribute("equipmentToUpdate", equipmentService.showOneEquipmentById(equipmentId));
         return "admin/equipment/edit";
     }

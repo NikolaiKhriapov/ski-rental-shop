@@ -135,9 +135,9 @@
                                     <label for="select-condition"></label>
                                     <select id="select-condition" name="condition">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
-                                                th:value="${i.name}"
+                                                th:value="${i}"
                                                 th:text="#{${'equipment.condition.' + i}}"
-                                                th:selected="${equipmentToUpdate.condition}">
+                                                th:selected="${equipmentToUpdate.condition.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
@@ -170,9 +170,9 @@
                                     <label for="select-boots-size"></label>
                                     <select id="select-boots-size" name="size">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.BootsSize).values}"
-                                                th:value="${i.name}"
+                                                th:value="${i}"
                                                 th:text="#{${'equipment.boots-size.' + i}}"
-                                                th:selected="${equipmentToUpdate.size}">
+                                                th:selected="${equipmentToUpdate.size.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
@@ -185,9 +185,9 @@
                                     <label for="select-clothes-size"></label>
                                     <select id="select-clothes-size" name="size">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.ClothesSize).values}"
-                                                th:value="${i.name}"
+                                                th:value="${i}"
                                                 th:text="${i}"
-                                                th:selected="${equipmentToUpdate.size}">
+                                                th:selected="${equipmentToUpdate.size.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
@@ -200,9 +200,9 @@
                                     <label for="select-stiffness"></label>
                                     <select id="select-stiffness" name="stiffness">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.Stiffness).values}"
-                                                th:value="${i.name}"
+                                                th:value="${i}"
                                                 th:text="#{${'equipment.stiffness.' + i}}"
-                                                th:selected="${equipmentToUpdate.stiffness}">
+                                                th:selected="${equipmentToUpdate.stiffness.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
@@ -214,9 +214,9 @@
                                     <label for="select-arch"></label>
                                     <select id="select-arch" name="arch">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.Arch).values}"
-                                                th:value="${i.name}"
+                                                th:value="${i}"
                                                 th:text="#{${'equipment.arch.' + i}}"
-                                                th:selected="${equipmentToUpdate.arch}">
+                                                th:selected="${equipmentToUpdate.arch.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
@@ -230,7 +230,7 @@
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.BindingSize).values}"
                                                 th:value="${i}"
                                                 th:text="${i}"
-                                                th:selected="${equipmentToUpdate.bindingSize}">
+                                                th:selected="${equipmentToUpdate.bindingSize.toString == i.toString}">
                                         </option>
                                     </select>
                                 </td>
