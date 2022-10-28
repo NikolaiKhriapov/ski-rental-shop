@@ -1,10 +1,17 @@
 package my.project.skirentalshop.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.*;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Rider {
 
     enum Size {
@@ -65,9 +72,9 @@ public class Rider {
 
     private Sex sex;
 
+    @NotNull(message = "{validation.rider.height}")
     @DecimalMin(value = "60", message = "{validation.rider.height}")
     @DecimalMax(value = "220", message = "{validation.rider.height}")
-    @NotNull(message = "{validation.rider.height}")
     private Double height; //TODO: handle java.lang.NumberFormatException
 
     @NotNull(message = "{validation.rider.weight}")
@@ -79,81 +86,4 @@ public class Rider {
 
     @OneToMany(mappedBy = "rider")
     private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
-
-    public Rider() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public Size getFootSize() {
-        return footSize;
-    }
-
-    public void setFootSize(Size footSize) {
-        this.footSize = footSize;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Rider rider = (Rider) o;
-        return Objects.equals(id, rider.id) &&
-                Objects.equals(name, rider.name) &&
-                sex == rider.sex &&
-                Objects.equals(height, rider.height) &&
-                Objects.equals(weight, rider.weight) &&
-                footSize == rider.footSize;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, sex, height, weight, footSize);
-    }
-
-    @Override
-    public String toString() {
-        return "Rider{" +
-                "id=" + id +
-                ", name='" + name +
-                ", sex=" + sex +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", footSize=" + footSize +
-                '}';
-    }
 }

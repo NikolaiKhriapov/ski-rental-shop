@@ -13,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class Client {
+
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
