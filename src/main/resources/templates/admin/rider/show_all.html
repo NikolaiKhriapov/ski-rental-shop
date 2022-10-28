@@ -143,7 +143,7 @@
                         <td th:text="${oneRider.height}"/>
                         <td th:text="${oneRider.weight}"/>
                         <td th:text="#{${'rider.sex.' + oneRider.sex}}"/>
-                        <td th:text="#{${'rider.size.' + oneRider.footSize}}"/>
+                        <td th:text="#{${'rider.clothesSize.' + oneRider.footSize}}"/>
                         <td th:width="1">
                             <a th:href="@{'/admin/info-riders/edit?riderId=' + ${oneRider.id}}">
                                 <button class="button" th:text="#{rider.show-all.table.button.edit}"/>

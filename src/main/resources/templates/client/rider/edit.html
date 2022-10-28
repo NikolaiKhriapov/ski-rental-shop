@@ -125,11 +125,11 @@
                         <tr>
                             <td th:text="#{rider.edit.foot} + ': '"/>
                             <td>
-                                <label for="select-foot-size"></label>
-                                <select id="select-foot-size" th:field="*{footSize}">
+                                <label for="select-foot-clothesSize"></label>
+                                <select id="select-foot-clothesSize" th:field="*{footSize}">
                                     <option th:each="i : ${T(my.project.skirentalshop.model.Rider.Size).values}"
                                             th:value="${i.name}"
-                                            th:text="#{${'rider.size.' + i}}"
+                                            th:text="#{${'rider.clothesSize.' + i}}"
                                             th:selected="${riderToUpdate.footSize}">
                                     </option>
                                 </select>
