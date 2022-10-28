@@ -42,27 +42,21 @@ public class EquipmentService {
             case SNOWBOARD -> {
                 equipmentToBeUpdated.setName(updatedEquipment.getName());
                 equipmentToBeUpdated.setCondition(updatedEquipment.getCondition());
-                equipmentToBeUpdated.setSnowboardSize(updatedEquipment.getSnowboardSize());
+                equipmentToBeUpdated.setSize(updatedEquipment.getSize());
                 equipmentToBeUpdated.setStiffness(updatedEquipment.getStiffness());
                 equipmentToBeUpdated.setArch(updatedEquipment.getArch());
                 equipmentToBeUpdated.setBindingSize(updatedEquipment.getBindingSize());
             }
-            case SNOWBOARD_BOOTS, SKI_BOOTS -> {
+            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> {
                 equipmentToBeUpdated.setName(updatedEquipment.getName());
                 equipmentToBeUpdated.setCondition(updatedEquipment.getCondition());
-                equipmentToBeUpdated.setBootsSize(updatedEquipment.getBootsSize());
+                equipmentToBeUpdated.setSize(updatedEquipment.getSize());
                 equipmentToBeUpdated.setStiffness(updatedEquipment.getStiffness());
-            }
-            case SKI -> {
-                equipmentToBeUpdated.setName(updatedEquipment.getName());
-                equipmentToBeUpdated.setSkiSize(updatedEquipment.getSkiSize());
-                equipmentToBeUpdated.setStiffness(updatedEquipment.getStiffness());
-                equipmentToBeUpdated.setCondition(updatedEquipment.getCondition());
             }
             case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION -> {
                 equipmentToBeUpdated.setName(updatedEquipment.getName());
-                equipmentToBeUpdated.setClothesSize(updatedEquipment.getClothesSize());
                 equipmentToBeUpdated.setCondition(updatedEquipment.getCondition());
+                equipmentToBeUpdated.setSize(updatedEquipment.getSize());
             }
         }
         equipmentRepository.save(equipmentToBeUpdated);

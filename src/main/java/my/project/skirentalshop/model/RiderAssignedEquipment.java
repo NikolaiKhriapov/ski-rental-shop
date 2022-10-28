@@ -8,7 +8,7 @@ import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
+//@Getter
 @Setter
 @EqualsAndHashCode
 @ToString

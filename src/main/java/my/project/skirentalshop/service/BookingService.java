@@ -101,8 +101,7 @@ public class BookingService {
 
     public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
         //get all equipment by type
-        List<Equipment> listOfAvailableEquipment =
-                findAllByTypeOrderByEquipmentSize(typeOfEquipment);
+        List<Equipment> listOfAvailableEquipment = equipmentRepository.findAllByTypeOrderBySize(typeOfEquipment);
         //remove equipment that is broken, in service, or otherwise not ready
         listOfAvailableEquipment.removeIf(oneEquipment ->
                 oneEquipment.getCondition().equals(EquipmentCondition.BROKEN) ||
@@ -129,24 +128,6 @@ public class BookingService {
             }
         }
         return listOfAvailableEquipment;
-    }
-
-    public List<Equipment> findAllByTypeOrderByEquipmentSize(TypesOfEquipment typeOfEquipment) {
-        switch (typeOfEquipment) {
-            case SNOWBOARD -> {
-                return equipmentRepository.findAllByTypeOrderBySnowboardSize(typeOfEquipment);
-            }
-            case SKI -> {
-                return equipmentRepository.findAllByTypeOrderBySkiSize(typeOfEquipment);
-            }
-            case SNOWBOARD_BOOTS, SKI_BOOTS -> {
-                return equipmentRepository.findAllByTypeOrderByBootsSize(typeOfEquipment);
-            }
-            case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION -> {
-                return equipmentRepository.findAllByTypeOrderByClothesSize(typeOfEquipment);
-            }
-            default -> throw new IllegalArgumentException("Equipment " + typeOfEquipment + " not found!");
-        }
     }
 
     public List<Rider> getListOfRiders(Long bookingId) {

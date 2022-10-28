@@ -189,21 +189,21 @@
                         <!-- snowboardSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      typeOfEquipment == 'snowboard'}"
-                            th:text="${oneEquipment.snowboardSize}"/>
+                            th:text="${oneEquipment.size}"/>
                         <!-- skiSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      typeOfEquipment == 'ski'}"
-                            th:text="${oneEquipment.skiSize}"/>
+                            th:text="${oneEquipment.size}"/>
                         <!-- bootsSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      (typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots')}"
-                            th:text="#{${'equipment.boots-size.' + oneEquipment.bootsSize}}"/>
+                            th:text="#{${'equipment.boots-size.' + oneEquipment.size}}"/>
                         <!-- clothesSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      (typeOfEquipment == 'helmet'            || typeOfEquipment == 'jacket' ||
                                       typeOfEquipment == 'gloves'            || typeOfEquipment == 'pants'  ||
                                       typeOfEquipment == 'protective-shorts' || typeOfEquipment == 'knee-protection')}"
-                            th:text="${oneEquipment.clothesSize}"/>
+                            th:text="${oneEquipment.size}"/>
                         <!-- stiffness -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      (typeOfEquipment == 'snowboard' || typeOfEquipment == 'snowboard-boots' ||

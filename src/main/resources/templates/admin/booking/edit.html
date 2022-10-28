@@ -213,16 +213,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} == null"
                                                             th:each="oneSnowboard : ${allAvailableSnowboards}"
                                                             th:value="${oneSnowboard.id}"
-                                                            th:text="${oneSnowboard.snowboardSize} + ' ' + ${oneSnowboard.name}">
+                                                            th:text="${oneSnowboard.size} + ' ' + ${oneSnowboard.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.snowboard.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.snowboard.snowboardSize} + ' ' + ${oneLink.riderAssignedEquipment.snowboard.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.snowboard.size} + ' ' + ${oneLink.riderAssignedEquipment.snowboard.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
                                                             th:each="oneSnowboard : ${allAvailableSnowboards}"
                                                             th:value="${oneSnowboard.id}"
-                                                            th:text="${oneSnowboard.snowboardSize} + ' ' + ${oneSnowboard.name}">
+                                                            th:text="${oneSnowboard.size} + ' ' + ${oneSnowboard.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboard.id} != null"
                                                             value="" th:disabled="false">
@@ -240,16 +240,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} == null"
                                                             th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.size}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.snowboardBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.snowboardBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.snowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.snowboardBoots.size}} + ' ' + ${oneLink.riderAssignedEquipment.snowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             th:each="oneSnowboardBoots : ${allAvailableSnowboardBoots}"
                                                             th:value="${oneSnowboardBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.bootsSize}} + ' ' + ${oneSnowboardBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSnowboardBoots.size}} + ' ' + ${oneSnowboardBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.snowboardBoots.id} != null"
                                                             value="" th:disabled="false">
@@ -266,16 +266,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.ski.id} == null"
                                                             th:each="oneSki : ${allAvailableSki}"
                                                             th:value="${oneSki.id}"
-                                                            th:text="${oneSki.skiSize} + ' ' + ${oneSki.name}">
+                                                            th:text="${oneSki.size} + ' ' + ${oneSki.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.ski.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.ski.skiSize} + ' ' + ${oneLink.riderAssignedEquipment.ski.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.ski.size} + ' ' + ${oneLink.riderAssignedEquipment.ski.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
                                                             th:each="oneSki : ${allAvailableSki}"
                                                             th:value="${oneSki.id}"
-                                                            th:text="${oneSki.skiSize} + ', ' + ${oneSki.name}">
+                                                            th:text="${oneSki.size} + ', ' + ${oneSki.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.ski.id} != null"
                                                             value="" th:disabled="false">
@@ -292,16 +292,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} == null"
                                                             th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.size}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.skiBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.skiBoots.bootsSize}} + ' ' + ${oneLink.riderAssignedEquipment.skiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneLink.riderAssignedEquipment.skiBoots.size}} + ' ' + ${oneLink.riderAssignedEquipment.skiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             th:each="oneSkiBoots : ${allAvailableSkiBoots}"
                                                             th:value="${oneSkiBoots.id}"
-                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.bootsSize}} + ' ' + ${oneSkiBoots.name}">
+                                                            th:text="#{${'equipment.boots-size.' + oneSkiBoots.size}} + ' ' + ${oneSkiBoots.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.skiBoots.id} != null"
                                                             value="" th:disabled="false">
@@ -318,16 +318,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.jacket.id} == null"
                                                             th:each="oneJacket : ${allAvailableJackets}"
                                                             th:value="${oneJacket.id}"
-                                                            th:text="${oneJacket.clothesSize} + ' ' + ${oneJacket.name}">
+                                                            th:text="${oneJacket.size} + ' ' + ${oneJacket.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.jacket.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.jacket.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.jacket.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.jacket.size} + ' ' + ${oneLink.riderAssignedEquipment.jacket.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
                                                             th:each="oneJacket : ${allAvailableJackets}"
                                                             th:value="${oneJacket.id}"
-                                                            th:text="${oneJacket.clothesSize} + ' ' + ${oneJacket.name}">
+                                                            th:text="${oneJacket.size} + ' ' + ${oneJacket.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.jacket.id} != null"
                                                             value="" th:disabled="false">
@@ -345,16 +345,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} == null"
                                                             th:each="oneKneeProtection : ${allAvailableKneeProtection}"
                                                             th:value="${oneKneeProtection.id}"
-                                                            th:text="${oneKneeProtection.clothesSize} + ' ' + ${oneKneeProtection.name}">
+                                                            th:text="${oneKneeProtection.size} + ' ' + ${oneKneeProtection.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.kneeProtection.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.kneeProtection.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.kneeProtection.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.kneeProtection.size} + ' ' + ${oneLink.riderAssignedEquipment.kneeProtection.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
                                                             th:each="oneKneeProtection : ${allAvailableKneeProtection}"
                                                             th:value="${oneKneeProtection.id}"
-                                                            th:text="${oneKneeProtection.clothesSize} + ' ' + ${oneKneeProtection.name}">
+                                                            th:text="${oneKneeProtection.size} + ' ' + ${oneKneeProtection.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.kneeProtection.id} != null"
                                                             value="" th:disabled="false">
@@ -372,16 +372,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} == null"
                                                             th:each="oneProtectiveShorts : ${allAvailableProtectiveShorts}"
                                                             th:value="${oneProtectiveShorts.id}"
-                                                            th:text="${oneProtectiveShorts.clothesSize} + ' ' + ${oneProtectiveShorts.name}">
+                                                            th:text="${oneProtectiveShorts.size} + ' ' + ${oneProtectiveShorts.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.protectiveShorts.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.protectiveShorts.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.protectiveShorts.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.protectiveShorts.size} + ' ' + ${oneLink.riderAssignedEquipment.protectiveShorts.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
                                                             th:each="oneProtectiveShorts : ${allAvailableProtectiveShorts}"
                                                             th:value="${oneProtectiveShorts.id}"
-                                                            th:text="${oneProtectiveShorts.clothesSize} + ' ' + ${oneProtectiveShorts.name}">
+                                                            th:text="${oneProtectiveShorts.size} + ' ' + ${oneProtectiveShorts.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.protectiveShorts.id} != null"
                                                             value="" th:disabled="false">
@@ -398,16 +398,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.helmet.id} == null"
                                                             th:each="oneHelmet : ${allAvailableHelmets}"
                                                             th:value="${oneHelmet.id}"
-                                                            th:text="${oneHelmet.clothesSize} + ' ' + ${oneHelmet.name}">
+                                                            th:text="${oneHelmet.size} + ' ' + ${oneHelmet.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.helmet.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.helmet.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.helmet.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.helmet.size} + ' ' + ${oneLink.riderAssignedEquipment.helmet.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
                                                             th:each="oneHelmet : ${allAvailableHelmets}"
                                                             th:value="${oneHelmet.id}"
-                                                            th:text="${oneHelmet.clothesSize} + ' ' + ${oneHelmet.name}">
+                                                            th:text="${oneHelmet.size} + ' ' + ${oneHelmet.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.helmet.id} != null"
                                                             value="" th:disabled="false">
@@ -424,16 +424,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.gloves.id} == null"
                                                             th:each="oneGloves : ${allAvailableGloves}"
                                                             th:value="${oneGloves.id}"
-                                                            th:text="${oneGloves.clothesSize} + ' ' + ${oneGloves.name}">
+                                                            th:text="${oneGloves.size} + ' ' + ${oneGloves.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.gloves.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.gloves.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.gloves.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.gloves.size} + ' ' + ${oneLink.riderAssignedEquipment.gloves.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
                                                             th:each="oneGloves : ${allAvailableGloves}"
                                                             th:value="${oneGloves.id}"
-                                                            th:text="${oneGloves.clothesSize} + ' ' + ${oneGloves.name}">
+                                                            th:text="${oneGloves.size} + ' ' + ${oneGloves.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.gloves.id} != null"
                                                             value="" th:disabled="false">
@@ -450,16 +450,16 @@
                                                     <option th:if="${oneLink.riderAssignedEquipment.pants.id} == null"
                                                             th:each="onePants : ${allAvailablePants}"
                                                             th:value="${onePants.id}"
-                                                            th:text="${onePants.clothesSize} + ' ' + ${onePants.name}">
+                                                            th:text="${onePants.size} + ' ' + ${onePants.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
                                                             th:value="${oneLink.riderAssignedEquipment.pants.id}"
-                                                            th:text="${oneLink.riderAssignedEquipment.pants.clothesSize} + ' ' + ${oneLink.riderAssignedEquipment.pants.name}">
+                                                            th:text="${oneLink.riderAssignedEquipment.pants.size} + ' ' + ${oneLink.riderAssignedEquipment.pants.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
                                                             th:each="onePants : ${allAvailablePants}"
                                                             th:value="${onePants.id}"
-                                                            th:text="${onePants.clothesSize} + ' ' + ${onePants.name}">
+                                                            th:text="${onePants.size} + ' ' + ${onePants.name}">
                                                     </option>
                                                     <option th:if="${oneLink.riderAssignedEquipment.pants.id} != null"
                                                             value="" th:disabled="false">

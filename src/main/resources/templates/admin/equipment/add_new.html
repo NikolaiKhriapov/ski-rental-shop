@@ -147,10 +147,10 @@
                                 <td>
                                     <label for="input-snowboard-size"></label>
                                     <input id="input-snowboard-size"
-                                           type="text" th:field="*{snowboardSize}"
+                                           type="text" th:field="*{size}"
                                            th:placeholder="#{equipment.parameter.snowboard-size}"/>
                                     <div class="validation-message"
-                                         th:if="${#fields.hasErrors('snowboardSize')}" th:errors="*{snowboardSize}">
+                                         th:if="${#fields.hasErrors('size')}" th:errors="*{size}">
                                     </div>
                                 </td>
                             </tr>
@@ -160,7 +160,7 @@
                                 <td>
                                     <label for="input-ski-size"></label>
                                     <input id="input-ski-size"
-                                           type="text" th:field="*{skiSize}" th:placeholder="#{equipment.parameter.ski-size}"/>
+                                           type="text" th:field="*{size}" th:placeholder="#{equipment.parameter.ski-size}"/>
                                 </td>
                             </tr>
                             <!-- bootsSize -->
