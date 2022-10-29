@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
 
 @Controller
-@RequestMapping("/admin/info-equipment/{typeOfEquipment}")
+@RequestMapping("/admin/equipment/{typeOfEquipment}")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
@@ -32,16 +32,17 @@ public class EquipmentController {
     // ----- show all -----
     @GetMapping()
     public String showAllEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment, Model model) {
-        model.addAttribute("allEquipment", equipmentService.showAllEquipment(convertToEnumField(typeOfEquipment)));
-        return "admin/equipment/show_all";
+        model.addAttribute("action", "showAll");
+        model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(convertToEnumField(typeOfEquipment)));
+        return "admin/equipment/equipment";
     }
 
     // ----- add new -----
     @GetMapping("/add-new")
     public String createNewEquipment(Model model) {
-        model.addAttribute("equipment", new Equipment());
         model.addAttribute("action", "create");
-        return "admin/equipment/add_new";
+        model.addAttribute("equipment", new Equipment());
+        return "admin/equipment/equipment";
     }
 
     @PostMapping("/add-new")
@@ -51,7 +52,7 @@ public class EquipmentController {
                                       Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
-            return "admin/equipment/add_new";
+            return "admin/equipment/equipment";
         }
         equipmentService.addNewEquipmentToDB(oneEquipment, convertToEnumField(typeOfEquipment));
         return "redirect:/admin/info-equipment/" + typeOfEquipment;
@@ -60,9 +61,9 @@ public class EquipmentController {
     // ----- edit -----
     @GetMapping("/edit/{equipmentId}")
     public String showOneEquipment(@PathVariable("equipmentId") Long equipmentId, Model model) {
-        model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId));
         model.addAttribute("action", "update");
-        return "admin/equipment/add_new";
+        model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId));
+        return "admin/equipment/equipment";
     }
 
     @PatchMapping("/edit/{equipmentId}")
@@ -72,7 +73,7 @@ public class EquipmentController {
                                      BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
-            return "admin/equipment/add_new";
+            return "admin/equipment/equipment";
         }
         equipmentService.updateEquipmentById(equipmentId, updatedEquipment, convertToEnumField(typeOfEquipment));
         return "redirect:/admin/info-equipment/" + typeOfEquipment;
@@ -90,10 +91,11 @@ public class EquipmentController {
     @GetMapping("/search")
     public String showAllEquipmentBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
                                            @RequestParam("search") String search, Model model) {
-        model.addAttribute("equipmentBySearch",
+        model.addAttribute("action", "search");
+        model.addAttribute("listOfEquipment",
                 equipmentService.showEquipmentBySearch(search, convertToEnumField(typeOfEquipment)));
         model.addAttribute("search", search);
-        return "admin/equipment/show_all";
+        return "admin/equipment/equipment";
     }
 
     // ----- sort -----
@@ -102,10 +104,11 @@ public class EquipmentController {
                                               @RequestParam("parameter") String parameter,
                                               @RequestParam("sortDirection") String sortDirection,
                                               Model model) {
+        model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("allEquipment",
+        model.addAttribute("listOfEquipment",
                 equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, convertToEnumField(typeOfEquipment)));
-        return "admin/equipment/show_all";
+        return "admin/equipment/equipment";
     }
 
     private TypesOfEquipment convertToEnumField(String typeOfEquipment) {
