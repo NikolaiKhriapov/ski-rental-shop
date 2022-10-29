@@ -14,7 +14,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     List<Equipment> findAllByTypeOrderById(TypesOfEquipment type);
 
     // ----- search -----
-    List<Equipment> findAllByTypeEqualsAndNameContainingIgnoreCase(TypesOfEquipment type, String partOfName);
+    List<Equipment> findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(TypesOfEquipment type, String partOfName);
 
     //// ----- edit booking info / assign equipment to riders -----
     List<Equipment> findAllByTypeOrderBySize(TypesOfEquipment type);

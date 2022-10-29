@@ -63,9 +63,9 @@ public class EquipmentController {
 
     @PatchMapping("/edit/{equipmentId}")
     public String updateOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                  @PathVariable("equipmentId") Long equipmentId,
-                                  @ModelAttribute("equipmentToUpdate") @Valid Equipment updatedEquipment,
-                                  BindingResult bindingResult) {
+                                     @PathVariable("equipmentId") Long equipmentId,
+                                     @ModelAttribute("equipmentToUpdate") @Valid Equipment updatedEquipment,
+                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/equipment/edit";
         }
@@ -76,7 +76,7 @@ public class EquipmentController {
     // ----- delete -----
     @DeleteMapping("/{equipmentId}")
     public String deleteOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                  @PathVariable("equipmentId") Long equipmentId) {
+                                     @PathVariable("equipmentId") Long equipmentId) {
         equipmentService.deleteEquipmentById(equipmentId);
         return "redirect:/admin/info-equipment/" + typeOfEquipment;
     }
@@ -84,19 +84,19 @@ public class EquipmentController {
     // ----- search -----
     @GetMapping("/search")
     public String showAllEquipmentBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                         @RequestParam("search") String search, Model model) {
+                                           @RequestParam("search") String search, Model model) {
         model.addAttribute("equipmentBySearch",
                 equipmentService.showEquipmentBySearch(search, convertToEnumField(typeOfEquipment)));
         model.addAttribute("search", search);
-        return "admin/equipment/search";
+        return "admin/equipment/show_all";
     }
 
     // ----- sort -----
     @GetMapping("/sort")
     public String sortAllEquipmentByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                               @RequestParam("parameter") String parameter,
-                                               @RequestParam("sortDirection") String sortDirection,
-                                               Model model) {
+                                              @RequestParam("parameter") String parameter,
+                                              @RequestParam("sortDirection") String sortDirection,
+                                              Model model) {
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("allEquipment",
                 equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, convertToEnumField(typeOfEquipment)));

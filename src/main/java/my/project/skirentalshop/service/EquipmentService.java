@@ -69,7 +69,7 @@ public class EquipmentService {
 
     // ----- search -----
     public List<Equipment> showEquipmentBySearch(String search, TypesOfEquipment type) {
-        return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCase(type, search);
+        return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(type, search);
     }
 
     // ----- sort -----
