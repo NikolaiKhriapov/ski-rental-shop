@@ -24,28 +24,32 @@
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
-                <div class="dropdown-content" th:if="${search == null}">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_1'}"
-                       th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_2'}"
-                       th:text="#{top-nav.theme.theme-2}"/>
-                </div>
-                <div class="dropdown-content" th:if="${search != null}">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&theme=theme_1'}"
-                       th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&theme=theme_2'}"
-                       th:text="#{top-nav.theme.theme-2}"/>
+                <div class="dropdown-content">
+                    <div th:if="${search == null}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_1'}"
+                           th:text="#{top-nav.theme.theme-1}"/>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?theme=theme_2'}"
+                           th:text="#{top-nav.theme.theme-2}"/>
+                    </div>
+                    <div th:if="${search != null}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&theme=theme_1'}"
+                           th:text="#{top-nav.theme.theme-1}"/>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&theme=theme_2'}"
+                           th:text="#{top-nav.theme.theme-2}"/>
+                    </div>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
-                <div class="dropdown-content" th:if="${search == null}">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=en'}">English</a>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=ru'}">Russian</a>
-                </div>
-                <div class="dropdown-content" th:if="${search != null}">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&lang=en'}">English</a>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&lang=ru'}">Russian</a>
+                <div class="dropdown-content">
+                    <div th:if="${search == null}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=en'}">English</a>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '?lang=ru'}">Russian</a>
+                    </div>
+                    <div th:if="${search != null}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&lang=en'}">English</a>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/search?search=' + ${search} + '&lang=ru'}">Russian</a>
+                    </div>
                 </div>
             </li>
         </ul>

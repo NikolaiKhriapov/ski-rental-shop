@@ -25,17 +25,31 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?theme=theme_1'}"
-                       th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?theme=theme_2'}"
-                       th:text="#{top-nav.theme.theme-2}"/>
+                    <div th:if="${action == 'create'}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?theme=theme_1'}"
+                           th:text="#{top-nav.theme.theme-1}"/>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?theme=theme_2'}"
+                           th:text="#{top-nav.theme.theme-2}"/>
+                    </div>
+                    <div th:if="${action == 'update'}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?theme=theme_1'}"
+                           th:text="#{top-nav.theme.theme-1}"/>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?theme=theme_2'}"
+                           th:text="#{top-nav.theme.theme-2}"/>
+                    </div>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?lang=en'}">English</a>
-                    <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?lang=ru'}">Russian</a>
+                    <div th:if="${action == 'create'}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?lang=en'}">English</a>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new?lang=ru'}">Russian</a>
+                    </div>
+                    <div th:if="${action == 'update'}">
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?lang=en'}">English</a>
+                        <a th:href="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/edit/' + ${equipmentId} + '?lang=ru'}">Russian</a>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -108,12 +122,15 @@
 
             <div class="new-edit">
                 <!--Header-->
-                <h1 th:text="#{${typeOfEquipment + '.header.add-new'}}"/>
+                <h1 th:if="${action == 'create'}" th:text="#{${typeOfEquipment + '.header.add-new'}}"/>
+                <h1 th:if="${action == 'update'}" th:text="#{${typeOfEquipment + '.header.edit'}}"/>
 
                 <!--Input parameters-->
-                <form th:method="POST"
-                      th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + '/add-new'}"
-                      th:object="${newEquipment}">
+                <form th:method="${action == 'create'} ? POST :
+                                (${action == 'update'} ? PATCH : '')"
+                      th:action="@{'/admin/info-equipment/' + ${typeOfEquipment} + ${action == 'create' ? '/add-new' : ''}
+                                                                                 + ${action == 'update' ? '/edit/' + equipmentId : ''}}"
+                      th:object="${equipment}">
                     <div th:switch="${typeOfEquipment}">
                         <table>
                             <!-- name -->
@@ -134,14 +151,22 @@
                                 <td>
                                     <label for="select-condition"></label>
                                     <select id="select-condition" name="condition">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
+                                        <option th:if="${action == 'create'}"
+                                                th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
                                                 th:value="${i.name}"
                                                 th:text="#{${'equipment.condition.' + i}}">
+                                        </option>
+                                        <option th:if="${action == 'update'}"
+                                                th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.condition.' + i}}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.condition.toString == i.toString} : false)">
                                         </option>
                                     </select>
                                 </td>
                             </tr>
-                            <!-- snowboardSize -->
+                            <!-- size – Snowboard -->
                             <tr th:if="${typeOfEquipment == 'snowboard'}">
                                 <td th:text="#{equipment.parameter.snowboard-size} + ': '"/>
                                 <td>
@@ -154,28 +179,32 @@
                                     </div>
                                 </td>
                             </tr>
-                            <!-- skiSize -->
+                            <!-- size - Ski -->
                             <tr th:if="${typeOfEquipment == 'ski'}">
                                 <td th:text="#{equipment.parameter.ski-size} + ': '"/>
                                 <td>
                                     <label for="input-ski-size"></label>
                                     <input id="input-ski-size"
-                                           type="text" th:field="*{size}" th:placeholder="#{equipment.parameter.ski-size}"/>
+                                           type="text" th:field="*{size}"
+                                           th:placeholder="#{equipment.parameter.ski-size}"/>
                                 </td>
                             </tr>
-                            <!-- bootsSize -->
+                            <!-- size - SnowboardBoots, SkiBoots -->
                             <tr th:if="${typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots'}">
                                 <td th:text="#{equipment.parameter.boots-size} + ': '"/>
                                 <td>
                                     <label for="select-boots-size"></label>
                                     <select id="select-boots-size" name="size">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.BootsSize).values}"
-                                                th:value="${i.name}" th:text="#{${'equipment.boots-size.' + i}}">
+                                                th:value="${i.name}"
+                                                th:text="#{${'equipment.boots-size.' + i}}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
                                     </select>
                                 </td>
                             </tr>
-                            <!-- clothesSize -->
+                            <!-- size - Helmet, Jacket, Gloves, Pants, ProtectiveShorts, KneeProtection -->
                             <tr th:if="${typeOfEquipment == 'helmet'            || typeOfEquipment == 'jacket' ||
                                          typeOfEquipment == 'gloves'            || typeOfEquipment == 'pants'  ||
                                          typeOfEquipment == 'protective-shorts' || typeOfEquipment == 'knee-protection'}">
@@ -185,7 +214,9 @@
                                     <select id="select-clothes-size" name="size">
                                         <option th:each="i : ${T(my.project.skirentalshop.model.enums.ClothesSize).values}"
                                                 th:value="${i.name}"
-                                                th:text="${i}">
+                                                th:text="${i}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
                                     </select>
                                 </td>
@@ -197,9 +228,12 @@
                                 <td>
                                     <label for="select-stiffness"></label>
                                     <select id="select-stiffness" name="stiffness">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Stiffness).values}"
+                                        <option th:if="${action == 'update'}"
+                                                th:each="i : ${T(my.project.skirentalshop.model.enums.Stiffness).values}"
                                                 th:value="${i.name}"
-                                                th:text="#{${'equipment.stiffness.' + i}}">
+                                                th:text="#{${'equipment.stiffness.' + i}}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.stiffness.toString == i.toString} : false)">
                                         </option>
                                     </select>
                                 </td>
@@ -210,9 +244,12 @@
                                 <td>
                                     <label for="select-arch"></label>
                                     <select id="select-arch" name="arch">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Arch).values}"
+                                        <option th:if="${action == 'update'}"
+                                                th:each="i : ${T(my.project.skirentalshop.model.enums.Arch).values}"
                                                 th:value="${i.name}"
-                                                th:text="#{${'equipment.arch.' + i}}">
+                                                th:text="#{${'equipment.arch.' + i}}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.arch.toString == i.toString} : false)">
                                         </option>
                                     </select>
                                 </td>
@@ -223,9 +260,12 @@
                                 <td>
                                     <label for="select-binding-size"></label>
                                     <select id="select-binding-size" name="bindingSize">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.BindingSize).values}"
-                                                th:value="${i}"
-                                                th:text="${i}">
+                                        <option th:if="${action == 'update'}"
+                                                th:each="i : ${T(my.project.skirentalshop.model.enums.BindingSize).values}"
+                                                th:value="${i.name}"
+                                                th:text="${i}"
+                                                th:selected="${action == 'create'} ? false :
+                                                            (${action == 'update'} ? ${equipment.bindingSize.toString == i.toString} : false)">
                                         </option>
                                     </select>
                                 </td>
@@ -235,7 +275,13 @@
 
                     <br>
 
-                    <input class="button" type="submit" th:value="#{${typeOfEquipment + '.button.add-new'}}"/>
+                    <!-- Button "Add new" or "Edit" -->
+                    <div>
+                        <input th:if="${action == 'create'}"
+                               class="button" type="submit" th:value="#{${typeOfEquipment + '.button.add-new'}}"/>
+                        <input th:if="${action == 'update'}"
+                               class="button" type="submit" th:value="#{equipment.button.save}"/>
+                    </div>
                 </form>
 
                 <br>

@@ -39,15 +39,18 @@ public class EquipmentController {
     // ----- add new -----
     @GetMapping("/add-new")
     public String createNewEquipment(Model model) {
-        model.addAttribute("newEquipment", new Equipment());
+        model.addAttribute("equipment", new Equipment());
+        model.addAttribute("action", "create");
         return "admin/equipment/add_new";
     }
 
     @PostMapping("/add-new")
     public String addNewEquipmentToDB(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                      @ModelAttribute("newEquipment") @Valid Equipment oneEquipment,
-                                      BindingResult bindingResult) {
+                                      @ModelAttribute("equipment") @Valid Equipment oneEquipment,
+                                      BindingResult bindingResult,
+                                      Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("action", "create");
             return "admin/equipment/add_new";
         }
         equipmentService.addNewEquipmentToDB(oneEquipment, convertToEnumField(typeOfEquipment));
@@ -57,17 +60,19 @@ public class EquipmentController {
     // ----- edit -----
     @GetMapping("/edit/{equipmentId}")
     public String showOneEquipment(@PathVariable("equipmentId") Long equipmentId, Model model) {
-        model.addAttribute("equipmentToUpdate", equipmentService.showOneEquipmentById(equipmentId));
-        return "admin/equipment/edit";
+        model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId));
+        model.addAttribute("action", "update");
+        return "admin/equipment/add_new";
     }
 
     @PatchMapping("/edit/{equipmentId}")
     public String updateOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
                                      @PathVariable("equipmentId") Long equipmentId,
-                                     @ModelAttribute("equipmentToUpdate") @Valid Equipment updatedEquipment,
-                                     BindingResult bindingResult) {
+                                     @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
+                                     BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/equipment/edit";
+            model.addAttribute("action", "update");
+            return "admin/equipment/add_new";
         }
         equipmentService.updateEquipmentById(equipmentId, updatedEquipment, convertToEnumField(typeOfEquipment));
         return "redirect:/admin/info-equipment/" + typeOfEquipment;

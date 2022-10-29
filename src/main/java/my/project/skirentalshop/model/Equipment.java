@@ -86,7 +86,7 @@ public class Equipment {
     }
 
     @Override
-    public String toString() {
+    public String toString() { //TODO: enum fields do not get printed properly
         return switch (type) {
             case SNOWBOARD -> "Equipment{" +
                     "id=" + id +
