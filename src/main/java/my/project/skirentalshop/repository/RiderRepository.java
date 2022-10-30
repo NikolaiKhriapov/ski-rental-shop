@@ -11,4 +11,7 @@ public interface RiderRepository extends JpaRepository<Rider, Long> {
 
     // ----- show all -----
     List<Rider> findAllByOrderById();
+
+    // ----- search -----
+    List<Rider> findAllByNameContainingIgnoreCaseOrderById(String search);
 }

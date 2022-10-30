@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/admin/info-clients")
+@RequestMapping("/admin/clients")
 public class ClientController {
 
     private final ClientService clientService;
@@ -24,57 +24,67 @@ public class ClientController {
     // ----- show all -----
     @GetMapping()
     public String showAllClients(Model model) {
-        model.addAttribute("allClients", clientService.showAllClients());
-        return "admin/client/show_all";
+        model.addAttribute("action", "showAll");
+        model.addAttribute("listOfClients", clientService.showAllClients());
+        return "admin/client/clients";
     }
 
     // ----- add new -----
     @GetMapping("/add-new")
     public String createNewClient(Model model) {
-        model.addAttribute("newClient", new Client());
-        return "admin/client/add_new";
+        model.addAttribute("action", "create");
+        model.addAttribute("client", new Client());
+        return "admin/client/clients";
     }
 
-    @PostMapping()
-    public String addNewClientToDB(@ModelAttribute("newClient") @Valid Client client, BindingResult bindingResult) {
+    @PostMapping("/add-new")
+    public String addNewClientToDB(@ModelAttribute("client") @Valid Client client,
+                                   BindingResult bindingResult,
+                                   Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/client/add_new";
+            model.addAttribute("action", "create");
+            return "admin/client/clients";
         }
         clientService.addNewClientToDB(client);
-        return "redirect:/admin/info-clients";
+        return "redirect:/admin/clients";
     }
 
     // ----- edit -----
     @GetMapping("/edit/{clientId}")
     public String showOneClient(@PathVariable("clientId") Long clientId, Model model) {
-        model.addAttribute("clientToUpdate", clientService.showOneClientById(clientId));
-        return "admin/client/edit";
+        model.addAttribute("action", "update");
+        model.addAttribute("client", clientService.showOneClientById(clientId));
+        return "admin/client/clients";
     }
 
     @PatchMapping("/edit/{clientId}")
     public String updateClient(@PathVariable("clientId") Long clientId,
-                               @ModelAttribute("clientToUpdate") @Valid Client updatedClient,
-                               BindingResult bindingResult) {
+                               @ModelAttribute("client") @Valid Client updatedClient,
+                               BindingResult bindingResult,
+                               Model model) {
         if (bindingResult.hasErrors()) {
-            return "admin/client/edit";
+            model.addAttribute("action", "update");
+            return "admin/client/clients";
         }
         clientService.updateClientById(clientId, updatedClient);
-        return "redirect:/admin/info-clients";
+        return "redirect:/admin/clients";
     }
 
     // ----- delete -----
     @DeleteMapping("/{clientId}")
     public String deleteClient(@PathVariable("clientId") Long clientId) {
         clientService.deleteClientById(clientId);
-        return "redirect:/admin/info-clients";
+        return "redirect:/admin/clients";
     }
 
     // ----- search -----
     @GetMapping("/search")
-    public String showClientsBySearch(@RequestParam("search") String search, Model model) {
-        model.addAttribute("clientsBySearch", clientService.showClientsBySearch(search));
+    public String showClientsBySearch(@RequestParam("search") String search,
+                                      Model model) {
+        model.addAttribute("action", "search");
+        model.addAttribute("listOfClients", clientService.showClientsBySearch(search));
         model.addAttribute("search", search);
-        return "admin/client/search";
+        return "admin/client/clients";
     }
 
     // ----- sort -----
@@ -82,8 +92,9 @@ public class ClientController {
     public String sortAllClientsByParameter(@RequestParam("parameter") String parameter,
                                             @RequestParam("sortDirection") String sortDirection,
                                             Model model) {
+        model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("allClients", clientService.sortAllClientsByParameter(parameter, sortDirection));
-        return "admin/client/show_all";
+        model.addAttribute("listOfClients", clientService.sortAllClientsByParameter(parameter, sortDirection));
+        return "admin/client/clients";
     }
 }

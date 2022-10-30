@@ -1,9 +1,7 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.Booking;
-import my.project.skirentalshop.model.BookingRiderEquipmentLink;
-import my.project.skirentalshop.model.Rider;
-import my.project.skirentalshop.model.RiderAssignedEquipment;
+import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.model.enums.TypesOfEquipment;
 import my.project.skirentalshop.repository.RiderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -80,13 +78,17 @@ public class RiderService {
         riderRepository.deleteById(id);
     }
 
+    // ----- search -----
+    public List<Rider> showRidersBySearch(String search) {
+        return riderRepository.findAllByNameContainingIgnoreCaseOrderById(search);
+    }
+
     // ----- sort -----
     public List<Rider> sortAllRidersByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return riderRepository.findAll(sort);
     }
-
 
     // ----- ClientRiderController / show all -----
     public List<Rider> showAllRidersForCurrentClient() {

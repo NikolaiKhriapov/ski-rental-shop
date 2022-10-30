@@ -14,7 +14,7 @@ import java.util.*;
 @ToString
 public class Rider {
 
-    enum Size {
+    enum FootSize {
         OTHER,
         RU36_EU37_MM235,
         RU34_EU35_MM240,
@@ -46,7 +46,7 @@ public class Rider {
 
         @Override
         public String toString() {
-            return resourceBundle.getString("rider.size." + name());
+            return resourceBundle.getString("riders.foot-size." + name());
         }
     }
 
@@ -58,7 +58,7 @@ public class Rider {
 
         @Override
         public String toString() {
-            return resourceBundle.getString("rider.sex." + name());
+            return resourceBundle.getString("riders.sex." + name());
         }
     }
 
@@ -82,7 +82,7 @@ public class Rider {
     @DecimalMax(value = "160", message = "{validation.rider.weight}")
     private Double weight; //TODO: handle java.lang.NumberFormatException
 
-    private Size footSize;
+    private FootSize footSize;
 
     @OneToMany(mappedBy = "rider")
     private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;

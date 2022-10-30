@@ -55,7 +55,7 @@ public class EquipmentController {
             return "admin/equipment/equipment";
         }
         equipmentService.addNewEquipmentToDB(oneEquipment, convertToEnumField(typeOfEquipment));
-        return "redirect:/admin/info-equipment/" + typeOfEquipment;
+        return "redirect:/admin/equipment/" + typeOfEquipment;
     }
 
     // ----- edit -----
@@ -70,13 +70,14 @@ public class EquipmentController {
     public String updateOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
                                      @PathVariable("equipmentId") Long equipmentId,
                                      @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
-                                     BindingResult bindingResult, Model model) {
+                                     BindingResult bindingResult,
+                                     Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
             return "admin/equipment/equipment";
         }
         equipmentService.updateEquipmentById(equipmentId, updatedEquipment, convertToEnumField(typeOfEquipment));
-        return "redirect:/admin/info-equipment/" + typeOfEquipment;
+        return "redirect:/admin/equipment/" + typeOfEquipment;
     }
 
     // ----- delete -----
@@ -84,13 +85,14 @@ public class EquipmentController {
     public String deleteOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
                                      @PathVariable("equipmentId") Long equipmentId) {
         equipmentService.deleteEquipmentById(equipmentId);
-        return "redirect:/admin/info-equipment/" + typeOfEquipment;
+        return "redirect:/admin/equipment/" + typeOfEquipment;
     }
 
     // ----- search -----
     @GetMapping("/search")
     public String showAllEquipmentBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                           @RequestParam("search") String search, Model model) {
+                                           @RequestParam("search") String search,
+                                           Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfEquipment",
                 equipmentService.showEquipmentBySearch(search, convertToEnumField(typeOfEquipment)));
@@ -100,10 +102,10 @@ public class EquipmentController {
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortAllEquipmentByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                              @RequestParam("parameter") String parameter,
-                                              @RequestParam("sortDirection") String sortDirection,
-                                              Model model) {
+    public String sortEquipmentByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                                           @RequestParam("parameter") String parameter,
+                                           @RequestParam("sortDirection") String sortDirection,
+                                           Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfEquipment",

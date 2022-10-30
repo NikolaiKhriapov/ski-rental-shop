@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{riders.title}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
+</head>
+
+<body>
+
+<div class="header">
+    <nav class="top-nav">
+        <ul class="top-nav-items">
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="dropdown-content">
+                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/riders' +
+                                       ${action == 'showAll' ? '?' : ''} +
+                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' : ''}
+                                       ${action == 'update'  ? '/edit/' + riderId + '?' : ''} +
+                                                                                                       'theme=theme_1'}"
+                       th:text="#{top-nav.theme.theme-1}"/>
+                    <a th:href="@{'/admin/riders' +
+                                       ${action == 'showAll' ? '?' : ''} +
+                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' : ''} +
+                                       ${action == 'update'  ? '/edit/' + riderId + '?' : ''} +
+                                                                                                       'theme=theme_2'}"
+                       th:text="#{top-nav.theme.theme-2}"/>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
+                <div class="dropdown-content">
+                    <a th:href="@{'/admin/riders' +
+                                       ${action == 'showAll' ? '?' : ''} +
+                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' : ''} +
+                                       ${action == 'update'  ? '/edit/' + riderId + '?' : ''} +
+                                                                                                 'lang=en'}">English</a>
+                    <a th:href="@{'/admin/riders' +
+                                       ${action == 'showAll' ? '?' : ''} +
+                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' : ''} +
+                                       ${action == 'update'  ? '/edit/' + riderId + '?' : ''} +
+                                                                                                 'lang=ru'}">Русский</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div class="main">
+
+    <div class="sidebar">
+        <button type="button">
+            <a href="/admin" th:text="#{side-bar.admin.home}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/bookings" th:text="#{side-bar.admin.list-of-bookings}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/clients" th:text="#{side-bar.admin.list-of-clients}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/riders" th:text="#{side-bar.admin.list-of-riders}"/>
+        </button>
+        <br>
+        <button type="button">
+            <a href="/admin/equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/ski" th:text="#{side-bar.admin.ski}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/pants" th:text="#{side-bar.admin.pants}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
+        </button>
+    </div>
+
+    <div class="main-screen">
+
+        <div class="content">
+
+            <div th:if="${action == 'showAll' || action == 'search'}" class="table">
+
+                <!--Header-->
+                <h1 th:if="${action == 'showAll'}" th:text="#{riders.header.show-all}"/>
+                <h1 th:if="${action == 'search'}" th:text="#{riders.header.search}"/>
+
+                <!--Search-->
+                <form th:method="GET"
+                      th:action="@{'/admin/riders/search'}">
+                    <label for="input-search"></label>
+                    <input id="input-search" style="width:200px"
+                           type="text" th:name="search"
+                           th:value="${search}" th:placeholder="#{riders.button.search.placeholder}"/>
+                    <input class="button" type="submit" th:value="#{riders.button.search}"/>
+                </form>
+
+                <br>
+
+                <!--Table-->
+                <table>
+                    <tr>
+                        <!-- id -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.id}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.id}"
+                               th:href="@{'/admin/riders/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- name -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.name.header}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.name.header}"
+                               th:href="@{'/admin/riders/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- height -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.height}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.height}"
+                               th:href="@{'/admin/riders/sort?parameter=height&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- weight -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.weight}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.weight}"
+                               th:href="@{'/admin/riders/sort?parameter=weight&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- sex -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.sex}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.sex}"
+                               th:href="@{'/admin/riders/sort?parameter=sex&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- footSize -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{riders.parameter.foot-size.header}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.foot-size.header}"
+                               th:href="@{'/admin/riders/sort?parameter=footSize&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="oneRider : ${listOfRiders}">
+                        <!-- id -->
+                        <td th:text="${oneRider.id}"/>
+                        <!-- name -->
+                        <td th:text="${oneRider.name}"/>
+                        <!-- height -->
+                        <td th:text="${oneRider.height}"/>
+                        <!-- weight -->
+                        <td th:text="${oneRider.weight}"/>
+                        <!-- sex -->
+                        <td th:text="#{${'riders.sex.' + oneRider.sex}}"/>
+                        <!-- footSize -->
+                        <td th:text="#{${'riders.foot-size.' + oneRider.footSize}}"/>
+                        <!-- Edit button -->
+                        <td th:width="1">
+                            <a th:href="@{'/admin/riders/edit?riderId=' + ${oneRider.id}}">
+                                <button class="button" th:text="#{riders.button.edit}"/>
+                            </a>
+                        </td>
+                        <!-- Delete button -->
+                        <td th:width="1">
+                            <form th:method="DELETE" th:action="@{'/admin/riders/' + ${oneRider.id}}">
+                                <input class="button" type="submit" th:value="#{riders.button.delete}"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <!--Go to "add-new"-->
+                <div th:if="${action == 'showAll'}">
+                    <a href="/admin/riders/add-new">
+                        <button class="button" th:text="#{riders.button.add-rider}"/>
+                    </a>
+                </div>
+
+                <!--Return to "show-all"-->
+                <div th:if="${action == 'search'}">
+                    <a href="/admin/riders/">
+                        <button class="button" th:text="#{equipment.button.return}"/>
+                    </a>
+                </div>
+
+            </div>
+
+            <div th:if="${action == 'create' || action == 'update'}" class="new-edit">
+
+                <!--Header-->
+                <h1 th:if="${action == 'create'}" th:text="#{riders.header.add-new}"/>
+                <h1 th:if="${action == 'update'}" th:text="#{riders.header.edit}"/>
+
+                <!--Input Parameters-->
+                <form th:method="${action == 'create'} ? POST :
+                                (${action == 'update'} ? PATCH : '')"
+                      th:action="@{'/admin/riders' + ${action == 'create' ? '/add-new' + (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                                           : ''}
+                                                    + ${action == 'update' ? '/edit/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                                           : ''}}"
+                      th:object="${rider}">
+                    <table>
+                        <!-- name -->
+                        <tr>
+                            <td th:text="#{riders.parameter.name} + ': '"/>
+                            <td>
+                                <label for="input-name"></label>
+                                <input id="input-name" type="text"
+                                       th:field="*{name}" th:placeholder="#{riders.parameter.name}"/>
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- sex -->
+                        <tr>
+                            <td th:text="#{riders.parameter.sex} + ': '"/>
+                            <td>
+                                <label for="select-sex"></label>
+                                <select id="select-sex" name="sex">
+                                    <option th:each="i : ${T(my.project.skirentalshop.model.Rider.Sex).values}"
+                                            th:value="${i.name}"
+                                            th:text="#{${'riders.sex.' + i}}"
+                                            th:selected="${action == 'create'} ? false :
+                                                        (${action == 'update'} ? ${rider.sex.toString == i.toString} : false)">
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <!-- height -->
+                        <tr>
+                            <td th:text="#{riders.parameter.height} + ': '"/>
+                            <td>
+                                <label for="input-height"></label>
+                                <input id="input-height" type="text"
+                                       th:field="*{height}" th:placeholder="#{riders.parameter.height}">
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors('height')}" th:errors="*{height}">
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- weight -->
+                        <tr>
+                            <td th:text="#{riders.parameter.weight} + ': '"/>
+                            <td>
+                                <label for="input-weight"></label>
+                                <input id="input-weight" type="text"
+                                       th:field="*{weight}" th:placeholder="#{riders.parameter.weight}"/>
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- footSize -->
+                        <tr>
+                            <td th:text="#{riders.parameter.foot-size} + ': '"/>
+                            <td>
+                                <label for="select-foot-size"></label>
+                                <select id="select-foot-size" name="footSize">
+                                    <option th:each="i : ${T(my.project.skirentalshop.model.Rider.FootSize).values}"
+                                            th:value="${i.name}"
+                                            th:text="#{${'riders.foot-size.' + i}}"
+                                            th:selected="${action == 'create'} ? false :
+                                                        (${action == 'update'} ? ${rider.footSize.toString == i.toString} : false)">
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                    <!-- Button "Add new" or "Edit" -->
+                    <div>
+                        <input th:if="${action == 'create'}"
+                               class="button" type="submit" th:value="#{riders.button.add-rider}"/>
+                        <input th:if="${action == 'update'}"
+                               class="button" type="submit" th:value="#{riders.button.save}"/>
+                    </div>
+
+                    <br>
+                </form>
+
+                <!--Requested Equipment-->
+                <form th:if="${action == 'update' && bookingId != null}"
+                      th:method="PATCH"
+                      th:action="@{'/admin/bookings/edit-equipment/' + ${riderId} + '?bookingId=' + ${bookingId}}"
+                      th:object="${link}">
+                    <table>
+                        <tr>
+                            <td th:text="#{riders.parameter.equipment} + ': '" th:align="top"/>
+                            <td>
+                                <div th:each="i : ${T(my.project.skirentalshop.model.enums.TypesOfEquipment).values}">
+                                    <label for="input-equipment"></label>
+                                    <input id="input-equipment" type="checkbox"
+                                           th:field="*{riderRequestedEquipment}"
+                                           th:value="${i.name}"/>
+                                    <span th:text="#{${'equipment.type.' + i}}"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br>
+
+                    <input class="button" type="submit" th:value="#{riders.button.save}"/>
+
+                    <br><br>
+                </form>
+
+                <!--Return to current booking-->
+                <div th:if="${bookingId != null}">
+                    <form th:method="GET"
+                          th:action="@{'/admin/bookings/edit/' + ${bookingId}}">
+                        <input class="button" type="submit" th:value="#{riders.button.back-to-booking}"/>
+                    </form>
+                </div>
+
+                <!--Return to "show-all" (Rider)-->
+                <div th:if="${bookingId == null}">
+                    <form th:method="GET"
+                          th:action="@{/admin/riders}">
+                        <input class="button" type="submit" th:value="#{riders.button.return}"/>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

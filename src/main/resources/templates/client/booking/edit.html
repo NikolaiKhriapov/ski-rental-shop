@@ -135,7 +135,7 @@
 
                         <br/>
 
-                        <input class="button" type="submit" th:value="#{booking.edit.button.save}"/>
+                        <input class="button" type="submit" th:value="#{bookings.edit.button.save}"/>
                     </form>
                 </div>
 
@@ -148,11 +148,11 @@
                             <tr th:each="oneLink : ${bookingToBeUpdated.listOfBookingRiderEquipmentLinks}">
                                 <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
                                 <td style="vertical-align:top" th:align="left">
-                                    <div th:text="#{booking.edit.table.header.name} + ': ' + ${oneLink.rider.name}"/>
-                                    <div th:text="#{booking.edit.table.header.sex} + ': ' + #{${'rider.sex.' + oneLink.rider.sex}}"/>
-                                    <div th:text="#{booking.edit.table.header.height} + ': ' + ${oneLink.rider.height}"/>
-                                    <div th:text="#{booking.edit.table.header.weight} + ': ' + ${oneLink.rider.weight}"/>
-                                    <div th:text="#{booking.edit.table.header.foot} + ': ' + #{${'rider.size.' + oneLink.rider.footSize}}"/>
+                                    <div th:text="#{riders.parameter.name} + ': ' + ${oneLink.rider.name}"/>
+                                    <div th:text="#{riders.parameter.sex} + ': ' + #{${'riders.sex.' + oneLink.rider.sex}}"/>
+                                    <div th:text="#{riders.parameter.height} + ': ' + ${oneLink.rider.height}"/>
+                                    <div th:text="#{riders.parameter.weight} + ': ' + ${oneLink.rider.weight}"/>
+                                    <div th:text="#{riders.parameter.foot-size} + ': ' + #{${'riders.size.' + oneLink.rider.footSize}}"/>
                                 </td>
                                 <td th:align="left">
                                     <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
