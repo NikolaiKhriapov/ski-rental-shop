@@ -2,7 +2,7 @@ package my.project.skirentalshop.model.enums;
 
 import java.util.ResourceBundle;
 
-public enum BootsSize {
+public enum FootSize {
     OTHER,
     RU36_EU37_MM235,
     RU34_EU35_MM240,
@@ -32,7 +32,8 @@ public enum BootsSize {
 
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
+    @Override
     public String toString() {
-        return resourceBundle.getString("equipment.boots-size." + name());
+        return resourceBundle.getString("equipment.foot-size." + name());
     }
 }

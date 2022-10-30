@@ -96,7 +96,7 @@
                         <td th:text="${oneRider.height}"/>
                         <td th:text="${oneRider.weight}"/>
                         <td th:text="#{${'riders.sex.' + oneRider.sex}}"/>
-                        <td th:text="#{${'riders.foot-size.' + oneRider.footSize}}"/>
+                        <td th:text="#{${'equipment.foot-size.' + oneRider.footSize}}"/>
                     </tr>
                 </table>
 
@@ -174,9 +174,9 @@
                             <td>
                                 <label for="select-foot-size"></label>
                                 <select id="select-foot-size" name="footSize">
-                                    <option th:each="i : ${T(my.project.skirentalshop.model.Rider.FootSize).values}"
+                                    <option th:each="i : ${T(my.project.skirentalshop.model.enums.FootSize).values}"
                                             th:value="${i.name}"
-                                            th:text="#{${'riders.foot-size.' + i}}"
+                                            th:text="#{${'equipment.foot-size.' + i}}"
                                             th:selected="${action == 'create'} ? false :
                                                         (${action == 'update'} ? ${rider.footSize.toString == i.toString} : false)">
                                     </option>

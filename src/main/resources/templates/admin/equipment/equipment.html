@@ -242,7 +242,7 @@
                         <!-- bootsSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      (typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots')}"
-                            th:text="#{${'equipment.boots-size.' + oneEquipment.size}}"/>
+                            th:text="#{${'equipment.foot-size.' + oneEquipment.size}}"/>
                         <!-- clothesSize -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment &&
                                      (typeOfEquipment == 'helmet'            || typeOfEquipment == 'jacket' ||
@@ -364,11 +364,11 @@
                             <tr th:if="${typeOfEquipment == 'snowboard-boots' || typeOfEquipment == 'ski-boots'}">
                                 <td th:text="#{equipment.parameter.boots-size} + ': '"/>
                                 <td>
-                                    <label for="select-boots-size"></label>
-                                    <select id="select-boots-size" name="size">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.BootsSize).values}"
+                                    <label for="select-foot-size"></label>
+                                    <select id="select-foot-size" name="size">
+                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.FootSize).values}"
                                                 th:value="${i.name}"
-                                                th:text="#{${'equipment.boots-size.' + i}}"
+                                                th:text="#{${'equipment.foot-size.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
                                                             (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
