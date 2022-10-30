@@ -21,10 +21,10 @@ public class AdminHomeController {
 
     // ----- admin home page -----
     @GetMapping()
-    public String showAdminMainPage(Model model) {
+    public String showAdminHome(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
         model.addAttribute("currentBookings", bookingService.showAllCurrentBookings());
-        return "admin/home/main_page";
+        return "admin/home/admin_home";
     }
 
     // ----- bookings for today -----
@@ -55,13 +55,6 @@ public class AdminHomeController {
     @GetMapping("/change-completed/{bookingId}")
     public String changeBookingCompleted(@PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);
-        return "redirect:/admin";
-    }
-
-    // ----- delete booking -----
-    @DeleteMapping("/delete-booking/{bookingId}")
-    public String deleteBooking(@PathVariable("bookingId") Long bookingId) {
-        bookingService.deleteBookingById(bookingId);
         return "redirect:/admin";
     }
 }

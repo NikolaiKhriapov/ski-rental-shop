@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="#{${typeOfEquipment + '.title'}}"/>
-    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -28,7 +28,7 @@
                     <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''}
+                                       ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + equipmentId + '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>

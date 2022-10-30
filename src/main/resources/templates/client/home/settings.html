@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="#{client.settings.title}"/>
-    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -44,28 +44,20 @@
 <div class="main">
 
     <div class="sidebar">
-        <button type="button">
-            <a href="/client" th:text="#{side-bar.client.home}"/>
-        </button>
+        <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
-        <button type="button">
-            <a href="/client/info-booking/add-new" th:text="#{side-bar.client.new-booking}"/>
-        </button>
+        <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
-        <button type="button">
-            <a href="/client/history" th:text="#{side-bar.client.history}"/>
-        </button>
+        <button type="button"><a href="/client/bookings/history" th:text="#{side-bar.client.history}"/></button>
         <br>
-        <button type="button">
-            <a href="/client/info-riders" th:text="#{side-bar.client.riders}"/>
-        </button>
+        <button type="button"><a href="/client/riders" th:text="#{side-bar.client.riders}"/></button>
     </div>
 
     <div class="main-screen">
 
         <div class="content">
-            <div class="new-edit">
 
+            <div class="new-edit">
                 <!--Update name, surname, phone, email-->
                 <h1 th:text="#{client.settings.info.header}"/>
                 <form th:method="PATCH"
@@ -166,6 +158,7 @@
                 </form>
 
             </div>
+
         </div>
 
         <div class="footer">

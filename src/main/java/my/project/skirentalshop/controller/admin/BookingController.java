@@ -40,7 +40,7 @@ public class BookingController {
     }
 
     @PostMapping("/add-new")
-    public String addNewBookingToDB(@ModelAttribute("newBooking") @Valid Booking newBooking,
+    public String addNewBookingToDB(@ModelAttribute("booking") @Valid Booking newBooking,
                                     BindingResult bindingResult,
                                     Model model) {
         if (bindingResult.hasErrors()) {
@@ -90,7 +90,7 @@ public class BookingController {
             return "admin/booking/bookings";
         }
         bookingService.updateBookingById(bookingToBeUpdatedId, updatedBookingInfo);
-        return "redirect:/admin/bookings/edit/{bookingId}";
+        return "redirect:/admin/bookings/edit/" + bookingToBeUpdatedId;
     }
 
     @PatchMapping("/edit-equipment/{riderId}")

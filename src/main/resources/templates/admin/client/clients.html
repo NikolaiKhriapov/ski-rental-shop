@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="#{clients.title}"/>
-    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -25,30 +25,32 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/clients/' +
+                    <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
-                                                                                                 'lang=en'}">English</a>
-                    <a th:href="@{'/admin/clients/' +
+                                                                                                       'theme=theme_1'}"
+                       th:text="#{top-nav.theme.theme-1}"/>
+                    <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
-                                                                                                 'lang=ru'}">Русский</a>
+                                                                                                       'theme=theme_2'}"
+                       th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/clients/' +
+                    <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
                                                                                                  'lang=en'}">English</a>
-                    <a th:href="@{'/admin/clients/' +
+                    <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +

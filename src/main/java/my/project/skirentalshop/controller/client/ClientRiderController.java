@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/client/info-riders")
+@RequestMapping("/client/riders")
 public class ClientRiderController {
 
     private final RiderService riderService;
@@ -24,33 +24,37 @@ public class ClientRiderController {
     // ----- show all -----
     @GetMapping()
     public String showAllRidersForClient(Model model) {
-        model.addAttribute("allRidersForClient", riderService.showAllRidersForCurrentClient());
-        return "client/rider/show_all";
+        model.addAttribute("action", "showAll");
+        model.addAttribute("listOfRidersForClient", riderService.showAllRidersForCurrentClient());
+        return "client/rider/riders";
     }
 
-    // ----- add new rider -----
+    // ----- add new -----
     @GetMapping("/add-new")
     public String createNewRider(@RequestParam(value = "bookingId", required = false) Long bookingId,
                                  Model model) {
-        model.addAttribute("newRider", new Rider());
+        model.addAttribute("action", "create");
+        model.addAttribute("rider", new Rider());
         model.addAttribute("bookingId", bookingId);
-        return "client/rider/add_new";
+        return "client/rider/riders";
     }
 
     @PostMapping("/add-new")
     public String addNewRiderToDb(@RequestParam(value = "bookingId", required = false) Long bookingId,
-                                  @ModelAttribute("newRider") @Valid Rider rider,
-                                  BindingResult bindingResult) {
+                                  @ModelAttribute("rider") @Valid Rider rider,
+                                  BindingResult bindingResult,
+                                  Model model) {
         if (bindingResult.hasErrors()) {
-            return "client/rider/add_new";
+            model.addAttribute("action", "create");
+            return "client/rider/riders";
         }
         riderService.addNewRiderToDB(rider);
 
         if (bookingId != null) {
             riderService.addRiderToBooking(bookingId, rider);
-            return "redirect:/client/info-riders/add-new?bookingId=" + bookingId;
+            return "redirect:/client/riders/add-new?bookingId=" + bookingId;
         }
-        return "redirect:/client/info-riders/";
+        return "redirect:/client/riders/";
     }
 
     // ----- edit -----
@@ -58,40 +62,46 @@ public class ClientRiderController {
     public String showOneRider(@RequestParam("riderId") Long riderId,
                                @RequestParam(value = "bookingId", required = false) Long bookingId,
                                Model model) {
-        model.addAttribute("riderToUpdate", riderService.showOneRiderById(riderId));
+        model.addAttribute("action", "update");
+        model.addAttribute("rider", riderService.showOneRiderById(riderId));
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("riderId", riderId);
         if (bookingId != null) {
             model.addAttribute("link", riderService.getBookingRiderEquipmentLink(
                     riderService.showOneBookingById(bookingId), riderService.showOneRiderById(riderId)));
         }
-        return "client/rider/edit";
+        return "client/rider/riders";
     }
 
     @PatchMapping("/edit/{riderId}")
     public String updateRider(@PathVariable("riderId") Long riderToBeUpdatedId,
                               @RequestParam(value = "bookingId", required = false) Long bookingId,
-                              @ModelAttribute("riderToUpdate") @Valid Rider updatedRider,
+                              @ModelAttribute("rider") @Valid Rider updatedRider,
                               BindingResult bindingResult,
                               Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("action", "update");
             model.addAttribute("riderId", riderToBeUpdatedId);
             model.addAttribute("bookingId", bookingId);
-            return "client/rider/edit";
+            if (bookingId != null) {
+                model.addAttribute("link", riderService.getBookingRiderEquipmentLink(
+                        riderService.showOneBookingById(bookingId), riderService.showOneRiderById(riderToBeUpdatedId)));
+            }
+            return "client/rider/riders";
         }
         riderService.updateRiderById(riderToBeUpdatedId, updatedRider);
 
         if (bookingId != null) {
-            return "redirect:/client/info-booking/edit/" + bookingId;
+            return "redirect:/client/bookings/edit/" + bookingId;
         } else {
-            return "redirect:/client/info-riders";
+            return "redirect:/client/riders";
         }
     }
 
     // ----- delete -----
-    @DeleteMapping("/")
-    public String deleteRider(@RequestParam("riderId") Long riderId) {
+    @DeleteMapping("/{riderId}")
+    public String deleteRider(@PathVariable("riderId") Long riderId) {
         riderService.deleteRiderById(riderId);
-        return "redirect:/client/info-riders";
+        return "redirect:/client/riders";
     }
 }

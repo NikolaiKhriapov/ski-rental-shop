@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="#{admin.bookings-by-date.title} + ' | ' + ${#dates.format(date, 'dd MMM yyyy')}"/>
-    <link rel="stylesheet" th:href="@{${#themes.code('afterAuthentication')}}"/>
+    <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -48,7 +48,7 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/info-booking/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
@@ -59,64 +59,67 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/info-booking" th:text="#{side-bar.admin.list-of-bookings}"/>
+            <a href="/admin/bookings" th:text="#{side-bar.admin.list-of-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-clients" th:text="#{side-bar.admin.list-of-clients}"/>
+            <a href="/admin/clients" th:text="#{side-bar.admin.list-of-clients}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-riders" th:text="#{side-bar.admin.list-of-riders}"/>
+            <a href="/admin/riders" th:text="#{side-bar.admin.list-of-riders}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/info-equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
+            <a href="/admin/equipment/snowboard" th:text="#{side-bar.admin.snowboard}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
+            <a href="/admin/equipment/snowboard-boots" th:text="#{side-bar.admin.snowboard-boots}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/ski" th:text="#{side-bar.admin.ski}"/>
+            <a href="/admin/equipment/ski" th:text="#{side-bar.admin.ski}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
+            <a href="/admin/equipment/ski-boots" th:text="#{side-bar.admin.ski-boots}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
+            <a href="/admin/equipment/helmet" th:text="#{side-bar.admin.helmet}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
+            <a href="/admin/equipment/jacket" th:text="#{side-bar.admin.jacket}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
+            <a href="/admin/equipment/gloves" th:text="#{side-bar.admin.gloves}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/pants" th:text="#{side-bar.admin.pants}"/>
+            <a href="/admin/equipment/pants" th:text="#{side-bar.admin.pants}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
+            <a href="/admin/equipment/protective-shorts" th:text="#{side-bar.admin.protective-shorts}"/>
         </button>
         <button type="button">
-            <a href="/admin/info-equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
+            <a href="/admin/equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
         </button>
     </div>
 
     <div class="main-screen">
 
         <div class="content">
+
+            <!--Table for Bookings by date-->
             <div class="table">
+
                 <!--Header-->
                 <h1 th:text="#{admin.bookings-by-date.header} + ' ' + ${#dates.format(date, 'dd MMM yyyy')}"/>
 
                 <!--Table-->
                 <table>
                     <tr>
-                        <th><a th:text="#{booking.search.table.header.id}"/></th>
-                        <th><a th:text="#{booking.search.table.header.client}"/></th>
-                        <th><a th:text="#{booking.search.table.header.phone1}"/></th>
-                        <th><a th:text="#{booking.search.table.header.phone2}"/></th>
-                        <th><a th:text="#{booking.search.table.header.date-of-arrival}"/></th>
-                        <th><a th:text="#{booking.search.table.header.date-of-return}"/></th>
-                        <th><a th:text="#{booking.show-all.table.header.number-of-riders}"/></th>
+                        <th><a th:text="#{bookings.parameter.id}"/></th>
+                        <th><a th:text="#{bookings.parameter.client}"/></th>
+                        <th><a th:text="#{bookings.parameter.phone1}"/></th>
+                        <th><a th:text="#{bookings.parameter.phone2}"/></th>
+                        <th><a th:text="#{bookings.parameter.date-of-arrival}"/></th>
+                        <th><a th:text="#{bookings.parameter.date-of-return}"/></th>
+                        <th><a th:text="#{bookings.parameter.number-of-riders}"/></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -130,14 +133,14 @@
                         <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                         <td th:width="1">
                             <form th:method="GET"
-                                  th:action="@{/admin/info-booking/edit/{id}(id=${oneBooking.id})}">
-                                <input class="button" type="submit" th:value="#{booking.search.table.button.edit}"/>
+                                  th:action="@{'/admin/info-booking/edit/' + ${oneBooking.id}}">
+                                <input class="button" type="submit" th:value="#{bookings.button.edit-booking}"/>
                             </form>
                         </td>
                         <td th:width="1">
                             <form th:method="DELETE"
-                                  th:action="@{/admin/info-booking/{id}(id=${oneBooking.id})}">
-                                <input class="button" type="submit" th:value="#{booking.search.table.button.delete}"/>
+                                  th:action="@{'/admin/info-booking/' + ${oneBooking.id}}">
+                                <input class="button" type="submit" th:value="#{bookings.button.delete}"/>
                             </form>
                         </td>
                     </tr>
@@ -147,9 +150,11 @@
 
                 <!--Return button-->
                 <a href="/admin">
-                    <button class="button" th:text="#{booking.search.button.return}"/>
+                    <button class="button" th:text="#{bookings.button.return}"/>
                 </a>
+
             </div>
+
         </div>
 
     </div>

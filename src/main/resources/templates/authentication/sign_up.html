@@ -71,7 +71,8 @@
             <span>
                 <label for="input-phone1"></label>
                 <input id="input-phone1" class="form-control"
-                       type="text" th:field="*{phone1}" th:placeholder="#{auth.sign-up.placeholder.phone}">
+                       type="text" th:field="*{phone1}"
+                       th:placeholder="#{auth.sign-up.placeholder.phone} + ' X(XXX)XXX-XX-XX'">
                 <a style="color:red" th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}"></a>
             </span>
             <span>

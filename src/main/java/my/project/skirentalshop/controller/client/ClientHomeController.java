@@ -35,14 +35,6 @@ public class ClientHomeController {
         return "client/home/main_page";
     }
 
-    // ----- client history -----
-    @GetMapping("/history")
-    public String showClientHistory(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("allBookingsForClient", bookingService.showAllBookingsForClient(username));
-        return "client/home/history";
-    }
-
     // ----- update applicationUser info -----
     @GetMapping("/settings")
     public String showSettings(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated, Model model) {
