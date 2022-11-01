@@ -13,6 +13,13 @@
 
 <body>
 
+<!--/*@thymesVar id="listOfRiders" type="List<Rider>"*/-->
+<!--/*@thymesVar id="rider" type="my.project.skirentalshop.model.Rider"*/-->
+<!--/*@thymesVar id="link" type="my.project.skirentalshop.model.BookingRiderEquipmentLink"*/-->
+<!--/*@thymesVar id="action" type="String"*/-->
+<!--/*@thymesVar id="bookingId" type="Long"*/-->
+<!--/*@thymesVar id="riderId" type="Long"*/-->
+
 <div class="header">
     <nav class="top-nav">
         <ul class="top-nav-items">
@@ -83,6 +90,8 @@
 
         <div class="content">
 
+
+
             <div th:if="${action == 'showAll'}" class="table">
 
                 <!--Header-->
@@ -98,7 +107,7 @@
                         <th><a th:text="#{riders.parameter.sex}"/></th>
                         <th><a th:text="#{riders.parameter.foot-size}"/></th>
                     </tr>
-                    <tr th:each="oneRider : ${listOfRidersForClient}">
+                    <tr th:each="oneRider : ${listOfRiders}">
                         <td th:text="${oneRider.id}"/>
                         <td th:text="${oneRider.name}" th:align="left"/>
                         <td th:text="${oneRider.height}"/>

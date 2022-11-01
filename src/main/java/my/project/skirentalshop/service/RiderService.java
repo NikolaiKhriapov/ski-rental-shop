@@ -3,6 +3,7 @@ package my.project.skirentalshop.service;
 import my.project.skirentalshop.model.*;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
+import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static my.project.skirentalshop.security.applicationUser.ApplicationUserRole.ADMIN;
+import static my.project.skirentalshop.security.applicationUser.ApplicationUserRole.CLIENT;
 
 @Service
 public class RiderService {
@@ -24,9 +28,41 @@ public class RiderService {
         this.bookingRiderEquipmentLinkService = bookingRiderEquipmentLinkService;
     }
 
+    public ApplicationUserRole convertToEnumField(String applicationUserRole) {
+        switch (applicationUserRole.toUpperCase().replace('-', '_')) {
+            case "ADMIN" -> {
+                return ADMIN;
+            }
+            case "CLIENT" -> {
+                return CLIENT;
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
+    }
+
     // ----- show all -----
-    public List<Rider> showAllRiders() {
-        return riderRepository.findAllByOrderById();
+    public List<Rider> showAllRiders(ApplicationUserRole applicationUserRole) {
+        switch (applicationUserRole) {
+            case ADMIN -> {
+                return riderRepository.findAllByOrderById();
+            }
+            case CLIENT -> {
+                ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                Long clientId = applicationUser.getClient().getId();
+                List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(clientId);
+
+                List<Rider> allRidersForClient = new ArrayList<>();
+                for (Booking oneBooking : allBookingsForClient) {
+                    for (Rider oneRider : bookingRiderEquipmentLinkService.getListOfRiders(oneBooking.getId())) {
+                        if (!allRidersForClient.contains(oneRider)) {
+                            allRidersForClient.add(oneRider);
+                        }
+                    }
+                }
+                return allRidersForClient;
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
     }
 
     public List<Booking> showAllBookings() {
@@ -43,8 +79,12 @@ public class RiderService {
     }
 
     // ----- add new -----
-    public void addNewRiderToDB(Rider rider) {
+    public void addNewRiderToDB(Rider rider, Long bookingId) {
         riderRepository.save(rider);
+
+        if (bookingId != null) {
+            addRiderToBooking(bookingId, rider);
+        }
     }
 
     // ----- edit -----
@@ -57,8 +97,14 @@ public class RiderService {
         return bookingRiderEquipmentLinkService.showOneBookingById(id);
     }
 
-    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Rider rider) {
-        return bookingRiderEquipmentLinkService.getBookingRiderEquipmentLink(booking, rider);
+    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Long bookingId, Long riderId) {
+        if (bookingId == null) {
+            return null;
+        } else {
+            Booking booking = showOneBookingById(bookingId);
+            Rider rider = showOneRiderById(riderId);
+            return bookingRiderEquipmentLinkService.getBookingRiderEquipmentLink(booking, rider);
+        }
     }
 
     public void updateRiderById(Long id, Rider updatedRider) {
@@ -88,23 +134,5 @@ public class RiderService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return riderRepository.findAll(sort);
-    }
-
-    // ----- ClientRiderController / show all -----
-    public List<Rider> showAllRidersForCurrentClient() {
-        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long clientId = applicationUser.getClient().getId();
-
-        List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(clientId);
-
-        List<Rider> allRidersForClient = new ArrayList<>();
-        for (Booking oneBooking : allBookingsForClient) {
-            for (Rider oneRider : bookingRiderEquipmentLinkService.getListOfRiders(oneBooking.getId())) {
-                if (!allRidersForClient.contains(oneRider)) {
-                    allRidersForClient.add(oneRider);
-                }
-            }
-        }
-        return allRidersForClient;
     }
 }
