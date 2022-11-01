@@ -39,8 +39,8 @@ public class BookingRiderEquipmentLinkService {
         return bookingService.showAllBookings();
     }
 
-    public List<Booking> showAllBookingsForClient(String email) {
-        return bookingService.showAllBookingsForClient(email);
+    public List<Booking> showAllBookingsForClient(Long clientId) {
+        return bookingService.showAllBookingsForClient(clientId);
     }
 
     public List<Rider> getListOfRiders(Long bookingId) {

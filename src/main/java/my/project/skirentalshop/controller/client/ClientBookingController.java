@@ -2,6 +2,7 @@ package my.project.skirentalshop.controller.client;
 
 import my.project.skirentalshop.model.Booking;
 import my.project.skirentalshop.model.BookingRiderEquipmentLink;
+import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,9 +27,11 @@ public class ClientBookingController {
     // ----- showAll -----
     @GetMapping("/history")
     public String showClientHistory(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long clientId = applicationUser.getClient().getId();
+
         model.addAttribute("action", "showAll");
-        model.addAttribute("listOfBookingsForClient", bookingService.showAllBookingsForClient(username));
+        model.addAttribute("listOfBookingsForClient", bookingService.showAllBookingsForClient(clientId));
         return "client/booking/bookings";
     }
 

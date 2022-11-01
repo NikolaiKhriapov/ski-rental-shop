@@ -30,8 +30,11 @@ public class ClientHomeController {
     // ----- client home page -----
     @GetMapping()
     public String showClientMainPage(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("currentBookingsForClient", bookingService.showCurrentBookingsForClient(username));
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long clientId = applicationUser.getClient().getId();
+
+        System.out.println("!!!!!" + bookingService.showCurrentBookingsForClient(clientId).size()); //TODO: delete
+        model.addAttribute("currentBookingsForClient", bookingService.showCurrentBookingsForClient(clientId));
         return "client/home/main_page";
     }
 
@@ -46,9 +49,12 @@ public class ClientHomeController {
     @PatchMapping("/settings/edit-info")
     public String updateApplicationUserInfo(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
                                             @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
-                                            BindingResult bindingResult,
-                                            Model model)    {
+                                            BindingResult bindingResult, Model model)    {
+        System.out.println("!!!!!!!" + registrationRequest.getName());
+        System.out.println("!!!!!!!" + registrationRequest.getPhone1());
+        System.out.println("!!!!!!!" + registrationRequest.getEmail());
         if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getAllErrors());
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }

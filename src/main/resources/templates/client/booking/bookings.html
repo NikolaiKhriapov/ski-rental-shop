@@ -206,7 +206,7 @@
                                     <div th:text="#{riders.parameter.sex} + ': ' + #{${'riders.sex.' + oneLink.rider.sex}}"/>
                                     <div th:text="#{riders.parameter.height} + ': ' + ${oneLink.rider.height}"/>
                                     <div th:text="#{riders.parameter.weight} + ': ' + ${oneLink.rider.weight}"/>
-                                    <div th:text="#{riders.parameter.foot-size} + ': ' + #{${'riders.foot-size.' + oneLink.rider.footSize}}"/>
+                                    <div th:text="#{riders.parameter.foot-size} + ': ' + #{${'equipment.foot-size.' + oneLink.rider.footSize}}"/>
                                 </td>
                                 <td th:align="left">
                                     <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">

@@ -63,19 +63,13 @@ public class ClientService {
         return clientRepository.findAll(sort);
     }
 
-    // ----- show client by email -----
-    public Client showOneClientByEmail(String email) {
-        return clientRepository.findByEmail(email);
-    }
-
     // ----- ClientHomeController / update applicationUser info -----
     public void updateClientById(Long clientToBeUpdatedId, RegistrationRequest registrationRequest) {
         Client clientToBeUpdated = showOneClientById(clientToBeUpdatedId);
 
-        clientToBeUpdated.setName(registrationRequest.getName() + ' ' + registrationRequest.getSurname());
+        clientToBeUpdated.setName(registrationRequest.getName());
         clientToBeUpdated.setPhone1(registrationRequest.getPhone1());
         clientToBeUpdated.setPhone2(registrationRequest.getPhone2());
-        clientToBeUpdated.setEmail(registrationRequest.getEmail());
 
         clientRepository.save(clientToBeUpdated);
     }

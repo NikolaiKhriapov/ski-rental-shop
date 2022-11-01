@@ -31,7 +31,7 @@ public class BookingRiderEquipmentLink {
     private List<TypesOfEquipment> riderRequestedEquipment;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn()
+    @JoinColumn
     private RiderAssignedEquipment riderAssignedEquipment;
 
     public BookingRiderEquipmentLink(Booking booking,

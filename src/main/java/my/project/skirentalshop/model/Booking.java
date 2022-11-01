@@ -27,12 +27,12 @@ public class Booking {
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @NotNull(message = "{validation.booking.invalid_date}")
+    @NotNull(message = "{validation.booking.invalid-date}")
     private Date dateOfArrival;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @NotNull(message = "{validation.booking.invalid_date}")
+    @NotNull(message = "{validation.booking.invalid-date}")
     private Date dateOfReturn;
 
     private boolean completed;

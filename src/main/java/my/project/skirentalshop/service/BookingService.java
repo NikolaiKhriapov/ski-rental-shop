@@ -66,7 +66,7 @@ public class BookingService {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
 
         List<Rider> allRidersForClient = new ArrayList<>();
-        List<Booking> allBookingsForClient = showAllBookingsForClient(bookingToBeUpdated.getClient().getEmail());
+        List<Booking> allBookingsForClient = showAllBookingsForClient(bookingToBeUpdated.getClient().getId());
         List<Booking> allBookingsForClientForTheSameTime = showBookingsForTheDate(
                 bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
         //add all unique riders from all bookings of the client
@@ -87,8 +87,8 @@ public class BookingService {
         return allRidersForClient;
     }
 
-    public List<Booking> showAllBookingsForClient(String email) {
-        return bookingRepository.findAllByClientEmail(email);
+    public List<Booking> showAllBookingsForClient(Long clientId) {
+        return bookingRepository.findAllByClientId(clientId);
     }
 
     public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
@@ -359,13 +359,13 @@ public class BookingService {
 
     // ----- ClientBookingController / add new booking -----
     public Client showCurrentClient() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return clientService.showOneClientByEmail(username);
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return clientService.showOneClientById(applicationUser.getClient().getId());
     }
 
     // ----- ClientHomeController / show upcoming bookings for the client -----
-    public List<Booking> showCurrentBookingsForClient(String email) {
-        return bookingRepository.findAllByClientEmailAndDateOfReturnAfter(email, new Date()); //TODO: check result
+    public List<Booking> showCurrentBookingsForClient(Long clientId) {
+        return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date()); //TODO: check result
     }
 
     // ----- ClientHomeController / update applicationUser info -----
@@ -373,7 +373,7 @@ public class BookingService {
         boolean emailExists = applicationUserService.checkIfExists(registrationRequest.getEmail());
         if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
             applicationUserService.updateApplicationUserInfo(applicationUserToBeUpdated, registrationRequest);
-            Client clientToBeUpdated = clientService.showOneClientByEmail(applicationUserToBeUpdated.getEmail());
+            Client clientToBeUpdated = clientService.showOneClientById(applicationUserToBeUpdated.getClient().getId());
             clientService.updateClientById(clientToBeUpdated.getId(), registrationRequest);
         }
     }

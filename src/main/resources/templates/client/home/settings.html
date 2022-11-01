@@ -68,32 +68,20 @@
                             <td th:text="#{client.settings.info.name} + ': '"/>
                             <td>
                                 <label for="input-name"></label>
-                                <input id="input-name" style="width: 300px" type="text"
+                                <input id="input-name" name="name" type="text" style="width: 300px"
                                        th:placeholder="#{client.settings.info.name}"
-                                       th:field="${applicationUserToBeUpdated.name}"/>
+                                       th:value="${applicationUserToBeUpdated.client.name}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td th:text="#{client.settings.info.surname} + ': '"></td>
-                            <td>
-                                <label for="input-surname"></label>
-                                <input id="input-surname" style="width: 300px" type="text"
-                                       th:placeholder="#{client.settings.info.surname}"
-                                       th:field="${applicationUserToBeUpdated.surname}"/>
-                                <div class="validation-message"
-                                     th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
-                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td th:text="#{client.settings.info.phone1} + ': '"/>
                             <td>
                                 <label for="input-phone1"></label>
-                                <input id="input-phone1" style="width: 300px" type="text"
+                                <input id="input-phone1" name="phone1" type="text" style="width: 300px"
                                        placeholder="X(XXX)XXX-XX-XX"
-                                       th:field="${applicationUserToBeUpdated.phone1}"/>
+                                       th:value="${applicationUserToBeUpdated.client.phone1}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('phone1')}" th:errors="*{phone1}">
                                 </div>
@@ -103,7 +91,7 @@
                             <td th:text="#{client.settings.info.email} + ': '"/>
                             <td>
                                 <label for="input-email"></label>
-                                <input id="input-email" style="width: 300px" type="text"
+                                <input id="input-email" name="email" type="text" style="width: 300px"
                                        th:placeholder="#{client.settings.info.email}"
                                        th:field="${applicationUserToBeUpdated.email}"/>
                                 <div class="validation-message"
@@ -113,7 +101,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="hidden" th:field="${applicationUserToBeUpdated.password}"/>
+                                <input name="password" type="hidden" value="Password1"/>
+                                <!--Temp value, just for passing validation-->
                             </td>
                         </tr>
                     </table>
@@ -133,10 +122,12 @@
                     <table>
                         <tr>
                             <td>
-                                <input type="hidden" th:field="${applicationUserToBeUpdated.name}"/>
-                                <input type="hidden" th:field="${applicationUserToBeUpdated.surname}"/>
-                                <input type="hidden" th:field="${applicationUserToBeUpdated.phone1}"/>
-                                <input type="hidden" th:field="${applicationUserToBeUpdated.email}"/>
+                                <input name="name" type="hidden"
+                                       th:value="${applicationUserToBeUpdated.client.name}"/>
+                                <input name="phone1" type="hidden"
+                                       th:value="${applicationUserToBeUpdated.client.phone1}"/>
+                                <input name="email" type="hidden"
+                                       th:value="${applicationUserToBeUpdated.email}"/>
                             </td>
                         </tr>
                         <tr>

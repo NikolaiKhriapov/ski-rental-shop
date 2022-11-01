@@ -1,6 +1,7 @@
 package my.project.skirentalshop.security.applicationUser;
 
 import lombok.*;
+import my.project.skirentalshop.model.Client;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +22,9 @@ public class ApplicationUser implements UserDetails {
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
-    private String name;
-    private String surname;
-    private String phone1;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private Client client;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -57,11 +58,8 @@ public class ApplicationUser implements UserDetails {
         return true;
     }
 
-    public ApplicationUser(String name, String surname, String phone1, String email, String password,
-                           ApplicationUserRole applicationUserRole) {
-        this.name = name;
-        this.surname = surname;
-        this.phone1 = phone1;
+    public ApplicationUser(Client client, String email, String password, ApplicationUserRole applicationUserRole) {
+        this.client = client;
         this.email = email;
         this.password = password;
         this.applicationUserRole = applicationUserRole;

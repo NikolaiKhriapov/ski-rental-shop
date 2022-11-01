@@ -28,14 +28,18 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
+                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
+                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -45,13 +49,17 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
+                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId + '&' : ''} +
+                                       ${action == 'create'  ? '/add-new?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
+                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -92,7 +100,7 @@
                     </tr>
                     <tr th:each="oneRider : ${listOfRidersForClient}">
                         <td th:text="${oneRider.id}"/>
-                        <td th:text="${oneRider.name}"/>
+                        <td th:text="${oneRider.name}" th:align="left"/>
                         <td th:text="${oneRider.height}"/>
                         <td th:text="${oneRider.weight}"/>
                         <td th:text="#{${'riders.sex.' + oneRider.sex}}"/>

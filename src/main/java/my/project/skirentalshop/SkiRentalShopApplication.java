@@ -24,7 +24,7 @@ public class SkiRentalShopApplication {
         return args -> {
             try {
                 ApplicationUser admin = new ApplicationUser(
-                        "", "", "", "admin", "admin", ApplicationUserRole.ADMIN);
+                        null, "admin", "admin", ApplicationUserRole.ADMIN);
                 applicationUserService.signUpUser(admin);
                 System.out.println("ADMIN has been created!");
             } catch (IllegalStateException e) {

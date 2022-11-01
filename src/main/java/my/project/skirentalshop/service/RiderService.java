@@ -2,6 +2,7 @@ package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.*;
 import my.project.skirentalshop.repository.RiderRepository;
+import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -91,8 +92,10 @@ public class RiderService {
 
     // ----- ClientRiderController / show all -----
     public List<Rider> showAllRidersForCurrentClient() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(username);
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long clientId = applicationUser.getClient().getId();
+
+        List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(clientId);
 
         List<Rider> allRidersForClient = new ArrayList<>();
         for (Booking oneBooking : allBookingsForClient) {

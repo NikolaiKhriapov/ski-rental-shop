@@ -46,9 +46,9 @@ public class ApplicationUserService implements UserDetailsService {
     }
 
     public void updateApplicationUserInfo(ApplicationUser applicationUserToBeUpdated, RegistrationRequest registrationRequest) {
-        applicationUserToBeUpdated.setName(registrationRequest.getName());
-        applicationUserToBeUpdated.setSurname(registrationRequest.getSurname());
-        applicationUserToBeUpdated.setPhone1(registrationRequest.getPhone1());
+        applicationUserToBeUpdated.getClient().setName(
+                registrationRequest.getName());
+        applicationUserToBeUpdated.getClient().setPhone1(registrationRequest.getPhone1());
         applicationUserToBeUpdated.setEmail(registrationRequest.getEmail());
 
         applicationUserRepository.save(applicationUserToBeUpdated);

@@ -63,12 +63,6 @@
                 <!-- TODO: change style to CSS class -->
             </span>
             <span>
-                <label for="input-surname"></label>
-                <input id="input-surname" class="form-control"
-                       type="text" th:field="*{surname}" th:placeholder="#{auth.sign-up.placeholder.surname}">
-                <a style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></a>
-            </span>
-            <span>
                 <label for="input-phone1"></label>
                 <input id="input-phone1" class="form-control"
                        type="text" th:field="*{phone1}"

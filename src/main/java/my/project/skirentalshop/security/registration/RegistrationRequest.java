@@ -12,13 +12,10 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
+
     @NotBlank(message = "{validation.application-user.invalid-name.not-blank}")
     @Size(max = 30, message = "{validation.application-user.invalid-name.size}")
     private String name;
-
-    @NotBlank(message = "{validation.application-user.invalid-surname.not-blank}")
-    @Size(max = 30, message = "{validation.application-user.invalid-surname.size}")
-    private String surname;
 
     @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.application-user.invalid-phone-number}")
     private String phone1;
