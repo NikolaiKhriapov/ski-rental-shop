@@ -27,8 +27,7 @@ public class RiderController {
     public String showAllRiders(@PathVariable("applicationUserRole") String applicationUserRole,
                                 Model model) {
         model.addAttribute("action", "showAll");
-        model.addAttribute("listOfRiders",
-                riderService.showAllRiders(riderService.convertToEnumField(applicationUserRole)));
+        model.addAttribute("listOfRiders", riderService.showAllRiders());
         return applicationUserRole + "/rider/riders";
     }
 

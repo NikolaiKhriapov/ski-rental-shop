@@ -20,10 +20,10 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     private Long id;
 
-    @NotEmpty(message = "{validation.client.invalid_name}")
+    @NotEmpty(message = "{validation.client.invalid-name}")
     private String name;
 
-    @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.client.invalid_phone_number}")
+    @Pattern(regexp = "[\\d]\\([\\d]{3}\\)[\\d]{3}-[\\d]{2}-[\\d]{2}", message = "{validation.client.invalid-phone-number}")
     private String phone1;
 
     private String phone2;

@@ -28,28 +28,16 @@ public class RiderService {
         this.bookingRiderEquipmentLinkService = bookingRiderEquipmentLinkService;
     }
 
-    public ApplicationUserRole convertToEnumField(String applicationUserRole) {
-        switch (applicationUserRole.toUpperCase().replace('-', '_')) {
-            case "ADMIN" -> {
-                return ADMIN;
-            }
-            case "CLIENT" -> {
-                return CLIENT;
-            }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
-        }
-    }
-
     // ----- show all -----
-    public List<Rider> showAllRiders(ApplicationUserRole applicationUserRole) {
+    public List<Rider> showAllRiders() {
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
         switch (applicationUserRole) {
             case ADMIN -> {
                 return riderRepository.findAllByOrderById();
             }
             case CLIENT -> {
-                ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                Long clientId = applicationUser.getClient().getId();
-                List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient(clientId);
+                List<Booking> allBookingsForClient = bookingRiderEquipmentLinkService.showAllBookingsForClient();
 
                 List<Rider> allRidersForClient = new ArrayList<>();
                 for (Booking oneBooking : allBookingsForClient) {

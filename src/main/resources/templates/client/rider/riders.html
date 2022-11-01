@@ -13,12 +13,13 @@
 
 <body>
 
-<!--/*@thymesVar id="listOfRiders" type="List<Rider>"*/-->
+<!--/*@thymesVar id="listOfRiders" type="java.util.List<my.project.skirentalshop.model.Rider>"*/-->
 <!--/*@thymesVar id="rider" type="my.project.skirentalshop.model.Rider"*/-->
 <!--/*@thymesVar id="link" type="my.project.skirentalshop.model.BookingRiderEquipmentLink"*/-->
-<!--/*@thymesVar id="action" type="String"*/-->
-<!--/*@thymesVar id="bookingId" type="Long"*/-->
-<!--/*@thymesVar id="riderId" type="Long"*/-->
+<!--/*@thymesVar id="Sex" type="my.project.skirentalshop.model.Rider.Sex"*/-->
+<!--/*@thymesVar id="action" type="java.lang.String"*/-->
+<!--/*@thymesVar id="bookingId" type="java.lang.Long"*/-->
+<!--/*@thymesVar id="riderId" type="java.lang.Long"*/-->
 
 <div class="header">
     <nav class="top-nav">
@@ -81,7 +82,7 @@
         <br>
         <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/history" th:text="#{side-bar.client.history}"/></button>
+        <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
         <button type="button"><a href="/client/riders" th:text="#{side-bar.client.riders}"/></button>
     </div>

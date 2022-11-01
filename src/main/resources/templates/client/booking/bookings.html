@@ -13,6 +13,13 @@
 
 <body>
 
+<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.model.Booking>"*/-->
+<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.model.Rider>"*/-->
+<!--/*@thymesVar id="booking" type="my.project.skirentalshop.model.Booking"*/-->
+<!--/*@thymesVar id="action" type="java.lang.String"*/-->
+<!--/*@thymesVar id="bookingId" type="java.lang.String"*/-->
+<!--/*@thymesVar id="existingRiderToBeAddedId" type="java.lang.Long"*/-->
+
 <div class="header">
     <nav class="top-nav">
         <ul class="top-nav-items">
@@ -27,13 +34,13 @@
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
                     <a th:href="@{'/client/bookings' +
-                                       ${action == 'showAll' ? '/history?' : ''} +
+                                       ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/client/bookings' +
-                                       ${action == 'showAll' ? '/history?' : ''} +
+                                       ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
                                                                                                        'theme=theme_2'}"
@@ -44,12 +51,12 @@
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
                     <a th:href="@{'/client/bookings' +
-                                       ${action == 'showAll' ? '/history?' : ''} +
+                                       ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/client/bookings' +
-                                       ${action == 'showAll' ? '/history?' : ''} +
+                                       ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'create'  ? '/add-new?' : ''} +
                                        ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
                                                                                                  'lang=ru'}">Русский</a>
@@ -66,7 +73,7 @@
         <br>
         <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/history" th:text="#{side-bar.client.history}"/></button>
+        <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
         <button type="button"><a href="/client/riders" th:text="#{side-bar.client.riders}"/></button>
     </div>
@@ -91,7 +98,7 @@
                         <th><a th:text="#{bookings.parameter.date-of-return}"/></th>
                         <th><a th:text="#{bookings.parameter.number-of-riders}"/></th>
                     </tr>
-                    <tr th:each="oneBooking : ${listOfBookingsForClient}">
+                    <tr th:each="oneBooking : ${listOfBookings}">
                         <td th:text="${oneBooking.id}"/>
                         <td th:text="${oneBooking.client.name}" th:align="left"/>
                         <td th:text="${oneBooking.client.phone1}"/>
@@ -228,7 +235,6 @@
                     </div>
                     <div th:unless="${booking.listOfBookingRiderEquipmentLinks.size > 0}"
                          th:text="#{bookings.empty-table}"/>
-
                     <br>
                 </div>
 

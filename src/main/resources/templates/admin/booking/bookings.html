@@ -13,6 +13,25 @@
 
 <body>
 
+<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.model.Booking>"*/-->
+<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.model.Client>"*/-->
+<!--/*@thymesVar id="allAvailableSnowboards" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSnowboardBoots" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSki" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSkiBoots" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableHelmets" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableJackets" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableGloves" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailablePants" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableProtectiveShorts" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableKneeProtection" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
+<!--/*@thymesVar id="booking" type="my.project.skirentalshop.model.Booking"*/-->
+<!--/*@thymesVar id="existingRiderToBeAddedId" type="java.lang.Long"*/-->
+<!--/*@thymesVar id="action" type="java.lang.String"*/-->
+<!--/*@thymesVar id="search" type="java.lang.String"*/-->
+<!--/*@thymesVar id="reverseSortDirection" type="java.lang.String"*/-->
+<!--/*@thymesVar id="bookingId" type="java.lang.String"*/-->
+
 <div class="header">
     <nav class="top-nav">
         <ul class="top-nav-items">
@@ -332,7 +351,7 @@
                     <div th:if="${booking.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
                             <tr th:each="oneLink : ${booking.listOfBookingRiderEquipmentLinks}">
-                                <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
+                                <td th:text="${oneLink.rider.id}" style="vertical-align:top" th:width="1"/>
                                 <td style="vertical-align:top" th:align="left">
                                     <div th:text="#{bookings.parameter.client} + ': ' + ${oneLink.rider.name}"/>
                                     <div th:text="#{riders.parameter.sex} + ': ' + #{${'riders.sex.' + oneLink.rider.sex}}"/>
@@ -635,6 +654,7 @@
                     </div>
                     <div th:unless="${booking.listOfBookingRiderEquipmentLinks.size > 0}"
                          th:text="#{bookings.empty-table}"/>
+                    <br>
                 </div>
 
                 <!--Add existing Rider to Booking-->

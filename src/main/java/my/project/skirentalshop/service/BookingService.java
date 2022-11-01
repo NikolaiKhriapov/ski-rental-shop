@@ -8,6 +8,7 @@ import my.project.skirentalshop.repository.BookingRiderEquipmentLinkRepository;
 import my.project.skirentalshop.repository.EquipmentRepository;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
+import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,50 @@ public class BookingService {
 
     // ----- show all bookings -----
     public List<Booking> showAllBookings() {
-        return bookingRepository.findAllByOrderById();
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+
+        switch (applicationUserRole) {
+            case ADMIN -> {
+                return bookingRepository.findAllByOrderById();
+            }
+            case CLIENT -> {
+                return bookingRepository.findAllByClientId(applicationUser.getClient().getId());
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
     }
 
     // ----- add new booking -----
+    public Booking createNewBooking() {
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+
+        Booking newBooking = new Booking();
+        switch (applicationUserRole) {
+            case ADMIN -> {
+                return newBooking;
+            }
+            case CLIENT -> {
+                newBooking.setClient(applicationUser.getClient());
+                return newBooking;
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
+    }
+
     public void addNewBookingToDB(Booking newBooking) {
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+
+        switch (applicationUserRole) {
+            case ADMIN -> {
+            }
+            case CLIENT -> {
+                new
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
         bookingRepository.save(newBooking);
     }
 
@@ -66,7 +106,7 @@ public class BookingService {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
 
         List<Rider> allRidersForClient = new ArrayList<>();
-        List<Booking> allBookingsForClient = showAllBookingsForClient(bookingToBeUpdated.getClient().getId());
+        List<Booking> allBookingsForClient = showAllBookings();
         List<Booking> allBookingsForClientForTheSameTime = showBookingsForTheDate(
                 bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
         //add all unique riders from all bookings of the client
@@ -85,10 +125,6 @@ public class BookingService {
         allRidersForClient.removeAll(getListOfRiders(bookingToBeUpdated.getId()));
 
         return allRidersForClient;
-    }
-
-    public List<Booking> showAllBookingsForClient(Long clientId) {
-        return bookingRepository.findAllByClientId(clientId);
     }
 
     public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
@@ -113,16 +149,21 @@ public class BookingService {
                 for (Rider rider : getListOfRiders(oneBooking.getId())) {
                     BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
                     switch (typeOfEquipment) {
-                        case SNOWBOARD -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboard());
-                        case SNOWBOARD_BOOTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboardBoots());
+                        case SNOWBOARD ->
+                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboard());
+                        case SNOWBOARD_BOOTS ->
+                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboardBoots());
                         case SKI -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSki());
-                        case SKI_BOOTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSkiBoots());
+                        case SKI_BOOTS ->
+                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSkiBoots());
                         case HELMET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getHelmet());
                         case JACKET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getJacket());
                         case GLOVES -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getGloves());
                         case PANTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getPants());
-                        case PROTECTIVE_SHORTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getProtectiveShorts());
-                        case KNEE_PROTECTION -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getKneeProtection());
+                        case PROTECTIVE_SHORTS ->
+                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getProtectiveShorts());
+                        case KNEE_PROTECTION ->
+                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getKneeProtection());
                     }
                 }
             }
@@ -141,7 +182,8 @@ public class BookingService {
         return listOfRiders;
     }
 
-    public void setListOfRiders(Booking booking, List<Rider> updatedListOfRiders) {
+    public void setListOfRiders(Booking booking, Long bookingToBeUpdatedId) {
+        List<Rider> updatedListOfRiders = getListOfRiders(bookingToBeUpdatedId);
         //delete all current bookingRiderEquipmentLinks for the booking
         bookingRiderEquipmentLinkRepository.deleteAll(booking.getListOfBookingRiderEquipmentLinks());
         //create new bookingRiderEquipmentLinks for the riders (without equipment)
@@ -355,12 +397,6 @@ public class BookingService {
 
     public List<Booking> showBookingsForTheDate(Date dateFrom, Date dateTo) {
         return bookingRepository.findByDateOfArrivalIsBetween(dateFrom, dateTo);
-    }
-
-    // ----- ClientBookingController / add new booking -----
-    public Client showCurrentClient() {
-        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return clientService.showOneClientById(applicationUser.getClient().getId());
     }
 
     // ----- ClientHomeController / show upcoming bookings for the client -----
