@@ -25,15 +25,15 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_1'" th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="'/admin/show-' + ${day} + '?theme=theme_2'" th:text="#{top-nav.theme.theme-2}"/>
+                    <a th:href="'/admin/bookings-' + ${day} + '?theme=theme_1'" th:text="#{top-nav.theme.theme-1}"/>
+                    <a th:href="'/admin/bookings-' + ${day} + '?theme=theme_2'" th:text="#{top-nav.theme.theme-2}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="'/admin/show-' + ${day} + '?lang=en'">English</a>
-                    <a th:href="'/admin/show-' + ${day} + '?lang=ru'">Русский</a>
+                    <a th:href="'/admin/bookings-' + ${day} + '?lang=en'">English</a>
+                    <a th:href="'/admin/bookings-' + ${day} + '?lang=ru'">Русский</a>
                 </div>
             </li>
         </ul>
@@ -48,14 +48,14 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+            <a href="/admin/bookings-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+            <a href="/admin/bookings-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
@@ -133,13 +133,13 @@
                         <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                         <td th:width="1">
                             <form th:method="GET"
-                                  th:action="@{'/admin/info-booking/edit/' + ${oneBooking.id}}">
+                                  th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
                                 <input class="button" type="submit" th:value="#{bookings.button.edit-booking}"/>
                             </form>
                         </td>
                         <td th:width="1">
                             <form th:method="DELETE"
-                                  th:action="@{'/admin/info-booking/' + ${oneBooking.id}}">
+                                  th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
                                 <input class="button" type="submit" th:value="#{bookings.button.delete}"/>
                             </form>
                         </td>

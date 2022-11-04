@@ -48,14 +48,14 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+            <a href="/admin/bookings-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+            <a href="/admin/bookings-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
@@ -134,7 +134,7 @@
                             <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
                             <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                             <td th:width="1">
-                                <form th:method="GET" th:action="@{'/admin/bookings/edit/' + ${oneBooking.id}}">
+                                <form th:method="GET" th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
                                     <input class="button" type="submit" th:value="#{bookings.button.edit-booking}"/>
                                 </form>
                             </td>
@@ -151,7 +151,7 @@
 
                 <!--Button - Add new booking-->
                 <div>
-                    <a href="/admin/bookings/add-new">
+                    <a href="/admin/bookings/new">
                         <button class="button" th:text="#{bookings.button.add-booking}"/>
                     </a>
                 </div>
@@ -189,12 +189,12 @@
                             <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
                             <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                             <td th:width="1">
-                                <form th:method="GET" th:action="@{'/admin/change-completed/' + ${oneBooking.id}}">
+                                <form th:method="GET" th:action="@{'/admin/' + ${oneBooking.id} + '/change-completed'}">
                                     <input class="button" type="submit" th:value="#{bookings.button.mark-completed}"/>
                                 </form>
                             </td>
                             <td th:width="1">
-                                <form th:method="GET" th:action="@{'/admin/bookings/edit/' + ${oneBooking.id}}">
+                                <form th:method="GET" th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
                                     <input class="button" type="submit" th:value="#{bookings.button.edit-booking}"/>
                                 </form>
                             </td>
@@ -211,7 +211,7 @@
 
                 <!--Button - Add new booking-->
                 <div>
-                    <a href="/admin/bookings/add-new">
+                    <a href="/admin/bookings/new">
                         <button class="button" th:text="#{bookings.button.add-booking}"/>
                     </a>
                 </div>

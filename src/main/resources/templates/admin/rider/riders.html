@@ -38,19 +38,19 @@
                     <a th:href="@{'/admin/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/admin/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -61,18 +61,18 @@
                     <a th:href="@{'/admin/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/admin/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -88,14 +88,14 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+            <a href="/admin/bookings-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+            <a href="/admin/bookings-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
@@ -152,7 +152,7 @@
 
                 <!--Search-->
                 <form th:method="GET"
-                      th:action="@{'/admin/riders/search'}">
+                      th:action="@{/admin/riders/search}">
                     <label for="input-search"></label>
                     <input id="input-search" style="width:200px"
                            type="text" th:name="search"
@@ -212,7 +212,7 @@
                         <td th:text="#{${'riders.sex.' + oneRider.sex}}"/>
                         <td th:text="#{${'equipment.foot-size.' + oneRider.footSize}}"/>
                         <td th:width="1">
-                            <a th:href="@{'/admin/riders/edit?riderId=' + ${oneRider.id}}">
+                            <a th:href="@{'/admin/riders/' + ${oneRider.id}}">
                                 <button class="button" th:text="#{riders.button.edit}"/>
                             </a>
                         </td>
@@ -228,7 +228,7 @@
 
                 <!--Go to "add-new"-->
                 <div th:if="${action == 'showAll'}">
-                    <a href="/admin/riders/add-new">
+                    <a href="/admin/riders/new">
                         <button class="button" th:text="#{riders.button.add-rider}"/>
                     </a>
                 </div>
@@ -251,10 +251,10 @@
                 <!--Input Parameters-->
                 <form th:method="${action == 'create'} ? POST :
                                 (${action == 'update'} ? PATCH : '')"
-                      th:action="@{'/admin/riders' + ${action == 'create' ? '/add-new' + (bookingId != null ? '?bookingId=' + bookingId : '')
-                                                                           : ''}
-                                                    + ${action == 'update' ? '/edit/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
-                                                                           : ''}}"
+                      th:action="@{'/admin/riders' + ${action == 'create' ? (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                                          : ''}
+                                                   + ${action == 'update' ? '/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                                          : ''}}"
                       th:object="${rider}">
                     <table>
                         <!-- name -->
@@ -341,7 +341,7 @@
                 <!--Requested Equipment-->
                 <form th:if="${action == 'update' && bookingId != null}"
                       th:method="PATCH"
-                      th:action="@{'/admin/bookings/edit-equipment/' + ${riderId} + '?bookingId=' + ${bookingId}}"
+                      th:action="@{'/admin/bookings/' + ${bookingId} + '/rider-requested-equipment/' + ${riderId}}"
                       th:object="${link}">
                     <table>
                         <tr>
@@ -368,7 +368,7 @@
                 <!--Return to current booking-->
                 <div th:if="${bookingId != null}">
                     <form th:method="GET"
-                          th:action="@{'/admin/bookings/edit/' + ${bookingId}}">
+                          th:action="@{'/admin/bookings/' + ${bookingId}}">
                         <input class="button" type="submit" th:value="#{riders.button.back-to-booking}"/>
                     </form>
                 </div>

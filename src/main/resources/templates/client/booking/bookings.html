@@ -35,14 +35,14 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/bookings' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + bookingId + '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/client/bookings' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + bookingId + '?' : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -52,13 +52,13 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/bookings' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + bookingId + '?' : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/client/bookings' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + bookingId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + bookingId + '?' : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -71,7 +71,7 @@
     <div class="sidebar">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
+        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
         <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
@@ -124,8 +124,8 @@
                     <!--Input parameters-->
                     <form th:method="${action == 'create'} ? POST :
                                     (${action == 'update'} ? PATCH : '')"
-                          th:action="@{'/client/bookings' + ${action == 'create' ? '/add-new' : ''}
-                                                          + ${action == 'update' ? '/edit/' + bookingId : ''}}"
+                          th:action="@{'/client/bookings' + ${action == 'create' ? '' : ''}
+                                                          + ${action == 'update' ? '/' + bookingId : ''}}"
                           th:object="${booking}">
                         <table>
                             <!-- id -->
@@ -207,7 +207,7 @@
                     <div th:if="${booking.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
                             <tr th:each="oneLink : ${booking.listOfBookingRiderEquipmentLinks}">
-                                <td th:text="${oneLink.rider.id}" style="vertical-align:top"/>
+                                <td th:text="${oneLink.rider.id}" style="vertical-align:top" th:width="1"/>
                                 <td style="vertical-align:top" th:align="left">
                                     <div th:text="#{bookings.parameter.client} + ': ' + ${oneLink.rider.name}"/>
                                     <div th:text="#{riders.parameter.sex} + ': ' + #{${'riders.sex.' + oneLink.rider.sex}}"/>
@@ -221,12 +221,12 @@
                                     </div>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="'/client/riders/edit?riderId=' + ${oneLink.rider.id} + '&bookingId=' + ${booking.id}">
+                                    <a th:href="'/client/riders/' + ${oneLink.rider.id} + '?bookingId=' + ${booking.id}">
                                         <button class="button" th:text="#{bookings.button.edit-rider}"/>
                                     </a>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="@{'/client/bookings/edit/remove-rider?bookingId=' + ${booking.id} + '&riderId=' + ${oneLink.rider.id}}">
+                                    <a th:href="@{'/client/bookings/' + ${booking.id} + '/remove-rider/' + ${oneLink.rider.id}}">
                                         <button class="button" th:text="#{bookings.button.remove-rider}"/>
                                     </a>
                                 </td>
@@ -242,7 +242,7 @@
                 <div th:if="${action == 'update'}">
                     <div th:if="${allAvailableRidersForClient.size > 0}">
                         <form th:method="PATCH"
-                              th:action="@{/client/bookings/edit/add-existing-rider/{bookingId}(bookingId=${bookingId})}"
+                              th:action="@{'/client/bookings/' + ${bookingId} + '/new-existing-rider'}"
                               th:object="${existingRiderToBeAddedId}">
                             <label for="select-existing-rider-id"></label>
                             <select id="select-existing-rider-id" name="existingRiderToBeAddedId">
@@ -260,7 +260,7 @@
 
                 <!--Add new rider-->
                 <div th:if="${action == 'update'}">
-                    <a th:href="@{'/client/riders/add-new?bookingId=' + ${booking.id}}">
+                    <a th:href="@{'/client/riders/new?bookingId=' + ${booking.id}}">
                         <button class="button" th:text="#{bookings.button.add-new-rider}"/>
                     </a>
 

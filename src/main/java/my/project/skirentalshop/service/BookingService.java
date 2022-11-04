@@ -8,6 +8,7 @@ import my.project.skirentalshop.repository.BookingRiderEquipmentLinkRepository;
 import my.project.skirentalshop.repository.EquipmentRepository;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
+import my.project.skirentalshop.security.applicationUser.ApplicationUserRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
@@ -89,7 +90,13 @@ public class BookingService {
             case ADMIN -> {
             }
             case CLIENT -> {
-                new
+                RegistrationRequest newApplicationUserInfo = new RegistrationRequest();
+                newApplicationUserInfo.setName(newBooking.getClient().getName());
+                newApplicationUserInfo.setPhone1(newBooking.getClient().getPhone1());
+                newApplicationUserInfo.setEmail(applicationUser.getEmail());
+
+                updateApplicationUserInfo(applicationUser, newApplicationUserInfo);
+                newBooking.setClient(clientService.showOneClientById(applicationUser.getClient().getId()));
             }
             default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
         }
@@ -195,7 +202,24 @@ public class BookingService {
     public void updateBookingById(Long bookingToBeUpdatedId, Booking updatedBookingInfo) {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
         //update client
-        clientService.updateClientById(bookingToBeUpdated.getClient().getId(), updatedBookingInfo.getClient());
+
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+        switch (applicationUserRole) {
+            case ADMIN -> {
+                clientService.updateClientById(bookingToBeUpdated.getClient().getId(), updatedBookingInfo.getClient());
+            }
+            case CLIENT -> {
+                RegistrationRequest newApplicationUserInfo = new RegistrationRequest();
+                newApplicationUserInfo.setName(updatedBookingInfo.getClient().getName());
+                newApplicationUserInfo.setPhone1(updatedBookingInfo.getClient().getPhone1());
+                newApplicationUserInfo.setEmail(applicationUser.getEmail());
+
+                updateApplicationUserInfo(applicationUser, newApplicationUserInfo);
+                bookingToBeUpdated.setClient(clientService.showOneClientById(applicationUser.getClient().getId()));
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+        }
         //update booking
         bookingToBeUpdated.setClient(bookingToBeUpdated.getClient());
         bookingToBeUpdated.setDateOfArrival(updatedBookingInfo.getDateOfArrival());

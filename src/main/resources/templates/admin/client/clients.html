@@ -28,15 +28,15 @@
                     <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -47,14 +47,14 @@
                     <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/admin/clients' +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + clientId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -70,14 +70,14 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+            <a href="/admin/bookings-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+            <a href="/admin/bookings-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
@@ -180,7 +180,7 @@
                         <td th:text="${oneClient.phone1}"/>
                         <td th:text="${oneClient.phone2}"/>
                         <td th:width="1">
-                            <a th:href="@{'/admin/clients/edit/' + ${oneClient.id}}">
+                            <a th:href="@{'/admin/clients/' + ${oneClient.id}}">
                                 <button class="button" th:text="#{clients.button.edit}"/>
                             </a>
                         </td>
@@ -196,7 +196,7 @@
 
                 <!--Go to "add-new"-->
                 <div th:if="${action == 'showAll'}">
-                    <a href="/admin/clients/add-new">
+                    <a href="/admin/clients/new">
                         <button class="button" th:text="#{clients.button.add-client}"/>
                     </a>
                 </div>
@@ -219,8 +219,8 @@
                 <!--Input parameters-->
                 <form th:method="${action == 'create'} ? POST :
                                 (${action == 'update'} ? PATCH : '')"
-                      th:action="@{'/admin/clients' + ${action == 'create' ? '/add-new' : ''}
-                                                    + ${action == 'update' ? '/edit/' + clientId : ''}}"
+                      th:action="@{'/admin/clients' + ${action == 'create' ? '' : ''}
+                                                    + ${action == 'update' ? '/' + clientId : ''}}"
                       th:object="${client}">
                     <table>
                         <!-- name -->

@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller.admin;
+package my.project.skirentalshop.controller;
 
 import my.project.skirentalshop.model.Rider;
 import my.project.skirentalshop.service.RiderService;
@@ -23,30 +23,30 @@ public class RiderController {
     }
 
     // ----- show all -----
-    @GetMapping()
-    public String showAllRiders(@PathVariable("applicationUserRole") String applicationUserRole,
-                                Model model) {
+    @GetMapping
+    public String showAll(@PathVariable("applicationUserRole") String applicationUserRole,
+                          Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfRiders", riderService.showAllRiders());
         return applicationUserRole + "/rider/riders";
     }
 
     // ----- add new -----
-    @GetMapping("/add-new")
-    public String createNewRider(@PathVariable("applicationUserRole") String applicationUserRole,
-                                 @RequestParam(value = "bookingId", required = false) Long bookingId,
-                                 Model model) {
+    @GetMapping("/new")
+    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @RequestParam(value = "bookingId", required = false) Long bookingId,
+                         Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("rider", new Rider());
         model.addAttribute("bookingId", bookingId);
         return applicationUserRole + "/rider/riders";
     }
 
-    @PostMapping("/add-new")
-    public String addNewRiderToDB(@PathVariable("applicationUserRole") String applicationUserRole,
-                                  @RequestParam(value = "bookingId", required = false) Long bookingId,
-                                  @ModelAttribute("rider") @Valid Rider rider,
-                                  BindingResult bindingResult, Model model) {
+    @PostMapping
+    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @RequestParam(value = "bookingId", required = false) Long bookingId,
+                         @ModelAttribute("rider") @Valid Rider rider,
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return applicationUserRole + "/rider/riders";
@@ -56,16 +56,16 @@ public class RiderController {
         if (bookingId == null) {
             return "redirect:/" + applicationUserRole + "/riders/";
         } else {
-            return "redirect:/" + applicationUserRole + "/riders/add-new?bookingId=" + bookingId;
+            return "redirect:/" + applicationUserRole + "/riders/new?bookingId=" + bookingId;
         }
     }
 
     // ----- edit -----
-    @GetMapping("/edit")
-    public String showOneRider(@PathVariable("applicationUserRole") String applicationUserRole,
-                               @RequestParam("riderId") Long riderId,
-                               @RequestParam(value = "bookingId", required = false) Long bookingId,
-                               Model model) {
+    @GetMapping("/{riderId}")
+    public String showOne(@PathVariable("applicationUserRole") String applicationUserRole,
+                          @PathVariable("riderId") Long riderId,
+                          @RequestParam(value = "bookingId", required = false) Long bookingId,
+                          Model model) {
         model.addAttribute("action", "update");
         model.addAttribute("rider", riderService.showOneRiderById(riderId));
         model.addAttribute("bookingId", bookingId);
@@ -74,12 +74,12 @@ public class RiderController {
         return applicationUserRole + "/rider/riders";
     }
 
-    @PatchMapping("/edit/{riderId}")
-    public String updateRider(@PathVariable("applicationUserRole") String applicationUserRole,
-                              @PathVariable("riderId") Long riderId,
-                              @RequestParam(value = "bookingId", required = false) Long bookingId,
-                              @ModelAttribute("rider") @Valid Rider updatedRider,
-                              BindingResult bindingResult, Model model) {
+    @PatchMapping("/{riderId}")
+    public String update(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @PathVariable("riderId") Long riderId,
+                         @RequestParam(value = "bookingId", required = false) Long bookingId,
+                         @ModelAttribute("rider") @Valid Rider updatedRider,
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
             model.addAttribute("riderId", riderId);
@@ -92,23 +92,23 @@ public class RiderController {
         if (bookingId == null) {
             return "redirect:/" + applicationUserRole + "/riders";
         } else {
-            return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingId;
+            return "redirect:/" + applicationUserRole + "/bookings/" + bookingId;
         }
     }
 
     // ----- delete -----
     @DeleteMapping("/{riderId}")
-    public String deleteRider(@PathVariable("applicationUserRole") String applicationUserRole,
-                              @PathVariable("riderId") Long riderId) {
+    public String delete(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @PathVariable("riderId") Long riderId) {
         riderService.deleteRiderById(riderId);
-        return "redirect:/" + applicationUserRole + "/riders/";
+        return "redirect:/" + applicationUserRole + "/riders";
     }
 
     // ----- search -----
     @GetMapping("/search")
-    public String showAllRidersBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
-                                        @RequestParam("search") String search,
-                                        Model model) {
+    public String showAllBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
+                                  @RequestParam("search") String search,
+                                  Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfRiders", riderService.showRidersBySearch(search));
         model.addAttribute("search", search);
@@ -117,10 +117,10 @@ public class RiderController {
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortRidersByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
-                                        @RequestParam("parameter") String parameter,
-                                        @RequestParam("sortDirection") String sortDirection,
-                                        Model model) {
+    public String sortAllByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
+                                     @RequestParam("parameter") String parameter,
+                                     @RequestParam("sortDirection") String sortDirection,
+                                     Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfRiders", riderService.sortAllRidersByParameter(parameter, sortDirection));

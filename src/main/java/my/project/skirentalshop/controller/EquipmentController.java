@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller.admin;
+package my.project.skirentalshop.controller;
 
 import my.project.skirentalshop.model.Equipment;
 import my.project.skirentalshop.model.enums.TypesOfEquipment;
@@ -30,26 +30,26 @@ public class EquipmentController {
     }
 
     // ----- show all -----
-    @GetMapping()
-    public String showAllEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment, Model model) {
+    @GetMapping
+    public String showAll(@PathVariable("typeOfEquipment") String typeOfEquipment, Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(convertToEnumField(typeOfEquipment)));
         return "admin/equipment/equipment";
     }
 
     // ----- add new -----
-    @GetMapping("/add-new")
-    public String createNewEquipment(Model model) {
+    @GetMapping("/new")
+    public String create(Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("equipment", new Equipment());
         return "admin/equipment/equipment";
     }
 
-    @PostMapping("/add-new")
-    public String addNewEquipmentToDB(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                      @ModelAttribute("equipment") @Valid Equipment oneEquipment,
-                                      BindingResult bindingResult,
-                                      Model model) {
+    @PostMapping
+    public String create(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                         @ModelAttribute("equipment") @Valid Equipment oneEquipment,
+                         BindingResult bindingResult,
+                         Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return "admin/equipment/equipment";
@@ -59,19 +59,19 @@ public class EquipmentController {
     }
 
     // ----- edit -----
-    @GetMapping("/edit/{equipmentId}")
-    public String showOneEquipment(@PathVariable("equipmentId") Long equipmentId, Model model) {
+    @GetMapping("/{equipmentId}")
+    public String showOne(@PathVariable("equipmentId") Long equipmentId, Model model) {
         model.addAttribute("action", "update");
         model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId));
         return "admin/equipment/equipment";
     }
 
-    @PatchMapping("/edit/{equipmentId}")
-    public String updateOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                     @PathVariable("equipmentId") Long equipmentId,
-                                     @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
-                                     BindingResult bindingResult,
-                                     Model model) {
+    @PatchMapping("/{equipmentId}")
+    public String update(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                         @PathVariable("equipmentId") Long equipmentId,
+                         @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
+                         BindingResult bindingResult,
+                         Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
             return "admin/equipment/equipment";
@@ -82,17 +82,17 @@ public class EquipmentController {
 
     // ----- delete -----
     @DeleteMapping("/{equipmentId}")
-    public String deleteOneEquipment(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                     @PathVariable("equipmentId") Long equipmentId) {
+    public String delete(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                         @PathVariable("equipmentId") Long equipmentId) {
         equipmentService.deleteEquipmentById(equipmentId);
         return "redirect:/admin/equipment/" + typeOfEquipment;
     }
 
     // ----- search -----
     @GetMapping("/search")
-    public String showAllEquipmentBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                           @RequestParam("search") String search,
-                                           Model model) {
+    public String showAllBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                                  @RequestParam("search") String search,
+                                  Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfEquipment",
                 equipmentService.showEquipmentBySearch(search, convertToEnumField(typeOfEquipment)));
@@ -102,10 +102,10 @@ public class EquipmentController {
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortEquipmentByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
-                                           @RequestParam("parameter") String parameter,
-                                           @RequestParam("sortDirection") String sortDirection,
-                                           Model model) {
+    public String sortAllByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
+                                     @RequestParam("parameter") String parameter,
+                                     @RequestParam("sortDirection") String sortDirection,
+                                     Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfEquipment",

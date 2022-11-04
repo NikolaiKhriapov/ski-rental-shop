@@ -46,7 +46,7 @@
     <div class="sidebar">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
+        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
         <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
@@ -61,7 +61,7 @@
                 <!--Update name, surname, phone, email-->
                 <h1 th:text="#{client.settings.info.header}"/>
                 <form th:method="PATCH"
-                      th:action="@{/client/settings/edit-info}"
+                      th:action="@{/client/settings/personal-info}"
                       th:object="${registrationRequest}">
                     <table>
                         <tr>
@@ -117,7 +117,7 @@
                 <!--Update password-->
                 <h1 th:text="#{client.settings.password.header}"/>
                 <form th:method="PATCH"
-                      th:action="@{/client/settings/edit-password}"
+                      th:action="@{/client/settings/password}"
                       th:object="${registrationRequest}">
                     <table>
                         <tr>

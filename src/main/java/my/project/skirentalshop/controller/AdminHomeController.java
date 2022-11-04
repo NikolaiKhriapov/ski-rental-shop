@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller.admin;
+package my.project.skirentalshop.controller;
 
 import my.project.skirentalshop.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class AdminHomeController {
     }
 
     // ----- admin home page -----
-    @GetMapping()
+    @GetMapping
     public String showAdminHome(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
         model.addAttribute("currentBookings", bookingService.showAllCurrentBookings());
@@ -28,7 +28,7 @@ public class AdminHomeController {
     }
 
     // ----- bookings for today -----
-    @GetMapping("/show-today")
+    @GetMapping("/bookings-today")
     public String showBookingsForToday(Model model) {
         Date todayBeginning = bookingService.getTodayBeginningAndEnd()[0];
         Date todayEnd = bookingService.getTodayBeginningAndEnd()[1];
@@ -40,7 +40,7 @@ public class AdminHomeController {
     }
 
     // ----- bookings for tomorrow -----
-    @GetMapping("/show-tomorrow")
+    @GetMapping("/bookings-tomorrow")
     public String showBookingsForTomorrow(Model model) {
         Date tomorrowBeginning = bookingService.getTomorrowBeginningAndEnd()[0];
         Date tomorrowEnd = bookingService.getTomorrowBeginningAndEnd()[1];
@@ -52,7 +52,7 @@ public class AdminHomeController {
     }
 
     // ----- mark booking completed -----
-    @GetMapping("/change-completed/{bookingId}")
+    @GetMapping("/{bookingId}/change-completed")
     public String changeBookingCompleted(@PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);
         return "redirect:/admin";

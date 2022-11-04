@@ -28,15 +28,15 @@
                     <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + equipmentId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + equipmentId + '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + equipmentId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + equipmentId + '?' : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -47,14 +47,14 @@
                     <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + equipmentId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + equipmentId + '?' : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} +
                                        ${action == 'showAll' ? '?' : ''} +
                                        ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/add-new?' : ''} +
-                                       ${action == 'update'  ? '/edit/' + equipmentId + '?' : ''} +
+                                       ${action == 'create'  ? '/new?' : ''} +
+                                       ${action == 'update'  ? '/' + equipmentId + '?' : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -70,14 +70,14 @@
         </button>
         <br>
         <button type="button">
-            <a href="/admin/bookings/add-new" th:text="#{side-bar.admin.new-booking}"/>
+            <a href="/admin/bookings/new" th:text="#{side-bar.admin.new-booking}"/>
         </button>
         <br>
         <button type="button">
-            <a href="/admin/show-today" th:text="#{side-bar.admin.today-bookings}"/>
+            <a href="/admin/bookings-today" th:text="#{side-bar.admin.today-bookings}"/>
         </button>
         <button type="button">
-            <a href="/admin/show-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
+            <a href="/admin/bookings-tomorrow" th:text="#{side-bar.admin.tomorrow-bookings}"/>
         </button>
         <br>
         <button type="button">
@@ -206,8 +206,8 @@
                         </th>
                         <!-- bindingSize -->
                         <th th:if="${typeOfEquipment == 'snowboard'}">
-                            <a th:if="${action == 'search'}" th:text="#{equipment.parameter.binding-size}"/>
-                            <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.binding-size}"
+                            <a th:if="${action == 'search'}" th:text="#{equipment.parameter.binding-size.header}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.binding-size.header}"
                                th:href="@{'/admin/equipment/' + ${typeOfEquipment} + '/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <th></th>
@@ -265,7 +265,7 @@
                         <!-- Edit button -->
                         <td th:if="${oneEquipment.type.name.toLowerCase.replace('_', '-') == typeOfEquipment}"
                             th:width="1">
-                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} + '/edit/' + ${oneEquipment.id}}">
+                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} + '/' + ${oneEquipment.id}}">
                                 <button class="button" th:text="#{equipment.button.edit}"/>
                             </a>
                         </td>
@@ -282,16 +282,16 @@
 
                 <br>
 
-                <!--Go to "add-new"-->
+                <!--Go to "new"-->
                 <div th:if="${action == 'showAll'}">
-                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} + '/add-new'}">
+                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment} + '/new'}">
                         <button class="button" th:text="#{${typeOfEquipment + '.button.add-new'}}"/>
                     </a>
                 </div>
 
                 <!--Return to "show-all"-->
                 <div th:if="${action == 'search'}">
-                    <a th:href="'/admin/equipment/' + ${typeOfEquipment} + '/'">
+                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment}}">
                         <button class="button" th:text="#{equipment.button.return}"/>
                     </a>
                 </div>
@@ -307,8 +307,8 @@
                 <!--Input parameters-->
                 <form th:method="${action == 'create'} ? POST :
                                 (${action == 'update'} ? PATCH : '')"
-                      th:action="@{'/admin/equipment/' + ${typeOfEquipment} + ${action == 'create' ? '/add-new' : ''}
-                                                                            + ${action == 'update' ? '/edit/' + equipmentId : ''}}"
+                      th:action="@{'/admin/equipment/' + ${typeOfEquipment} + ${action == 'create' ? '' : ''}
+                                                                            + ${action == 'update' ? '/' + equipmentId : ''}}"
                       th:object="${equipment}">
                     <div th:switch="${typeOfEquipment}">
                         <table>
@@ -443,7 +443,7 @@
 
                     <br>
 
-                    <!-- Button "Add new" or "Edit" -->
+                    <!-- Submit button -->
                     <div>
                         <input th:if="${action == 'create'}"
                                class="button" type="submit" th:value="#{${typeOfEquipment + '.button.add-new'}}"/>

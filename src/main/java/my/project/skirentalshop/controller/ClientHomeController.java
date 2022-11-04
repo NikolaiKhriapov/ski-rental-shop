@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller.client;
+package my.project.skirentalshop.controller;
 
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
@@ -28,33 +28,28 @@ public class ClientHomeController {
     }
 
     // ----- client home page -----
-    @GetMapping()
+    @GetMapping
     public String showClientMainPage(Model model) {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long clientId = applicationUser.getClient().getId();
-
-        System.out.println("!!!!!" + bookingService.showCurrentBookingsForClient(clientId).size()); //TODO: delete
         model.addAttribute("currentBookingsForClient", bookingService.showCurrentBookingsForClient(clientId));
         return "client/home/main_page";
     }
 
     // ----- update applicationUser info -----
     @GetMapping("/settings")
-    public String showSettings(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated, Model model) {
+    public String showSettings(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
+                               Model model) {
         model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
         model.addAttribute("registrationRequest", new RegistrationRequest());
         return "client/home/settings";
     }
 
-    @PatchMapping("/settings/edit-info")
+    @PatchMapping("/settings/personal-info")
     public String updateApplicationUserInfo(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
                                             @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                                             BindingResult bindingResult, Model model)    {
-        System.out.println("!!!!!!!" + registrationRequest.getName());
-        System.out.println("!!!!!!!" + registrationRequest.getPhone1());
-        System.out.println("!!!!!!!" + registrationRequest.getEmail());
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getAllErrors());
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }
@@ -62,7 +57,7 @@ public class ClientHomeController {
         return "redirect:/client/settings";
     }
 
-    @PatchMapping("/settings/edit-password")
+    @PatchMapping("/settings/password")
     public String updateApplicationUserPassword(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
                                                 @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                                                 BindingResult bindingResult, Model model) {

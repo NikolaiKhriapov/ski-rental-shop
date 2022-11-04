@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller.admin;
+package my.project.skirentalshop.controller;
 
 import my.project.skirentalshop.model.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
@@ -27,40 +27,39 @@ public class BookingController {
     }
 
     // ----- show all -----
-    @GetMapping()
-    public String showAllBookings(@PathVariable("applicationUserRole") String applicationUserRole,
-                                  Model model) {
+    @GetMapping
+    public String showAll(@PathVariable("applicationUserRole") String applicationUserRole,
+                          Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfBookings", bookingService.showAllBookings());
         return applicationUserRole + "/booking/bookings";
     }
 
     // ----- add new -----
-    @GetMapping("/add-new")
-    public String createNewBooking(@PathVariable("applicationUserRole") String applicationUserRole,
-                                   Model model) {
+    @GetMapping("/new")
+    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
+                         Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("booking", bookingService.createNewBooking());
         return applicationUserRole + "/booking/bookings";
     }
 
-    @PostMapping("/add-new")
-    public String addNewBookingToDB(@PathVariable("applicationUserRole") String applicationUserRole,
-                                    @ModelAttribute("booking") @Valid Booking newBooking,
-                                    BindingResult bindingResult, Model model) {
+    @PostMapping
+    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @ModelAttribute("booking") @Valid Booking newBooking,
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return applicationUserRole + "/booking/bookings";
         }
-        System.out.println("!!!!!" + newBooking.getClient().getId());
         bookingService.addNewBookingToDB(newBooking);
-        return "redirect:/" + applicationUserRole + "/riders/add-new?bookingId=" + newBooking.getId();
+        return "redirect:/" + applicationUserRole + "/riders/new?bookingId=" + newBooking.getId();
     }
 
     // ----- edit -----
-    @GetMapping("/edit/{bookingId}")
-    public String showOneBooking(@PathVariable("applicationUserRole") String applicationUserRole,
-                                 @PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
+    @GetMapping("/{bookingId}")
+    public String showOne(@PathVariable("applicationUserRole") String applicationUserRole,
+                          @PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
         Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
 
         model.addAttribute("action", "update");
@@ -82,7 +81,7 @@ public class BookingController {
         return applicationUserRole + "/booking/bookings";
     }
 
-    @PatchMapping("/edit/{bookingId}")
+    @PatchMapping("/{bookingId}")
     public String updateBookingAndClientInfo(@PathVariable("applicationUserRole") String applicationUserRole,
                                              @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                              @ModelAttribute("booking") @Valid Booking updatedBookingInfo,
@@ -97,51 +96,51 @@ public class BookingController {
             return applicationUserRole + "/booking/bookings";
         }
         bookingService.updateBookingById(bookingToBeUpdatedId, updatedBookingInfo);
-        return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
-    @PatchMapping("/edit-equipment/{riderId}")
+    @PatchMapping("/{bookingId}/rider-requested-equipment/{riderId}")
     public String updateRiderRequestedEquipment(@PathVariable("applicationUserRole") String applicationUserRole,
+                                                @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                                 @PathVariable("riderId") Long riderToBeUpdatedId,
-                                                @RequestParam("bookingId") Long bookingToBeUpdatedId,
                                                 @ModelAttribute("link") BookingRiderEquipmentLink updatedLink) {
         bookingService.updateRiderRequestedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, updatedLink);
-        return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
-    @PatchMapping("/edit/assign-equipment")
-    public String assignEquipmentToOneRider(@PathVariable("applicationUserRole") String applicationUserRole,
-                                            @RequestParam("bookingId") Long bookingToBeUpdatedId,
-                                            @RequestParam("riderId") Long riderToBeUpdatedId,
-                                            @ModelAttribute("oneLink.riderAssignedEquipment") RiderAssignedEquipment riderAssignedEquipment) { //TODO: reconsider
+    @PatchMapping("/{bookingId}/rider-assigned-equipment/{riderId}")
+    public String updateRiderAssignedEquipment(@PathVariable("applicationUserRole") String applicationUserRole,
+                                               @PathVariable("bookingId") Long bookingToBeUpdatedId,
+                                               @PathVariable("riderId") Long riderToBeUpdatedId,
+                                               @ModelAttribute("oneLink.riderAssignedEquipment") RiderAssignedEquipment riderAssignedEquipment) { //TODO: reconsider
         bookingService.setRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipment);
-        return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
-    @GetMapping("/edit/remove-rider")
+    @GetMapping("/{bookingId}/remove-rider/{riderId}")
     public String removeRiderFromBooking(@PathVariable("applicationUserRole") String applicationUserRole,
-                                         @RequestParam("bookingId") Long bookingToBeUpdatedId,
-                                         @RequestParam("riderId") Long riderToBeRemovedId) {
+                                         @PathVariable("bookingId") Long bookingToBeUpdatedId,
+                                         @PathVariable("riderId") Long riderToBeRemovedId) {
         bookingService.removeRiderFromBooking(bookingToBeUpdatedId, riderToBeRemovedId);
-        return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
-    @PatchMapping("/edit/add-existing-rider/{bookingId}")
+    @PatchMapping("/{bookingId}/new-existing-rider")
     public String addExistingRiderToBooking(@PathVariable("applicationUserRole") String applicationUserRole,
                                             @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                             @ModelAttribute("existingRiderToBeAddedId") Long existingRiderToBeAddedId) {
         bookingService.addRiderToBooking(bookingToBeUpdatedId, existingRiderToBeAddedId);
-        return "redirect:/" + applicationUserRole + "/bookings/edit/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
     // ----- delete -----
     @DeleteMapping("/{bookingId}")
-    public String deleteBooking(@PathVariable("applicationUserRole") String applicationUserRole,
-                                @PathVariable("bookingId") Long bookingId) {
+    public String delete(@PathVariable("applicationUserRole") String applicationUserRole,
+                         @PathVariable("bookingId") Long bookingId) {
         bookingService.deleteBookingById(bookingId);
 
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        switch(user.getApplicationUserRole()) {
+        switch (user.getApplicationUserRole()) {
             case ADMIN -> {
                 return "redirect:/admin/bookings";
             }
@@ -155,18 +154,18 @@ public class BookingController {
     }
 
     // ----- mark completed -----
-    @GetMapping("/change-booking-completed/{bookingId}")
-    public String changeBookingCompleted(@PathVariable("applicationUserRole") String applicationUserRole,
-                                         @PathVariable("bookingId") Long bookingId) {
+    @GetMapping("/{bookingId}/change-completed")
+    public String changeCompleted(@PathVariable("applicationUserRole") String applicationUserRole,
+                                  @PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);
         return "redirect:/" + applicationUserRole + "/bookings";
     }
 
     // ----- search -----
     @GetMapping("/search")
-    public String showBookingsBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
-                                       @RequestParam("search") String search,
-                                       Model model) {
+    public String showBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
+                               @RequestParam("search") String search,
+                               Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfBookings", bookingService.showBookingsBySearch(search));
         model.addAttribute("search", search);
@@ -175,10 +174,10 @@ public class BookingController {
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortBookingsByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
-                                          @RequestParam("parameter") String parameter,
-                                          @RequestParam("sortDirection") String sortDirection,
-                                          Model model) {
+    public String sortByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
+                                  @RequestParam("parameter") String parameter,
+                                  @RequestParam("sortDirection") String sortDirection,
+                                  Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfBookings",

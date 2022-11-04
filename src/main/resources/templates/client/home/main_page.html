@@ -46,7 +46,7 @@
     <div class="sidebar">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
+        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
         <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
@@ -86,7 +86,7 @@
                             <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                             <td th:width="1">
                                 <form th:method="GET"
-                                      th:action="@{'/client/bookings/edit/' + ${oneBooking.id}}">
+                                      th:action="@{'/client/bookings/' + ${oneBooking.id}}">
                                     <input class="button" type="submit"
                                            th:value="#{client.main-page.table.button.edit}"/>
                                 </form>

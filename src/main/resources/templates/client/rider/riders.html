@@ -36,18 +36,18 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -57,17 +57,17 @@
                 <div class="dropdown-content">
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=en'}">English</a>
                     <a th:href="@{'/client/riders' +
                                        ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/add-new?' +
+                                       ${action == 'create'  ? '/new?' +
                                                 (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/edit?riderId=' + riderId +
-                                                (bookingId != null ? '&bookingId=' + bookingId + '&' : '') : ''} +
+                                       ${action == 'update'  ? '/' + riderId + '?' +
+                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>
@@ -80,7 +80,7 @@
     <div class="sidebar">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
-        <button type="button"><a href="/client/bookings/add-new" th:text="#{side-bar.client.new-booking}"/></button>
+        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
         <br>
         <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
         <br>
@@ -92,7 +92,6 @@
         <div class="content">
 
 
-
             <div th:if="${action == 'showAll'}" class="table">
 
                 <!--Header-->
@@ -102,11 +101,11 @@
                 <table>
                     <tr>
                         <th><a th:text="#{riders.parameter.id}"/></th>
-                        <th><a th:text="#{riders.parameter.name}"/></th>
+                        <th><a th:text="#{riders.parameter.name.header}"/></th>
                         <th><a th:text="#{riders.parameter.height}"/></th>
                         <th><a th:text="#{riders.parameter.weight}"/></th>
                         <th><a th:text="#{riders.parameter.sex}"/></th>
-                        <th><a th:text="#{riders.parameter.foot-size}"/></th>
+                        <th><a th:text="#{riders.parameter.foot-size.header}"/></th>
                     </tr>
                     <tr th:each="oneRider : ${listOfRiders}">
                         <td th:text="${oneRider.id}"/>
@@ -129,9 +128,9 @@
                 <!--Input Parameters-->
                 <form th:method="${action == 'create'} ? POST :
                                 (${action == 'update'} ? PATCH : '')"
-                      th:action="@{'/client/riders' + ${action == 'create' ? '/add-new' + (bookingId != null ? '?bookingId=' + bookingId : '')
+                      th:action="@{'/client/riders' + ${action == 'create' ? (bookingId != null ? '?bookingId=' + bookingId : '')
                                                                            : ''}
-                                                    + ${action == 'update' ? '/edit/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                    + ${action == 'update' ? '/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
                                                                            : ''}}"
                       th:object="${rider}">
                     <table>
@@ -219,7 +218,7 @@
                 <!--Requested Equipment-->
                 <form th:if="${action == 'update' && bookingId != null}"
                       th:method="PATCH"
-                      th:action="@{'/client/bookings/edit-equipment/' + ${riderId} + '?bookingId=' + ${bookingId}}"
+                      th:action="@{'/client/bookings/' + ${bookingId} + '/rider-requested-equipment/' + ${riderId}}"
                       th:object="${link}">
                     <table>
                         <tr>
@@ -246,7 +245,7 @@
                 <!--Return to current booking-->
                 <div th:if="${bookingId != null}">
                     <form th:method="GET"
-                          th:action="@{'/client/bookings/edit/' + ${bookingId}}">
+                          th:action="@{'/client/bookings/' + ${bookingId}}">
                         <input class="button" type="submit" th:value="#{riders.button.back-to-booking}"/>
                     </form>
                 </div>
