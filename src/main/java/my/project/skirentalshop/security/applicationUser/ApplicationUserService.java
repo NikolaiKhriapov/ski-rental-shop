@@ -45,16 +45,16 @@ public class ApplicationUserService implements UserDetailsService {
         return applicationUserRepository.findByEmail(email).isPresent();
     }
 
-    public void updateApplicationUserInfo(ApplicationUser applicationUserToBeUpdated, RegistrationRequest registrationRequest) {
-        applicationUserToBeUpdated.getClient().setName(
-                registrationRequest.getName());
+    public void updatePersonalInfo(ApplicationUser applicationUserToBeUpdated,
+                                   RegistrationRequest registrationRequest) {
+        applicationUserToBeUpdated.getClient().setName(registrationRequest.getName());
         applicationUserToBeUpdated.getClient().setPhone1(registrationRequest.getPhone1());
         applicationUserToBeUpdated.setEmail(registrationRequest.getEmail());
 
         applicationUserRepository.save(applicationUserToBeUpdated);
     }
 
-    public void updateApplicationUserPassword(ApplicationUser applicationUserToBeUpdated, String password) {
+    public void updatePassword(ApplicationUser applicationUserToBeUpdated, String password) {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
         applicationUserToBeUpdated.setPassword(encodedPassword);
 

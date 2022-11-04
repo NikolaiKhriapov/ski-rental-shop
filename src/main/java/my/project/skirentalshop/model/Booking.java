@@ -37,7 +37,7 @@ public class Booking {
 
     private boolean completed;
 
-    @OneToMany(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
 
 
@@ -45,5 +45,12 @@ public class Booking {
         this.client = client;
         this.dateOfArrival = dateOfArrival;
         this.dateOfReturn = dateOfReturn;
+    }
+
+    public List<BookingRiderEquipmentLink> getListOfBookingRiderEquipmentLinks() {
+        if (listOfBookingRiderEquipmentLinks == null) {
+            listOfBookingRiderEquipmentLinks = new ArrayList<>();
+        }
+            return listOfBookingRiderEquipmentLinks;
     }
 }

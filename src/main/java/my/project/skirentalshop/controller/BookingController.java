@@ -87,7 +87,7 @@ public class BookingController {
                                              @ModelAttribute("booking") @Valid Booking updatedBookingInfo,
                                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            bookingService.setListOfRiders(updatedBookingInfo, bookingToBeUpdatedId);
+            bookingService.resetListOfRiders(updatedBookingInfo, bookingToBeUpdatedId);
             model.addAttribute("action", "update");
             model.addAttribute("booking", updatedBookingInfo);
             model.addAttribute("existingRiderToBeAddedId", 0L);

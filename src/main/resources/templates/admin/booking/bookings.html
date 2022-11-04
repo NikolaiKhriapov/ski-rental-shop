@@ -656,26 +656,6 @@
                     <br>
                 </div>
 
-                <!--Add existing Rider to Booking-->
-                <div th:if="${action == 'update'}">
-                    <div th:if="${allAvailableRidersForClient.size > 0}">
-                        <form th:method="PATCH"
-                              th:action="@{'/admin/bookings/' + ${bookingId} + '/new-existing-rider'}"
-                              th:object="${existingRiderToBeAddedId}">
-                            <label for="select-existing-rider-id"></label>
-                            <select id="select-existing-rider-id" name="existingRiderToBeAddedId">
-                                <option th:each="oneRider : ${allAvailableRidersForClient}"
-                                        th:value="${oneRider.id}"
-                                        th:text="${oneRider.name}">
-                                </option>
-                            </select>
-                            <input class="button" type="submit" th:value="#{bookings.button.add-existing-rider}"/>
-                        </form>
-
-                        <br>
-                    </div>
-                </div>
-
                 <!--Add new rider-->
                 <div th:if="${action == 'update'}">
                     <a th:href="@{'/admin/riders/new?bookingId=' + ${booking.id}}">

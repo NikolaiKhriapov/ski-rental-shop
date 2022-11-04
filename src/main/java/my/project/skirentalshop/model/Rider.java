@@ -49,6 +49,13 @@ public class Rider {
 
     private FootSize footSize;
 
-    @OneToMany(mappedBy = "rider")
+    @OneToMany(mappedBy = "rider", cascade = CascadeType.ALL)
     private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
+
+    public List<BookingRiderEquipmentLink> getListOfBookingRiderEquipmentLinks() {
+        if (listOfBookingRiderEquipmentLinks == null) {
+            listOfBookingRiderEquipmentLinks = new ArrayList<>();
+        }
+        return listOfBookingRiderEquipmentLinks;
+    }
 }

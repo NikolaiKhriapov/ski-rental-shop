@@ -8,7 +8,6 @@ import my.project.skirentalshop.repository.BookingRiderEquipmentLinkRepository;
 import my.project.skirentalshop.repository.EquipmentRepository;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
-import my.project.skirentalshop.security.applicationUser.ApplicationUserRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
@@ -17,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BookingService {
@@ -110,36 +106,39 @@ public class BookingService {
     }
 
     public List<Rider> showAvailableExistingRidersForClientForBooking(Long bookingToBeUpdatedId) {
-        Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole role = applicationUser.getApplicationUserRole();
 
-        List<Rider> allRidersForClient = new ArrayList<>();
-        List<Booking> allBookingsForClient = showAllBookings();
-        List<Booking> allBookingsForClientForTheSameTime = showBookingsForTheDate(
-                bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
-        //add all unique riders from all bookings of the client
-        for (Booking oneBooking : allBookingsForClient) {
-            for (Rider oneRider : getListOfRiders(oneBooking.getId())) {
-                if (!allRidersForClient.contains(oneRider)) {
-                    allRidersForClient.add(oneRider);
-                }
+        switch (role) {
+            case ADMIN -> {
+                return null;
             }
-        }
-        //remove all riders that appear in client bookings for the same time
-        for (Booking oneBooking : allBookingsForClientForTheSameTime) {
-            allRidersForClient.removeAll(getListOfRiders(oneBooking.getId()));
-        }
-        //remove all riders that already appear in this booking
-        allRidersForClient.removeAll(getListOfRiders(bookingToBeUpdated.getId()));
+            case CLIENT -> {
+                Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
 
-        return allRidersForClient;
-    }
+                List<Rider> allRidersForClient = new ArrayList<>();
+                List<Booking> allBookingsForClient = showAllBookings();
+                List<Booking> allBookingsForTheSameTime = showBookingsForTheDate(
+                        bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
+                //add all unique riders from all bookings of the client
+                for (Booking oneBooking : allBookingsForClient) {
+                    for (Rider oneRider : getListOfRiders(oneBooking.getId())) {
+                        if (!allRidersForClient.contains(oneRider)) {
+                            allRidersForClient.add(oneRider);
+                        }
+                    }
+                }
+                //remove all riders that appear in client bookings for the same time
+                for (Booking oneBooking : allBookingsForTheSameTime) {
+                    allRidersForClient.removeAll(getListOfRiders(oneBooking.getId()));
+                }
+                //remove all riders that already appear in this booking
+                allRidersForClient.removeAll(getListOfRiders(bookingToBeUpdated.getId()));
 
-    public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
-        return ((booking1.getDateOfArrival().after(booking2.getDateOfArrival()) || booking1.getDateOfArrival().equals(booking2.getDateOfArrival())) &&
-                (booking1.getDateOfArrival().before(booking2.getDateOfReturn()) || booking1.getDateOfArrival().equals(booking2.getDateOfReturn()))) ||
-                ((booking1.getDateOfReturn().after(booking2.getDateOfArrival()) || booking1.getDateOfReturn().equals(booking2.getDateOfArrival())) &&
-                        (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
-                (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
+                return allRidersForClient;
+            }
+            default -> throw new IllegalArgumentException("ApplicationUserRole " + role + " does not exist");
+        }
     }
 
     public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
@@ -154,7 +153,7 @@ public class BookingService {
         for (Booking oneBooking : showAllBookings()) {
             if (checkIfBookingsOverlap(booking, oneBooking)) {
                 for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider);
+                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider.getId());
                     switch (typeOfEquipment) {
                         case SNOWBOARD ->
                                 listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboard());
@@ -178,6 +177,23 @@ public class BookingService {
         return listOfAvailableEquipment;
     }
 
+    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Long riderId) {
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+
+        return links.stream()
+                .filter(link -> Objects.equals(link.getRider().getId(), riderId))
+                .findAny()
+                .orElse(null);
+    }
+
+    public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
+        return ((booking1.getDateOfArrival().after(booking2.getDateOfArrival()) || booking1.getDateOfArrival().equals(booking2.getDateOfArrival())) &&
+                (booking1.getDateOfArrival().before(booking2.getDateOfReturn()) || booking1.getDateOfArrival().equals(booking2.getDateOfReturn()))) ||
+                ((booking1.getDateOfReturn().after(booking2.getDateOfArrival()) || booking1.getDateOfReturn().equals(booking2.getDateOfArrival())) &&
+                        (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
+                (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
+    }
+
     public List<Rider> getListOfRiders(Long bookingId) {
         List<Rider> listOfRiders = new ArrayList<>();
         Booking booking = showOneBookingById(bookingId);
@@ -189,14 +205,13 @@ public class BookingService {
         return listOfRiders;
     }
 
-    public void setListOfRiders(Booking booking, Long bookingToBeUpdatedId) {
-        List<Rider> updatedListOfRiders = getListOfRiders(bookingToBeUpdatedId);
-        //delete all current bookingRiderEquipmentLinks for the booking
-        bookingRiderEquipmentLinkRepository.deleteAll(booking.getListOfBookingRiderEquipmentLinks());
-        //create new bookingRiderEquipmentLinks for the riders (without equipment)
-        for (Rider oneRider : updatedListOfRiders) {
-            new BookingRiderEquipmentLink(booking, oneRider, new ArrayList<>(), new RiderAssignedEquipment());
-        }
+    public void resetListOfRiders(Booking bookingToBeUpdated, Long bookingToUpdateFromId) {
+        //because we did not populate booking.listOfBookingRiderEquipmentLinks, it became NULL after pulling it from
+        //the view, and after failing validation we are being thrown to the view again, therefore we need to populate
+        //the list again
+        Booking bookingToUpdateFrom = showOneBookingById(bookingToUpdateFromId);
+        List<BookingRiderEquipmentLink> linksToUpdateFrom = bookingToUpdateFrom.getListOfBookingRiderEquipmentLinks();
+        bookingToBeUpdated.setListOfBookingRiderEquipmentLinks(linksToUpdateFrom);
     }
 
     public void updateBookingById(Long bookingToBeUpdatedId, Booking updatedBookingInfo) {
@@ -241,18 +256,12 @@ public class BookingService {
         bookingRepository.save(bookingToBeUpdated);
     }
 
-    public Rider showOneRiderById(Long riderId) {
-        return riderRepository.findById(riderId).orElseThrow(() ->
-                new IllegalStateException("Rider with id = " + riderId + " not found!"));
-    }
-
     public void setRiderAssignedEquipment(Long bookingToBeUpdatedId,
                                           Long riderToBeUpdatedId,
                                           RiderAssignedEquipment updatedRiderAssignedEquipment) {
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
-        Rider rider = showOneRiderById(riderToBeUpdatedId);
 
-        BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, rider);
+        BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, riderToBeUpdatedId);
         RiderAssignedEquipment riderAssignedEquipment = link.getRiderAssignedEquipment();
 
         if (updatedRiderAssignedEquipment.getSnowboard().getId() != null) {
@@ -287,22 +296,29 @@ public class BookingService {
         }
 
         link.setRiderAssignedEquipment(riderAssignedEquipment);
-        bookingRiderEquipmentLinkRepository.save(link);
+        booking.getListOfBookingRiderEquipmentLinks().remove(link);
+        booking.getListOfBookingRiderEquipmentLinks().add(link);
+        bookingRepository.save(booking);
     }
 
-    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Rider rider) {
-        return bookingRiderEquipmentLinkRepository.findByBookingIdAndRiderId(booking.getId(), rider.getId());
+    public Rider showOneRiderById(Long riderId) {
+        return riderRepository.findById(riderId).orElseThrow(() ->
+                new IllegalStateException("Rider with id = " + riderId + " not found!"));
     }
 
-    public void addRiderToBooking(Long bookingId, Long riderId) {
-        Booking booking = showOneBookingById(bookingId);
-        Rider rider = showOneRiderById(riderId);
+    public void removeRiderFromBooking(Long bookingToBeUpdatedId, Long riderToBeRemovedId) {
+        Booking booking = showOneBookingById(bookingToBeUpdatedId);
 
-        bookingRiderEquipmentLinkRepository
-                .save(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new RiderAssignedEquipment()));
+        BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, riderToBeRemovedId);
+        unassignRiderAssignedEquipment(booking, link);
+
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        links.remove(link);
+
+        bookingRepository.save(booking);
     }
 
-    public void unassignRiderAssignedEquipment(BookingRiderEquipmentLink link) {
+    public void unassignRiderAssignedEquipment(Booking booking, BookingRiderEquipmentLink link) {
         RiderAssignedEquipment riderAssignedEquipment = link.getRiderAssignedEquipment();
 
         riderAssignedEquipment.setSnowboard(null);
@@ -317,22 +333,17 @@ public class BookingService {
         riderAssignedEquipment.setKneeProtection(null);
 
         link.setRiderAssignedEquipment(riderAssignedEquipment);
-        bookingRiderEquipmentLinkRepository.save(link);
+        booking.getListOfBookingRiderEquipmentLinks().remove(link);
+        booking.getListOfBookingRiderEquipmentLinks().add(link);
+        bookingRepository.save(booking);
     }
 
-    public void removeRiderFromBooking(Long bookingToBeUpdatedId, Long riderToBeRemovedId) {
-        Booking booking = showOneBookingById(bookingToBeUpdatedId);
-        Rider rider = showOneRiderById(riderToBeRemovedId);
-        BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, rider);
+    public void addRiderToBooking(Long bookingId, Long riderId) {
+        Booking booking = showOneBookingById(bookingId);
+        Rider rider = showOneRiderById(riderId);
 
-        unassignRiderAssignedEquipment(link);
-
-        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
-
-        links.remove(link);
-        bookingRiderEquipmentLinkRepository.delete(link);
-
-        booking.setListOfBookingRiderEquipmentLinks(links);
+        booking.getListOfBookingRiderEquipmentLinks()
+                .add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new RiderAssignedEquipment()));
         bookingRepository.save(booking);
     }
 
@@ -346,7 +357,6 @@ public class BookingService {
         Booking bookingToBeDeleted = showOneBookingById(bookingToBeDeletedId);
         bookingToBeDeleted.setClient(null);
         bookingRepository.save(bookingToBeDeleted);
-        bookingRiderEquipmentLinkRepository.deleteAll(bookingToBeDeleted.getListOfBookingRiderEquipmentLinks());
         bookingRepository.delete(bookingToBeDeleted);
     }
 
@@ -370,6 +380,9 @@ public class BookingService {
         return bookingRepository.findAll(sort);
     }
 
+
+
+    ///TODO: remove
     // ----- AdminHomeController / show all incomplete bookings -----
     public List<Booking> showAllIncompleteBookings() {
         return bookingRepository.findAllByCompletedFalseOrderByDateOfArrivalAsc();
@@ -429,16 +442,17 @@ public class BookingService {
     }
 
     // ----- ClientHomeController / update applicationUser info -----
-    public void updateApplicationUserInfo(ApplicationUser applicationUserToBeUpdated, RegistrationRequest registrationRequest) {
+    public void updateApplicationUserInfo(ApplicationUser applicationUserToBeUpdated,
+                                          RegistrationRequest registrationRequest) {
         boolean emailExists = applicationUserService.checkIfExists(registrationRequest.getEmail());
         if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
-            applicationUserService.updateApplicationUserInfo(applicationUserToBeUpdated, registrationRequest);
+            applicationUserService.updatePersonalInfo(applicationUserToBeUpdated, registrationRequest);
             Client clientToBeUpdated = clientService.showOneClientById(applicationUserToBeUpdated.getClient().getId());
             clientService.updateClientById(clientToBeUpdated.getId(), registrationRequest);
         }
     }
 
     public void updateApplicationUserPassword(ApplicationUser applicationUserToBeUpdated, String password) {
-        applicationUserService.updateApplicationUserPassword(applicationUserToBeUpdated, password);
+        applicationUserService.updatePassword(applicationUserToBeUpdated, password);
     }
 }

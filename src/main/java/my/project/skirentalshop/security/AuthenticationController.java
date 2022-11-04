@@ -1,9 +1,11 @@
 package my.project.skirentalshop.security;
 
+import my.project.skirentalshop.security.applicationUser.ApplicationUser;
+import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.registration.RegistrationRequest;
 import my.project.skirentalshop.security.registration.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,8 +39,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    public String signUpAndAddNewClientToDB(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
-                                            BindingResult bindingResult) {
+    public String signUp(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
+                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "authentication/sign_up";
         }
@@ -47,12 +49,18 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/home")
-    public String defaultAfterLogin(Authentication authResult) {
-        String role = authResult.getAuthorities().toString();
-        if (role.equals("[ADMIN]")) {
-            return "redirect:/admin";
-        } else {
-            return "redirect:/client";
+    public String defaultAfterLogin() {
+        ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+        switch (applicationUserRole) {
+            case ADMIN -> {
+                return "redirect:/admin";
+            }
+            case CLIENT -> {
+                return "redirect:/client";
+            }
+            default ->
+                    throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " does not exist!");
         }
     }
 }

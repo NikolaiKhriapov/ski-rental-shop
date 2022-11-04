@@ -39,8 +39,7 @@ public class ClientController {
 
     @PostMapping
     public String create(@ModelAttribute("client") @Valid Client client,
-                         BindingResult bindingResult,
-                         Model model) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return "admin/client/clients";
@@ -60,8 +59,7 @@ public class ClientController {
     @PatchMapping("/{clientId}")
     public String update(@PathVariable("clientId") Long clientId,
                          @ModelAttribute("client") @Valid Client updatedClient,
-                         BindingResult bindingResult,
-                         Model model) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
             return "admin/client/clients";

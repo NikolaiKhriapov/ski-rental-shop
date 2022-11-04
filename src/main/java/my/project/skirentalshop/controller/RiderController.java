@@ -124,7 +124,6 @@ public class RiderController {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfRiders", riderService.sortAllRidersByParameter(parameter, sortDirection));
-        model.addAttribute("listOfBookings", riderService.showAllBookings());
         return applicationUserRole + "/rider/riders";
     }
 }

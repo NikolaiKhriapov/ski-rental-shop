@@ -48,8 +48,7 @@ public class EquipmentController {
     @PostMapping
     public String create(@PathVariable("typeOfEquipment") String typeOfEquipment,
                          @ModelAttribute("equipment") @Valid Equipment oneEquipment,
-                         BindingResult bindingResult,
-                         Model model) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return "admin/equipment/equipment";
@@ -70,8 +69,7 @@ public class EquipmentController {
     public String update(@PathVariable("typeOfEquipment") String typeOfEquipment,
                          @PathVariable("equipmentId") Long equipmentId,
                          @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
-                         BindingResult bindingResult,
-                         Model model) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
             return "admin/equipment/equipment";

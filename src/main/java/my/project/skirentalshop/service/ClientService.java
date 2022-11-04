@@ -63,6 +63,8 @@ public class ClientService {
         return clientRepository.findAll(sort);
     }
 
+
+    ///TODO: remove
     // ----- ClientHomeController / update applicationUser info -----
     public void updateClientById(Long clientToBeUpdatedId, RegistrationRequest registrationRequest) {
         Client clientToBeUpdated = showOneClientById(clientToBeUpdatedId);
