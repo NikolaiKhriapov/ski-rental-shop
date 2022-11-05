@@ -10,11 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+import java.util.Objects;
 
 @Controller
-@RequestMapping("/admin/equipment/{typeOfEquipment}")
+@RequestMapping("/admin/equipment/{type}")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
@@ -25,15 +24,16 @@ public class EquipmentController {
     }
 
     @ModelAttribute
-    public void addToModel(@PathVariable("typeOfEquipment") String typeOfEquipment, Model model) {
-        model.addAttribute("typeOfEquipment", typeOfEquipment);
+    public void addToModel(@PathVariable("type") String type, Model model) {
+        model.addAttribute("typeOfEquipment", TypesOfEquipment.convertToEnumField(type));
     }
 
     // ----- show all -----
     @GetMapping
-    public String showAll(@PathVariable("typeOfEquipment") String typeOfEquipment, Model model) {
+    public String showAll(@PathVariable("type") String type, Model model) {
         model.addAttribute("action", "showAll");
-        model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(convertToEnumField(typeOfEquipment)));
+        model.addAttribute("listOfEquipment",
+                equipmentService.showAllEquipment(TypesOfEquipment.convertToEnumField(type)));
         return "admin/equipment/equipment";
     }
 
@@ -46,15 +46,15 @@ public class EquipmentController {
     }
 
     @PostMapping
-    public String create(@PathVariable("typeOfEquipment") String typeOfEquipment,
+    public String create(@PathVariable("type") String type,
                          @ModelAttribute("equipment") @Valid Equipment oneEquipment,
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return "admin/equipment/equipment";
         }
-        equipmentService.addNewEquipmentToDB(oneEquipment, convertToEnumField(typeOfEquipment));
-        return "redirect:/admin/equipment/" + typeOfEquipment;
+        equipmentService.addNewEquipmentToDB(oneEquipment, TypesOfEquipment.convertToEnumField(type));
+        return "redirect:/admin/equipment/" + type;
     }
 
     // ----- edit -----
@@ -66,7 +66,7 @@ public class EquipmentController {
     }
 
     @PatchMapping("/{equipmentId}")
-    public String update(@PathVariable("typeOfEquipment") String typeOfEquipment,
+    public String update(@PathVariable("type") String type,
                          @PathVariable("equipmentId") Long equipmentId,
                          @ModelAttribute("equipment") @Valid Equipment updatedEquipment,
                          BindingResult bindingResult, Model model) {
@@ -74,76 +74,43 @@ public class EquipmentController {
             model.addAttribute("action", "update");
             return "admin/equipment/equipment";
         }
-        equipmentService.updateEquipmentById(equipmentId, updatedEquipment, convertToEnumField(typeOfEquipment));
-        return "redirect:/admin/equipment/" + typeOfEquipment;
+        equipmentService.updateEquipmentById(
+                equipmentId, updatedEquipment, Objects.requireNonNull(TypesOfEquipment.convertToEnumField(type))
+        );
+        return "redirect:/admin/equipment/" + type;
     }
 
     // ----- delete -----
     @DeleteMapping("/{equipmentId}")
-    public String delete(@PathVariable("typeOfEquipment") String typeOfEquipment,
+    public String delete(@PathVariable("type") String type,
                          @PathVariable("equipmentId") Long equipmentId) {
         equipmentService.deleteEquipmentById(equipmentId);
-        return "redirect:/admin/equipment/" + typeOfEquipment;
+        return "redirect:/admin/equipment/" + type;
     }
 
     // ----- search -----
     @GetMapping("/search")
-    public String showAllBySearch(@PathVariable("typeOfEquipment") String typeOfEquipment,
+    public String showAllBySearch(@PathVariable("type") String type,
                                   @RequestParam("search") String search,
                                   Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfEquipment",
-                equipmentService.showEquipmentBySearch(search, convertToEnumField(typeOfEquipment)));
+                equipmentService.showEquipmentBySearch(search, TypesOfEquipment.convertToEnumField(type)));
         model.addAttribute("search", search);
         return "admin/equipment/equipment";
     }
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortAllByParameter(@PathVariable("typeOfEquipment") String typeOfEquipment,
+    public String sortAllByParameter(@PathVariable("type") String type,
                                      @RequestParam("parameter") String parameter,
                                      @RequestParam("sortDirection") String sortDirection,
                                      Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("listOfEquipment",
-                equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, convertToEnumField(typeOfEquipment)));
+        model.addAttribute("listOfEquipment", equipmentService.sortAllEquipmentByParameter(
+                parameter, sortDirection, TypesOfEquipment.convertToEnumField(type))
+        );
         return "admin/equipment/equipment";
-    }
-
-    private TypesOfEquipment convertToEnumField(String typeOfEquipment) {
-        switch (typeOfEquipment.toUpperCase().replace('-', '_')) {
-            case "SNOWBOARD" -> {
-                return SNOWBOARD;
-            }
-            case "SNOWBOARD_BOOTS" -> {
-                return SNOWBOARD_BOOTS;
-            }
-            case "SKI" -> {
-                return SKI;
-            }
-            case "SKI_BOOTS" -> {
-                return SKI_BOOTS;
-            }
-            case "HELMET" -> {
-                return HELMET;
-            }
-            case "JACKET" -> {
-                return JACKET;
-            }
-            case "GLOVES" -> {
-                return GLOVES;
-            }
-            case "PANTS" -> {
-                return PANTS;
-            }
-            case "PROTECTIVE_SHORTS" -> {
-                return PROTECTIVE_SHORTS;
-            }
-            case "KNEE_PROTECTION" -> {
-                return KNEE_PROTECTION;
-            }
-            default -> throw new IllegalArgumentException("Equipment " + typeOfEquipment + " not found!");
-        }
     }
 }
