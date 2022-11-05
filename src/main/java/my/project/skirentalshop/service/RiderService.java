@@ -1,6 +1,7 @@
 package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.repository.BookingRepository;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
@@ -17,13 +18,13 @@ import java.util.Objects;
 public class RiderService {
 
     private final RiderRepository riderRepository;
-    private final BookingService bookingService; //TODO: remove
+    private final BookingRepository bookingRepository;
 
     @Autowired
     public RiderService(RiderRepository riderRepository,
-                        BookingService bookingService) {
+                        BookingRepository bookingRepository) {
         this.riderRepository = riderRepository;
-        this.bookingService = bookingService;
+        this.bookingRepository = bookingRepository;
     }
 
     // ----- show all -----
@@ -60,7 +61,8 @@ public class RiderService {
         if (bookingId != null) {
             List<BookingRiderEquipmentLink> links = rider.getListOfBookingRiderEquipmentLinks();
             links.add(new BookingRiderEquipmentLink(
-                    bookingService.showOneBookingById(bookingId),
+                    bookingRepository.findById(bookingId).orElseThrow(() ->
+                            new IllegalStateException("Booking with id = " + bookingId + " not found!")),
                     rider,
                     new ArrayList<>(),
                     new RiderAssignedEquipment())
