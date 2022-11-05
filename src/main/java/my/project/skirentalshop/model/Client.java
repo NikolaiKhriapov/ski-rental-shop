@@ -5,6 +5,7 @@ import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Client {
 
     private String phone2;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Booking> listOfBookings;
 
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
@@ -38,5 +39,12 @@ public class Client {
         this.name = name;
         this.phone1 = phone1;
         this.phone2 = phone2;
+    }
+
+    public List<Booking> getListOfBookings() {
+        if (listOfBookings == null) {
+            return new ArrayList<>();
+        }
+        return listOfBookings;
     }
 }

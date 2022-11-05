@@ -129,7 +129,7 @@ public class BookingController {
     public String addExistingRiderToBooking(@PathVariable("applicationUserRole") String applicationUserRole,
                                             @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                             @ModelAttribute("existingRiderToBeAddedId") Long existingRiderToBeAddedId) {
-        bookingService.addRiderToBooking(bookingToBeUpdatedId, existingRiderToBeAddedId);
+        bookingService.addExistingRiderToBooking(bookingToBeUpdatedId, existingRiderToBeAddedId);
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 

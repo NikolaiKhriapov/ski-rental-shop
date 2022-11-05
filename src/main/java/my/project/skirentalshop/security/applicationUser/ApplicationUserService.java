@@ -47,11 +47,14 @@ public class ApplicationUserService implements UserDetailsService {
 
     public void updatePersonalInfo(ApplicationUser applicationUserToBeUpdated,
                                    RegistrationRequest registrationRequest) {
-        applicationUserToBeUpdated.getClient().setName(registrationRequest.getName());
-        applicationUserToBeUpdated.getClient().setPhone1(registrationRequest.getPhone1());
-        applicationUserToBeUpdated.setEmail(registrationRequest.getEmail());
+        boolean emailExists = checkIfExists(registrationRequest.getEmail());
+        if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
+            applicationUserToBeUpdated.getClient().setName(registrationRequest.getName());
+            applicationUserToBeUpdated.getClient().setPhone1(registrationRequest.getPhone1());
+            applicationUserToBeUpdated.setEmail(registrationRequest.getEmail());
 
-        applicationUserRepository.save(applicationUserToBeUpdated);
+            applicationUserRepository.save(applicationUserToBeUpdated);
+        }
     }
 
     public void updatePassword(ApplicationUser applicationUserToBeUpdated, String password) {

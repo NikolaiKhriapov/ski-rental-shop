@@ -3,14 +3,9 @@ package my.project.skirentalshop.service;
 import my.project.skirentalshop.model.*;
 import my.project.skirentalshop.model.enums.EquipmentCondition;
 import my.project.skirentalshop.model.enums.TypesOfEquipment;
-import my.project.skirentalshop.repository.BookingRepository;
-import my.project.skirentalshop.repository.BookingRiderEquipmentLinkRepository;
-import my.project.skirentalshop.repository.EquipmentRepository;
-import my.project.skirentalshop.repository.RiderRepository;
+import my.project.skirentalshop.repository.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
-import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
-import my.project.skirentalshop.security.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,26 +17,16 @@ import java.util.*;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
-    private final BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository;
-    private final RiderRepository riderRepository;
+    private final ClientRepository clientRepository;
     private final EquipmentRepository equipmentRepository;
-
-    private final ApplicationUserService applicationUserService;
-    private final ClientService clientService;
 
     @Autowired
     public BookingService(BookingRepository bookingRepository,
-                          BookingRiderEquipmentLinkRepository bookingRiderEquipmentLinkRepository,
-                          RiderRepository riderRepository,
-                          EquipmentRepository equipmentRepository,
-                          ApplicationUserService applicationUserService,
-                          ClientService clientService) {
+                          ClientRepository clientRepository,
+                          EquipmentRepository equipmentRepository) {
         this.bookingRepository = bookingRepository;
-        this.bookingRiderEquipmentLinkRepository = bookingRiderEquipmentLinkRepository;
-        this.riderRepository = riderRepository;
+        this.clientRepository = clientRepository;
         this.equipmentRepository = equipmentRepository;
-        this.applicationUserService = applicationUserService;
-        this.clientService = clientService;
     }
 
     // ----- show all bookings -----
@@ -81,18 +66,17 @@ public class BookingService {
     public void addNewBookingToDB(Booking newBooking) {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-
         switch (applicationUserRole) {
             case ADMIN -> {
             }
             case CLIENT -> {
-                RegistrationRequest newApplicationUserInfo = new RegistrationRequest();
-                newApplicationUserInfo.setName(newBooking.getClient().getName());
-                newApplicationUserInfo.setPhone1(newBooking.getClient().getPhone1());
-                newApplicationUserInfo.setEmail(applicationUser.getEmail());
+                Client updatedClient = clientRepository.findById(applicationUser.getClient().getId()).orElseThrow(() ->
+                        new IllegalStateException("Client with id = " + applicationUser.getClient().getId() + " not found!"));
+                updatedClient.setName(newBooking.getClient().getName());
+                updatedClient.setPhone1(newBooking.getClient().getPhone1());
 
-                updateApplicationUserInfo(applicationUser, newApplicationUserInfo);
-                newBooking.setClient(clientService.showOneClientById(applicationUser.getClient().getId()));
+                newBooking.setClient(updatedClient);
+                applicationUser.setClient(newBooking.getClient());
             }
             default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
         }
@@ -217,29 +201,20 @@ public class BookingService {
     public void updateBookingById(Long bookingToBeUpdatedId, Booking updatedBookingInfo) {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
         //update client
-
+        bookingToBeUpdated.getClient().setName(updatedBookingInfo.getClient().getName());
+        bookingToBeUpdated.getClient().setPhone1(updatedBookingInfo.getClient().getPhone1());
+        //update applicationUser, if needed (applicationUser gets updated anyway, but after reauthorization)
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
         switch (applicationUserRole) {
             case ADMIN -> {
-                clientService.updateClientById(bookingToBeUpdated.getClient().getId(), updatedBookingInfo.getClient());
             }
-            case CLIENT -> {
-                RegistrationRequest newApplicationUserInfo = new RegistrationRequest();
-                newApplicationUserInfo.setName(updatedBookingInfo.getClient().getName());
-                newApplicationUserInfo.setPhone1(updatedBookingInfo.getClient().getPhone1());
-                newApplicationUserInfo.setEmail(applicationUser.getEmail());
-
-                updateApplicationUserInfo(applicationUser, newApplicationUserInfo);
-                bookingToBeUpdated.setClient(clientService.showOneClientById(applicationUser.getClient().getId()));
-            }
+            case CLIENT -> applicationUser.setClient(bookingToBeUpdated.getClient());
             default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
         }
         //update booking
-        bookingToBeUpdated.setClient(bookingToBeUpdated.getClient());
         bookingToBeUpdated.setDateOfArrival(updatedBookingInfo.getDateOfArrival());
         bookingToBeUpdated.setDateOfReturn(updatedBookingInfo.getDateOfReturn());
-
         bookingRepository.save(bookingToBeUpdated);
     }
 
@@ -301,11 +276,6 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public Rider showOneRiderById(Long riderId) {
-        return riderRepository.findById(riderId).orElseThrow(() ->
-                new IllegalStateException("Rider with id = " + riderId + " not found!"));
-    }
-
     public void removeRiderFromBooking(Long bookingToBeUpdatedId, Long riderToBeRemovedId) {
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
 
@@ -338,13 +308,25 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public void addRiderToBooking(Long bookingId, Long riderId) {
+    public void addExistingRiderToBooking(Long bookingId, Long riderId) {
         Booking booking = showOneBookingById(bookingId);
         Rider rider = showOneRiderById(riderId);
 
         booking.getListOfBookingRiderEquipmentLinks()
                 .add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new RiderAssignedEquipment()));
         bookingRepository.save(booking);
+    }
+
+    public Rider showOneRiderById(Long riderId) {
+        //workaround, just so not to use riderService.showOneRiderById(Long riderId)
+        //1 and only 1 rider will be found
+        return showAllBookings().stream()
+                .map(booking -> Objects.requireNonNull(booking.getListOfBookingRiderEquipmentLinks().stream()
+                                .filter(link -> Objects.equals(link.getRider().getId(), riderId))
+                                .findAny().orElse(null))
+                        .getRider())
+                .findAny()
+                .orElse(null);
     }
 
     // ----- delete booking -----
@@ -379,7 +361,6 @@ public class BookingService {
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return bookingRepository.findAll(sort);
     }
-
 
 
     ///TODO: remove
@@ -439,20 +420,5 @@ public class BookingService {
     // ----- ClientHomeController / show upcoming bookings for the client -----
     public List<Booking> showCurrentBookingsForClient(Long clientId) {
         return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date()); //TODO: check result
-    }
-
-    // ----- ClientHomeController / update applicationUser info -----
-    public void updateApplicationUserInfo(ApplicationUser applicationUserToBeUpdated,
-                                          RegistrationRequest registrationRequest) {
-        boolean emailExists = applicationUserService.checkIfExists(registrationRequest.getEmail());
-        if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
-            applicationUserService.updatePersonalInfo(applicationUserToBeUpdated, registrationRequest);
-            Client clientToBeUpdated = clientService.showOneClientById(applicationUserToBeUpdated.getClient().getId());
-            clientService.updateClientById(clientToBeUpdated.getId(), registrationRequest);
-        }
-    }
-
-    public void updateApplicationUserPassword(ApplicationUser applicationUserToBeUpdated, String password) {
-        applicationUserService.updatePassword(applicationUserToBeUpdated, password);
     }
 }
