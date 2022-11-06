@@ -317,6 +317,12 @@
                                     </div>
                                 </td>
                             </tr>
+                            <!-- type -->
+                            <tr>
+                                <td>
+                                    <input type="hidden" th:field="*{type}" th:value="${typeOfEquipment}"/>
+                                </td>
+                            </tr>
                             <!-- condition -->
                             <tr>
                                 <td th:text="#{equipment.parameter.condition} + ': '"/>
