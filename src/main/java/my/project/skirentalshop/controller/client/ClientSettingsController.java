@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller;
+package my.project.skirentalshop.controller.client;
 
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;

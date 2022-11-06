@@ -1,4 +1,4 @@
-package my.project.skirentalshop.controller;
+package my.project.skirentalshop.controller.admin;
 
 import my.project.skirentalshop.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;

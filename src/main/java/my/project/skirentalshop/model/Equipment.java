@@ -30,10 +30,6 @@ public class Equipment {
     EquipmentCondition condition;
 
 //    @Pattern(regexp = "(1[0-6][0-9]|170)([w|W]?)", message = "{validation.snowboard.invalid-size}")
-//    String snowboardSize; //Snowboard
-//    String skiSize; //Ski
-//    FootSize footSize; //SnowboardBoots, SkiBoots
-//    ClothesSize clothesSize; //Helmet, Jacket, Gloves, Pants, ProtectiveShorts, KneeProtection
     String size;
 
     Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
