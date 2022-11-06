@@ -59,9 +59,11 @@ public class EquipmentController {
 
     // ----- edit -----
     @GetMapping("/{equipmentId}")
-    public String showOne(@PathVariable("equipmentId") Long equipmentId, Model model) {
+    public String showOne(@PathVariable("type") String type,
+                          @PathVariable("equipmentId") Long equipmentId, Model model) {
         model.addAttribute("action", "update");
-        model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId));
+        model.addAttribute("equipment",
+                equipmentService.showOneEquipmentById(equipmentId, TypesOfEquipment.convertToEnumField(type)));
         return "admin/equipment/equipment";
     }
 

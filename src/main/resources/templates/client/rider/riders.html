@@ -34,20 +34,14 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/client/riders' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/new?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/' + riderId + '?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'create'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                  ${action == 'update'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/client/riders' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/new?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/' + riderId + '?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'create'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                  ${action == 'update'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -55,19 +49,13 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/client/riders' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/new?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/' + riderId + '?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'create'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                  ${action == 'update'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=en'}">English</a>
-                    <a th:href="@{'/client/riders' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'create'  ? '/new?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
-                                       ${action == 'update'  ? '/' + riderId + '?' +
-                                                (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'create'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
+                                  ${action == 'update'  ? '?' + (bookingId != null ? 'bookingId=' + bookingId + '&' : '') : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>

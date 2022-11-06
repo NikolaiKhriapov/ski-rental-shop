@@ -2,7 +2,6 @@ package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.Client;
 import my.project.skirentalshop.repository.ClientRepository;
-import my.project.skirentalshop.security.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -61,18 +60,5 @@ public class ClientService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return clientRepository.findAll(sort);
-    }
-
-
-    ///TODO: remove
-    // ----- ClientHomeController / update applicationUser info -----
-    public void updateClientById(Long clientToBeUpdatedId, RegistrationRequest registrationRequest) {
-        Client clientToBeUpdated = showOneClientById(clientToBeUpdatedId);
-
-        clientToBeUpdated.setName(registrationRequest.getName());
-        clientToBeUpdated.setPhone1(registrationRequest.getPhone1());
-        clientToBeUpdated.setPhone2(registrationRequest.getPhone2());
-
-        clientRepository.save(clientToBeUpdated);
     }
 }

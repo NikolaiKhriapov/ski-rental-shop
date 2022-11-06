@@ -50,7 +50,8 @@ public class ApplicationConfigI18n implements WebMvcConfigurer {
                 "classpath:/client",
                 "classpath:/rider",
                 "classpath:/equipment",
-                "classpath:/validation"
+                "classpath:/validation",
+                "classpath:/error"
         );
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;

@@ -13,6 +13,9 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     // ----- show all -----
     List<Equipment> findAllByTypeOrderById(TypesOfEquipment type);
 
+    // ----- edit -----
+    Equipment findByIdAndType(Long id, TypesOfEquipment type);
+
     // ----- search -----
     List<Equipment> findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(TypesOfEquipment type, String partOfName);
 

@@ -12,6 +12,12 @@ h1 {
     font-weight: normal; /* because Safari default settings for <h1> add extra letter-spacing */
 }
 
+h2 {
+    font-size: 20px;
+    margin-top: 0;
+    font-weight: normal;
+}
+
 .button {
     cursor: pointer;
 

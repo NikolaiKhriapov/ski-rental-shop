@@ -35,7 +35,6 @@ public class AdminHomeController {
 
         model.addAttribute("date", todayBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(todayBeginning, todayEnd));
-        model.addAttribute("day", "today");
         return "admin/home/bookings_by_date";
     }
 
@@ -47,7 +46,6 @@ public class AdminHomeController {
 
         model.addAttribute("date", tomorrowBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(tomorrowBeginning, tomorrowEnd));
-        model.addAttribute("day", "tomorrow");
         return "admin/home/bookings_by_date";
     }
 

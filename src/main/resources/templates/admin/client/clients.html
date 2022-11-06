@@ -25,18 +25,16 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/clients' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/new?' : ''} +
-                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'search'  ? 'search?search=' + search + '&' : ''} +
+                                  ${action == 'create'  ? '?' : ''} +
+                                  ${action == 'update'  ? '?' : ''} +
                                                                                                        'theme=theme_1'}"
                        th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/admin/clients' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/new?' : ''} +
-                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'search'  ? 'search?search=' + search + '&' : ''} +
+                                  ${action == 'create'  ? '?' : ''} +
+                                  ${action == 'update'  ? '?' : ''} +
                                                                                                        'theme=theme_2'}"
                        th:text="#{top-nav.theme.theme-2}"/>
                 </div>
@@ -44,17 +42,15 @@
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
                 <div class="dropdown-content">
-                    <a th:href="@{'/admin/clients' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/new?' : ''} +
-                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'search'  ? 'search?search=' + search + '&' : ''} +
+                                  ${action == 'create'  ? '?' : ''} +
+                                  ${action == 'update'  ? '?' : ''} +
                                                                                                  'lang=en'}">English</a>
-                    <a th:href="@{'/admin/clients' +
-                                       ${action == 'showAll' ? '?' : ''} +
-                                       ${action == 'search'  ? '/search?search=' + search + '&' : ''} +
-                                       ${action == 'create'  ? '/new?' : ''} +
-                                       ${action == 'update'  ? '/' + clientId + '?' : ''} +
+                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
+                                  ${action == 'search'  ? 'search?search=' + search + '&' : ''} +
+                                  ${action == 'create'  ? '?' : ''} +
+                                  ${action == 'update'  ? '?' : ''} +
                                                                                                  'lang=ru'}">Русский</a>
                 </div>
             </li>

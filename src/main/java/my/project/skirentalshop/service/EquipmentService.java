@@ -31,13 +31,16 @@ public class EquipmentService {
     }
 
     // ----- edit -----
-    public Equipment showOneEquipmentById(Long id) {
-        return equipmentRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Equipment with id = " + id + " not found!"));
+    public Equipment showOneEquipmentById(Long id, TypesOfEquipment type) {
+        Equipment equipment = equipmentRepository.findByIdAndType(id, type);
+        if (equipment == null) {
+            throw new IllegalStateException(String.format("Equipment with id=%s not found!", id));
+        }
+        return equipment;
     }
 
     public void updateEquipmentById(Long id, Equipment updatedEquipment, TypesOfEquipment type) {
-        Equipment equipmentToBeUpdated = showOneEquipmentById(id);
+        Equipment equipmentToBeUpdated = showOneEquipmentById(id, type);
         switch (type) {
             case SNOWBOARD -> {
                 equipmentToBeUpdated.setName(updatedEquipment.getName());
