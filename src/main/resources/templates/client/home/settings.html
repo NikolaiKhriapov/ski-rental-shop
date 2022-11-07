@@ -58,6 +58,7 @@
         <div class="content">
 
             <div class="new-edit">
+
                 <!--Update name, surname, phone, email-->
                 <h1 th:text="#{client.settings.info.header}"/>
                 <form th:method="PATCH"
@@ -100,8 +101,23 @@
                             </td>
                         </tr>
                         <tr>
+                            <td style="text-align: center" colspan="2">
+                                <br>
+                                <div th:text="#{client.settings.info.email-confirm}"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <label for="input-email2"></label>
+                                <input id="input-email2" name="email2" type="text" style="width: 300px"
+                                       th:placeholder="#{client.settings.info.email}"/>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <input name="password" type="hidden" value="Password1"/>
+                                <input name="password2" type="hidden" value="Password1"/>
                                 <!--Temp value, just for passing validation-->
                             </td>
                         </tr>
@@ -112,7 +128,14 @@
                     <input class="button" type="submit" th:value="#{equipment.button.save}"/>
                 </form>
 
-                <br><br>
+                <br>
+
+                <div class="validation-message"
+                     th:if="${#fields.hasErrors('${registrationRequest}')}"
+                     th:errors="${registrationRequest}">
+                </div>
+
+                <br>
 
                 <!--Update password-->
                 <h1 th:text="#{client.settings.password.header}"/>
@@ -128,6 +151,8 @@
                                        th:value="${applicationUserToBeUpdated.client.phone1}"/>
                                 <input name="email" type="hidden"
                                        th:value="${applicationUserToBeUpdated.email}"/>
+                                <input name="email2" type="hidden"
+                                       th:value="${applicationUserToBeUpdated.email}"/>
                             </td>
                         </tr>
                         <tr>
@@ -135,10 +160,18 @@
                             <td>
                                 <label for="input-password"></label>
                                 <input id="input-password" style="width:250px" type="password"
-                                       th:placeholder="#{client.settings.info.password}"
-                                       th:field="${applicationUserToBeUpdated.password}"/>
-                                <div class="validation-message" th:if="${#fields.hasErrors()}" th:errors="*{password}">
+                                       name="password" th:placeholder="#{client.settings.info.password}"/>
+                                <div class="validation-message"
+                                     th:if="${#fields.hasErrors()}" th:errors="*{password}">
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{client.settings.info.password-confirm} + ': '"/>
+                            <td>
+                                <label for="input-password2"></label>
+                                <input id="input-password2" style="width:250px" type="password"
+                                       name="password2" th:placeholder="#{client.settings.info.password}"/>
                             </td>
                         </tr>
                     </table>

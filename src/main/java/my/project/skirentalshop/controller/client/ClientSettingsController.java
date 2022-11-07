@@ -52,6 +52,9 @@ public class ClientSettingsController {
                                                 @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            System.out.println("!!!!!" + registrationRequest.getPassword());
+            System.out.println("!!!!!" + registrationRequest.getPassword2());
+            System.out.println("!!!!!" + bindingResult.getAllErrors());
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }

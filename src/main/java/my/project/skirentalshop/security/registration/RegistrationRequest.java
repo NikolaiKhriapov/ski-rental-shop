@@ -1,6 +1,7 @@
 package my.project.skirentalshop.security.registration;
 
 import lombok.*;
+import my.project.skirentalshop.validation.FieldsValueMatch;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,6 +12,18 @@ import javax.validation.constraints.Size;
 @Setter
 @EqualsAndHashCode
 @ToString
+@FieldsValueMatch.List({
+        @FieldsValueMatch(
+                field = "email",
+                fieldMatch = "email2",
+                message = "{validation.application-user.email-not-matching}"
+        ),
+        @FieldsValueMatch(
+                field = "password",
+                fieldMatch = "password2",
+                message = "{validation.application-user.password-not-matching}"
+        )
+})
 public class RegistrationRequest {
 
     @NotBlank(message = "{validation.application-user.invalid-name.not-blank}")
@@ -26,6 +39,10 @@ public class RegistrationRequest {
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "{validation.application-user.invalid-email}")
     private String email;
 
+    private String email2;
+
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$", message = "{validation.application-user.password-invalid}")
     private String password;
+
+    private String password2;
 }

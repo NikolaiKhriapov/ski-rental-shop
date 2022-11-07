@@ -76,11 +76,23 @@
                 <a style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></a>
             </span>
             <span>
+                <label for="input-email2"></label>
+                <input id="input-email2" class="form-control"
+                       type="text" th:field="*{email2}" th:placeholder="#{auth.sign-up.placeholder.email}">
+            </span>
+            <span>
                 <label for="input-password"></label>
                 <input id="input-password" class="form-control"
                        type="password" th:field="*{password}" th:placeholder="#{auth.sign-up.placeholder.password}">
                 <a style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></a>
             </span>
+            <span>
+                <label for="input-password2"></label>
+                <input id="input-password2" class="form-control"
+                       type="password" th:field="*{password2}" th:placeholder="#{auth.sign-up.placeholder.password}">
+             </span>
+
+            <a style="color:red" th:if="${#fields.hasErrors('${registrationRequest}')}" th:errors="${registrationRequest}"></a>
 
             <br>
 

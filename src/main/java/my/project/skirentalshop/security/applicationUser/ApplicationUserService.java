@@ -47,6 +47,7 @@ public class ApplicationUserService implements UserDetailsService {
 
     public void updatePersonalInfo(ApplicationUser applicationUserToBeUpdated,
                                    RegistrationRequest registrationRequest) {
+
         boolean emailExists = checkIfExists(registrationRequest.getEmail());
         if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
             applicationUserToBeUpdated.getClient().setName(registrationRequest.getName());

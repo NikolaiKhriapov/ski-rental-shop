@@ -86,7 +86,7 @@ public class BookingService {
 
     public void checkIfDateOfReturnAfterDateOfArrival(Booking booking, BindingResult bindingResult) {
         if (!booking.getDateOfReturn().after(booking.getDateOfArrival())) {
-            bindingResult.rejectValue("dateOfReturn", "validation.booking.date.invalid_dates");
+            bindingResult.rejectValue("dateOfReturn", "validation.application-user.invalid-dates");
         }
     }
 
