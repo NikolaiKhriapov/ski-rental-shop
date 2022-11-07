@@ -13,16 +13,8 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode
 @ToString
 @FieldsValueMatch.List({
-        @FieldsValueMatch(
-                field = "email",
-                fieldMatch = "email2",
-                message = "{validation.application-user.email-not-matching}"
-        ),
-        @FieldsValueMatch(
-                field = "password",
-                fieldMatch = "password2",
-                message = "{validation.application-user.password-not-matching}"
-        )
+        @FieldsValueMatch(field = "email", fieldMatch = "email2", message = "{validation.application-user.email-not-matching}"),
+        @FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
 })
 public class RegistrationRequest {
 

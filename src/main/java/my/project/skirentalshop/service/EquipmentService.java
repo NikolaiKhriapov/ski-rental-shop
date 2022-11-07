@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EquipmentService {
@@ -20,28 +21,33 @@ public class EquipmentService {
     }
 
     // ----- show all -----
-    public List<Equipment> showAllEquipment(TypesOfEquipment type) {
-        return equipmentRepository.findAllByTypeOrderById(type);
+    public List<Equipment> showAllEquipment(String type) {
+        return equipmentRepository.findAllByTypeOrderById(TypesOfEquipment.convertToEnumField(type));
     }
 
     // ----- add new -----
-    public void addNewEquipmentToDB(Equipment equipment, TypesOfEquipment type) {
-        equipment.setType(type);
+    public Equipment createNewEquipmentByType(String type) {
+        Equipment equipment = new Equipment();
+        equipment.setType(TypesOfEquipment.convertToEnumField(type));
+        return equipment;
+    }
+
+    public void addNewEquipmentToDB(Equipment equipment) {
         equipmentRepository.save(equipment);
     }
 
     // ----- edit -----
-    public Equipment showOneEquipmentById(Long id, TypesOfEquipment type) {
-        Equipment equipment = equipmentRepository.findByIdAndType(id, type);
+    public Equipment showOneEquipmentById(Long id, String type) {
+        Equipment equipment = equipmentRepository.findByIdAndType(id, TypesOfEquipment.convertToEnumField(type));
         if (equipment == null) {
             throw new IllegalStateException(String.format("Equipment with id=%s not found!", id));
         }
         return equipment;
     }
 
-    public void updateEquipmentById(Long id, Equipment updatedEquipment, TypesOfEquipment type) {
+    public void updateEquipmentById(Long id, Equipment updatedEquipment, String type) {
         Equipment equipmentToBeUpdated = showOneEquipmentById(id, type);
-        switch (type) {
+        switch ((Objects.requireNonNull(TypesOfEquipment.convertToEnumField(type)))) {
             case SNOWBOARD -> {
                 equipmentToBeUpdated.setName(updatedEquipment.getName());
                 equipmentToBeUpdated.setCondition(updatedEquipment.getCondition());
@@ -71,16 +77,19 @@ public class EquipmentService {
     }
 
     // ----- search -----
-    public List<Equipment> showEquipmentBySearch(String search, TypesOfEquipment type) {
-        return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(type, search);
+    public List<Equipment> showEquipmentBySearch(String search, String type) {
+        return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(
+                TypesOfEquipment.convertToEnumField(type), search
+        );
     }
 
     // ----- sort -----
-    public List<Equipment> sortAllEquipmentByParameter(String parameter, String sortDirection, TypesOfEquipment type) {
+    public List<Equipment> sortAllEquipmentByParameter(String parameter, String sortDirection, String type) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         List<Equipment> allEquipmentSortedByParameter = equipmentRepository.findAll(sort);
-        allEquipmentSortedByParameter.removeIf(i -> !(i.getType().equals(type)));
+
+        allEquipmentSortedByParameter.removeIf(i -> !(i.getType().equals(TypesOfEquipment.convertToEnumField(type))));
         return allEquipmentSortedByParameter;
     }
 }

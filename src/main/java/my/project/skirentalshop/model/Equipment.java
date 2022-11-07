@@ -2,6 +2,7 @@ package my.project.skirentalshop.model;
 
 import lombok.*;
 import my.project.skirentalshop.model.enums.*;
+import my.project.skirentalshop.validation.EquipmentSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Setter
 //@EqualsAndHashCode
 //@ToString
+@EquipmentSize
 public class Equipment {
 
     @Id
@@ -29,7 +31,6 @@ public class Equipment {
 
     EquipmentCondition condition;
 
-//    @Pattern(regexp = "(1[0-6][0-9]|170)([w|W]?)", message = "{validation.snowboard.invalid-size}")
     String size;
 
     Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
@@ -44,8 +45,7 @@ public class Equipment {
         if (o == null || getClass() != o.getClass()) return false;
         Equipment equipment = (Equipment) o;
         return switch (type) {
-            case SNOWBOARD ->
-                    Objects.equals(id, equipment.id) &&
+            case SNOWBOARD -> Objects.equals(id, equipment.id) &&
                     type == equipment.type &&
                     Objects.equals(name, equipment.name) &&
                     condition == equipment.condition &&
@@ -53,8 +53,7 @@ public class Equipment {
                     stiffness == equipment.stiffness &&
                     arch == equipment.arch &&
                     bindingSize == equipment.bindingSize;
-            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS ->
-                    Objects.equals(id, equipment.id) &&
+            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> Objects.equals(id, equipment.id) &&
                     type == equipment.type &&
                     Objects.equals(name, equipment.name) &&
                     condition == equipment.condition &&
@@ -62,20 +61,18 @@ public class Equipment {
                     stiffness == equipment.stiffness;
             case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION ->
                     Objects.equals(id, equipment.id) &&
-                    type == equipment.type &&
-                    Objects.equals(name, equipment.name) &&
-                    condition == equipment.condition &&
-                    Objects.equals(size, equipment.size);
+                            type == equipment.type &&
+                            Objects.equals(name, equipment.name) &&
+                            condition == equipment.condition &&
+                            Objects.equals(size, equipment.size);
         };
     }
 
     @Override
     public int hashCode() {
         return switch (type) {
-            case SNOWBOARD ->
-                    Objects.hash(id, type, name, condition, size, stiffness, arch, bindingSize);
-            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS ->
-                    Objects.hash(id, type, name, condition, size, stiffness);
+            case SNOWBOARD -> Objects.hash(id, type, name, condition, size, stiffness, arch, bindingSize);
+            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> Objects.hash(id, type, name, condition, size, stiffness);
             case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION ->
                     Objects.hash(id, type, name, condition, size);
         };

@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/equipment/{type}")
@@ -32,16 +31,16 @@ public class EquipmentController {
     @GetMapping
     public String showAll(@PathVariable("type") String type, Model model) {
         model.addAttribute("action", "showAll");
-        model.addAttribute("listOfEquipment",
-                equipmentService.showAllEquipment(TypesOfEquipment.convertToEnumField(type)));
+        model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(type));
         return "admin/equipment/equipment";
     }
 
     // ----- add new -----
     @GetMapping("/new")
-    public String create(Model model) {
+    public String create(@PathVariable("type") String type,
+                         Model model) {
         model.addAttribute("action", "create");
-        model.addAttribute("equipment", new Equipment());
+        model.addAttribute("equipment", equipmentService.createNewEquipmentByType(type));
         return "admin/equipment/equipment";
     }
 
@@ -53,7 +52,7 @@ public class EquipmentController {
             model.addAttribute("action", "create");
             return "admin/equipment/equipment";
         }
-        equipmentService.addNewEquipmentToDB(oneEquipment, TypesOfEquipment.convertToEnumField(type));
+        equipmentService.addNewEquipmentToDB(oneEquipment);
         return "redirect:/admin/equipment/" + type;
     }
 
@@ -63,7 +62,7 @@ public class EquipmentController {
                           @PathVariable("equipmentId") Long equipmentId, Model model) {
         model.addAttribute("action", "update");
         model.addAttribute("equipment",
-                equipmentService.showOneEquipmentById(equipmentId, TypesOfEquipment.convertToEnumField(type)));
+                equipmentService.showOneEquipmentById(equipmentId, type));
         return "admin/equipment/equipment";
     }
 
@@ -76,9 +75,7 @@ public class EquipmentController {
             model.addAttribute("action", "update");
             return "admin/equipment/equipment";
         }
-        equipmentService.updateEquipmentById(
-                equipmentId, updatedEquipment, Objects.requireNonNull(TypesOfEquipment.convertToEnumField(type))
-        );
+        equipmentService.updateEquipmentById(equipmentId, updatedEquipment, type);
         return "redirect:/admin/equipment/" + type;
     }
 
@@ -96,8 +93,7 @@ public class EquipmentController {
                                   @RequestParam("search") String search,
                                   Model model) {
         model.addAttribute("action", "search");
-        model.addAttribute("listOfEquipment",
-                equipmentService.showEquipmentBySearch(search, TypesOfEquipment.convertToEnumField(type)));
+        model.addAttribute("listOfEquipment", equipmentService.showEquipmentBySearch(search, type));
         model.addAttribute("search", search);
         return "admin/equipment/equipment";
     }
@@ -111,7 +107,7 @@ public class EquipmentController {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfEquipment", equipmentService.sortAllEquipmentByParameter(
-                parameter, sortDirection, TypesOfEquipment.convertToEnumField(type))
+                parameter, sortDirection, type)
         );
         return "admin/equipment/equipment";
     }

@@ -316,7 +316,7 @@
                             <!-- type -->
                             <tr>
                                 <td>
-                                    <input type="hidden" th:field="*{type}" th:value="${typeOfEquipment}"/>
+                                    <input type="hidden" th:field="${equipment.type}"/>
                                 </td>
                             </tr>
                             <!-- condition -->
@@ -342,8 +342,7 @@
                                     <input id="input-snowboard-size" type="text" th:field="*{size}"
                                            th:placeholder="#{equipment.parameter.snowboard-size}"/>
                                     <div class="validation-message"
-                                         th:if="${#fields.hasErrors('size')}" th:errors="*{size}">
-                                    </div>
+                                         th:if="${#fields.hasErrors('${equipment}')}" th:errors="${equipment}"></div>
                                 </td>
                             </tr>
                             <!-- size - Ski -->
@@ -353,6 +352,8 @@
                                     <label for="input-ski-size"></label>
                                     <input id="input-ski-size" type="text" th:field="*{size}"
                                            th:placeholder="#{equipment.parameter.ski-size}"/>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('${equipment}')}" th:errors="${equipment}"></div>
                                 </td>
                             </tr>
                             <!-- size - SnowboardBoots, SkiBoots -->
@@ -368,6 +369,8 @@
                                                             (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
                                     </select>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('${equipment}')}" th:errors="${equipment}"></div>
                                 </td>
                             </tr>
                             <!-- size - Helmet, Jacket, Gloves, Pants, ProtectiveShorts, KneeProtection -->
@@ -385,6 +388,8 @@
                                                             (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
                                     </select>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('${equipment}')}" th:errors="${equipment}"></div>
                                 </td>
                             </tr>
                             <!-- stiffness -->
@@ -441,7 +446,8 @@
                     <!-- Submit button -->
                     <div>
                         <input th:if="${action == 'create'}"
-                               class="button" type="submit" th:value="#{${typeOfEquipment.namePlural + '.button.add-new'}}"/>
+                               class="button" type="submit"
+                               th:value="#{${typeOfEquipment.namePlural + '.button.add-new'}}"/>
                         <input th:if="${action == 'update'}"
                                class="button" type="submit" th:value="#{equipment.button.save}"/>
                     </div>
