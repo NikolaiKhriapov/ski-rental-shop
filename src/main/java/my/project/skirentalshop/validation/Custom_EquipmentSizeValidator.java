@@ -5,7 +5,7 @@ import my.project.skirentalshop.model.Equipment;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EquipmentSizeValidator implements ConstraintValidator<EquipmentSize, Equipment> {
+public class Custom_EquipmentSizeValidator implements ConstraintValidator<Custom_EquipmentSize, Equipment> {
 
     public boolean isValid(Equipment equipment, ConstraintValidatorContext context) {
         switch (equipment.getType()) {

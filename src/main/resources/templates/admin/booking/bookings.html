@@ -321,8 +321,10 @@
                                     <label for="input-dor"></label>
                                     <input id="input-dor" type="datetime-local" th:field="*{dateOfReturn}"/>
                                     <div class="validation-message"
-                                         th:if="${#fields.hasErrors('dateOfReturn')}"
-                                         th:errors="*{dateOfReturn}">
+                                         th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">
+                                    </div>
+                                    <div class="validation-message"
+                                    th:if="${#fields.hasErrors('${booking}')}" th:errors="${booking}">
                                     </div>
                                 </td>
                             </tr>

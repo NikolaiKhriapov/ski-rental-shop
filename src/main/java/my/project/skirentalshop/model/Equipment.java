@@ -2,7 +2,7 @@ package my.project.skirentalshop.model;
 
 import lombok.*;
 import my.project.skirentalshop.model.enums.*;
-import my.project.skirentalshop.validation.EquipmentSize;
+import my.project.skirentalshop.validation.Custom_EquipmentSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 //@EqualsAndHashCode
 //@ToString
-@EquipmentSize
+@Custom_EquipmentSize
 public class Equipment {
 
     @Id

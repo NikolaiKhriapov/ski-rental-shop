@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = EquipmentSizeValidator.class)
+@Constraint(validatedBy = Custom_BookingDatesValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EquipmentSize {
+public @interface Custom_BookingDates {
 
-    String message() default "Invalid size format!";
+    String message() default "Fields values don't match!";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

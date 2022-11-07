@@ -1,6 +1,7 @@
 package my.project.skirentalshop.model;
 
 import lombok.*;
+import my.project.skirentalshop.validation.Custom_BookingDates;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Custom_BookingDates
 public class Booking {
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)

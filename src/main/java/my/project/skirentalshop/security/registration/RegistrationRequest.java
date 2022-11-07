@@ -1,7 +1,7 @@
 package my.project.skirentalshop.security.registration;
 
 import lombok.*;
-import my.project.skirentalshop.validation.FieldsValueMatch;
+import my.project.skirentalshop.validation.Custom_FieldsValueMatch;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -12,9 +12,9 @@ import javax.validation.constraints.Size;
 @Setter
 @EqualsAndHashCode
 @ToString
-@FieldsValueMatch.List({
-        @FieldsValueMatch(field = "email", fieldMatch = "email2", message = "{validation.application-user.email-not-matching}"),
-        @FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
+@Custom_FieldsValueMatch.List({
+        @Custom_FieldsValueMatch(field = "email", fieldMatch = "email2", message = "{validation.application-user.email-not-matching}"),
+        @Custom_FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
 })
 public class RegistrationRequest {
 

@@ -182,6 +182,9 @@
                                     <div class="validation-message"
                                          th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">
                                     </div>
+                                    <div class="validation-message"
+                                         th:if="${#fields.hasErrors('${booking}')}" th:errors="${booking}">
+                                    </div>
                                 </td>
                             </tr>
                         </table>

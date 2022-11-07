@@ -7,21 +7,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = FieldsValueMatchValidator.class)
+@Constraint(validatedBy = Custom_EquipmentSizeValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldsValueMatch {
+public @interface Custom_EquipmentSize {
 
-    String message() default "Fields values don't match!";
-    String field();
-    String fieldMatch();
+    String message() default "Invalid size format!";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface List {
-        FieldsValueMatch[] value();
-    }
 }
