@@ -277,7 +277,7 @@
                             <td th:text="#{riders.parameter.height} + ': '"/>
                             <td>
                                 <label for="input-height"></label>
-                                <input id="input-height" type="text"
+                                <input id="input-height" type="number" step="0.1"
                                        th:field="*{height}" th:placeholder="#{riders.parameter.height}">
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('height')}" th:errors="*{height}">
@@ -289,7 +289,7 @@
                             <td th:text="#{riders.parameter.weight} + ': '"/>
                             <td>
                                 <label for="input-weight"></label>
-                                <input id="input-weight" type="text"
+                                <input id="input-weight" type="number" step="0.1"
                                        th:field="*{weight}" th:placeholder="#{riders.parameter.weight}"/>
                                 <div class="validation-message"
                                      th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">

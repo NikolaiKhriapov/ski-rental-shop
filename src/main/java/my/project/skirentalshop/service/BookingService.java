@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.*;
 
@@ -81,6 +82,12 @@ public class BookingService {
             default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
         }
         bookingRepository.save(newBooking);
+    }
+
+    public void checkIfDateOfReturnAfterDateOfArrival(Booking booking, BindingResult bindingResult) {
+        if (!booking.getDateOfReturn().after(booking.getDateOfArrival())) {
+            bindingResult.rejectValue("dateOfReturn", "validation.booking.date.invalid_dates");
+        }
     }
 
     // ----- edit booking info / show one booking -----

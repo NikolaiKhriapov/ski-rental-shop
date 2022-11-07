@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
@@ -27,12 +28,14 @@ public class Booking {
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @NotNull(message = "{validation.booking.invalid-date}")
+    @NotNull(message = "{validation.booking.date.not-null}")
+    @Future(message = "{validation.booking.date.future}")
     private Date dateOfArrival;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @NotNull(message = "{validation.booking.invalid-date}")
+    @NotNull(message = "{validation.booking.date.not-null}")
+    @Future(message = "{validation.booking.date.future}")
     private Date dateOfReturn;
 
     private boolean completed;
@@ -51,6 +54,6 @@ public class Booking {
         if (listOfBookingRiderEquipmentLinks == null) {
             listOfBookingRiderEquipmentLinks = new ArrayList<>();
         }
-            return listOfBookingRiderEquipmentLinks;
+        return listOfBookingRiderEquipmentLinks;
     }
 }

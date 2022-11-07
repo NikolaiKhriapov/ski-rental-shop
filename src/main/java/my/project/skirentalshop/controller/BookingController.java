@@ -48,6 +48,7 @@ public class BookingController {
     public String create(@PathVariable("applicationUserRole") String applicationUserRole,
                          @ModelAttribute("booking") @Valid Booking newBooking,
                          BindingResult bindingResult, Model model) {
+        bookingService.checkIfDateOfReturnAfterDateOfArrival(newBooking, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
             return applicationUserRole + "/booking/bookings";
@@ -86,6 +87,7 @@ public class BookingController {
                                              @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                              @ModelAttribute("booking") @Valid Booking updatedBookingInfo,
                                              BindingResult bindingResult, Model model) {
+        bookingService.checkIfDateOfReturnAfterDateOfArrival(updatedBookingInfo, bindingResult);
         if (bindingResult.hasErrors()) {
             bookingService.resetListOfRiders(updatedBookingInfo, bookingToBeUpdatedId);
             model.addAttribute("action", "update");

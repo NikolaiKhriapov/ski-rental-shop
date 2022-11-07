@@ -40,12 +40,12 @@ public class Rider {
     @NotNull(message = "{validation.rider.height}")
     @DecimalMin(value = "60", message = "{validation.rider.height}")
     @DecimalMax(value = "220", message = "{validation.rider.height}")
-    private Double height; //TODO: handle java.lang.NumberFormatException
+    private Double height;
 
     @NotNull(message = "{validation.rider.weight}")
     @DecimalMin(value = "50", message = "{validation.rider.weight}")
     @DecimalMax(value = "160", message = "{validation.rider.weight}")
-    private Double weight; //TODO: handle java.lang.NumberFormatException
+    private Double weight;
 
     private FootSize footSize;
 
