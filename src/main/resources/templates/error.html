@@ -125,6 +125,13 @@
         <button type="button">
             <a href="/admin/equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
         </button>
+        <br>
+        <button type="button">
+            <a href="/admin/equipment/broken" th:text="#{side-bar.admin.broken}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
+        </button>
     </div><!--admin-->
     <div class="sidebar" th:if="${#request.userPrincipal.name != 'admin'}">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>

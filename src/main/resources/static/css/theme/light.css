@@ -140,7 +140,7 @@ h2 {
 
 .sidebar button a {
     display: block;
-    padding: 9px 20px;
+    padding: 9px 10px 9px 20px;
 
     text-decoration: none;
     color: white;
