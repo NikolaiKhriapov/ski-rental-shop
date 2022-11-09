@@ -313,7 +313,7 @@ public class BookingService {
         Rider rider = showOneRiderById(riderId);
 
         booking.getListOfBookingRiderEquipmentLinks()
-                .add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new RiderAssignedEquipment()));
+                .add(new BookingRiderEquipmentLink(booking, rider, new RiderAssignedEquipment(), new ArrayList<>()));
         bookingRepository.save(booking);
     }
 

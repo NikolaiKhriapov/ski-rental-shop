@@ -1,6 +1,7 @@
 package my.project.skirentalshop.service;
 
 import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.model.enums.EquipmentCondition;
 import my.project.skirentalshop.model.enums.TypesOfEquipment;
 import my.project.skirentalshop.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,10 @@ public class EquipmentService {
 
         allEquipmentSortedByParameter.removeIf(i -> !(i.getType().equals(TypesOfEquipment.convertToEnumField(type))));
         return allEquipmentSortedByParameter;
+    }
+
+    // ----- show broken equipment -----
+    public List<Equipment> showEquipmentByCondition(EquipmentCondition condition) {
+        return equipmentRepository.findAllByConditionOrderByType(condition);
     }
 }

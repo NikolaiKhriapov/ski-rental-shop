@@ -8,39 +8,40 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
+@Table(name = "booking_rider_equipment_link")
 public class BookingRiderEquipmentLink {
+
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "rider_id")
     private Rider rider;
 
-    @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
-    @CollectionTable(joinColumns = @JoinColumn)
-    private List<TypesOfEquipment> riderRequestedEquipment;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "rider_assigned_equipment_id")
     private RiderAssignedEquipment riderAssignedEquipment;
+
+    @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "booking_rider_equipment_link_rider_requested_equipment",
+            joinColumns = @JoinColumn(name = "booking_rider_equipment_link_id"))
+    private List<TypesOfEquipment> riderRequestedEquipment;
 
     public BookingRiderEquipmentLink(Booking booking,
                                      Rider rider,
-                                     List<TypesOfEquipment> riderRequestedEquipment,
-                                     RiderAssignedEquipment riderAssignedEquipment) {
+                                     RiderAssignedEquipment riderAssignedEquipment,
+                                     List<TypesOfEquipment> riderRequestedEquipment) {
         this.booking = booking;
         this.rider = rider;
-        this.riderRequestedEquipment = riderRequestedEquipment;
         this.riderAssignedEquipment = riderAssignedEquipment;
+        this.riderRequestedEquipment = riderRequestedEquipment;
     }
 }

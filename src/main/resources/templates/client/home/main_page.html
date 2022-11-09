@@ -77,7 +77,7 @@
                             <th></th>
                         </tr>
                         <tr th:each="oneBooking : ${currentBookingsForClient}">
-                            <td th:text="${oneBooking.id}"/>
+                            <td th:text="${oneBooking.id}" th:width="50"/>
                             <td th:text="${oneBooking.client.name}" th:align="left"/>
                             <td th:text="${oneBooking.client.phone1}"/>
                             <td th:text="${oneBooking.client.phone2}"/>

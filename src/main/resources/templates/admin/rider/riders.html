@@ -16,7 +16,6 @@
 <!--/*@thymesVar id="listOfRiders" type="java.util.List<my.project.skirentalshop.model.Rider>"*/-->
 <!--/*@thymesVar id="rider" type="my.project.skirentalshop.model.Rider"*/-->
 <!--/*@thymesVar id="link" type="my.project.skirentalshop.model.BookingRiderEquipmentLink"*/-->
-<!--/*@thymesVar id="Sex" type="my.project.skirentalshop.model.Rider.Sex"*/-->
 <!--/*@thymesVar id="action" type="java.lang.String"*/-->
 <!--/*@thymesVar id="bookingId" type="java.lang.Long"*/-->
 <!--/*@thymesVar id="riderId" type="java.lang.Long"*/-->
@@ -126,6 +125,13 @@
         <button type="button">
             <a href="/admin/equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
         </button>
+        <br>
+        <button type="button">
+            <a href="/admin/equipment/broken" th:text="#{side-bar.admin.broken}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
+        </button>
     </div>
 
     <div class="main-screen">
@@ -193,7 +199,7 @@
                         <th></th>
                     </tr>
                     <tr th:each="oneRider : ${listOfRiders}">
-                        <td th:text="${oneRider.id}"/>
+                        <td th:text="${oneRider.id}" th:width="50"/>
                         <td th:text="${oneRider.name}" th:align="left"/>
                         <td th:text="${oneRider.height}"/>
                         <td th:text="${oneRider.weight}"/>
@@ -263,7 +269,7 @@
                             <td>
                                 <label for="select-sex"></label>
                                 <select id="select-sex" name="sex">
-                                    <option th:each="i : ${T(my.project.skirentalshop.model.Rider.Sex).values}"
+                                    <option th:each="i : ${T(my.project.skirentalshop.model.enums.Sex).values}"
                                             th:value="${i.name}"
                                             th:text="#{${'riders.sex.' + i}}"
                                             th:selected="${action == 'create'} ? false :

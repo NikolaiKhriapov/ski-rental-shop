@@ -7,105 +7,45 @@ import my.project.skirentalshop.validation.Custom_EquipmentSize;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-//@EqualsAndHashCode
-//@ToString
+@Data
 @Custom_EquipmentSize
+@Table(name = "equipment")
 public class Equipment {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @Column(name = "id")
     Long id;
 
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     TypesOfEquipment type;
 
     @NotBlank(message = "{validation.equipment.invalid-name.not-empty}")
     @Size(message = "{validation.equipment.invalid-name.size}")
+    @Column(name = "name")
     String name;
 
+    @Column(name = "condition")
+    @Enumerated(EnumType.STRING)
     EquipmentCondition condition;
 
+    @Column(name = "size")
     String size;
 
+    @Column(name = "stiffness")
+    @Enumerated(EnumType.STRING)
     Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
 
+    @Column(name = "arch")
+    @Enumerated(EnumType.STRING)
     Arch arch; //Snowboard
 
+    @Column(name = "binding_size")
+    @Enumerated(EnumType.STRING)
     BindingSize bindingSize; //Snowboard
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Equipment equipment = (Equipment) o;
-        return switch (type) {
-            case SNOWBOARD -> Objects.equals(id, equipment.id) &&
-                    type == equipment.type &&
-                    Objects.equals(name, equipment.name) &&
-                    condition == equipment.condition &&
-                    Objects.equals(size, equipment.size) &&
-                    stiffness == equipment.stiffness &&
-                    arch == equipment.arch &&
-                    bindingSize == equipment.bindingSize;
-            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> Objects.equals(id, equipment.id) &&
-                    type == equipment.type &&
-                    Objects.equals(name, equipment.name) &&
-                    condition == equipment.condition &&
-                    Objects.equals(size, equipment.size) &&
-                    stiffness == equipment.stiffness;
-            case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION ->
-                    Objects.equals(id, equipment.id) &&
-                            type == equipment.type &&
-                            Objects.equals(name, equipment.name) &&
-                            condition == equipment.condition &&
-                            Objects.equals(size, equipment.size);
-        };
-    }
-
-    @Override
-    public int hashCode() {
-        return switch (type) {
-            case SNOWBOARD -> Objects.hash(id, type, name, condition, size, stiffness, arch, bindingSize);
-            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> Objects.hash(id, type, name, condition, size, stiffness);
-            case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION ->
-                    Objects.hash(id, type, name, condition, size);
-        };
-    }
-
-    @Override
-    public String toString() { //TODO: enum fields do not get printed properly
-        return switch (type) {
-            case SNOWBOARD -> "Equipment{" +
-                    "id=" + id +
-                    "type=" + type +
-                    ", name='" + name +
-                    ", condition=" + condition +
-                    ", size='" + size +
-                    ", stiffness=" + stiffness +
-                    ", arch=" + arch +
-                    ", bindingSize=" + bindingSize +
-                    '}';
-            case SKI, SNOWBOARD_BOOTS, SKI_BOOTS -> "Equipment{" +
-                    "id=" + id +
-                    "type=" + type +
-                    ", name='" + name +
-                    ", condition=" + condition +
-                    ", size=" + size +
-                    ", stiffness=" + stiffness +
-                    '}';
-            case HELMET, JACKET, GLOVES, PANTS, PROTECTIVE_SHORTS, KNEE_PROTECTION -> "Equipment{" +
-                    "id=" + id +
-                    "type=" + type +
-                    ", name='" + name +
-                    ", condition=" + condition +
-                    ", size=" + size +
-                    '}';
-        };
-    }
 }

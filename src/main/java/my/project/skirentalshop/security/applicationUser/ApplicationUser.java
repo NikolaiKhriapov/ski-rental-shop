@@ -12,24 +12,34 @@ import java.util.Collections;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
+@Table(name = "application_user")
 public class ApplicationUser implements UserDetails {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @Column(name = "id")
     private Long id;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "client_id")
     private Client client;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "application_user_role")
     private ApplicationUserRole applicationUserRole;
+
+    @Column(name = "locked")
     private boolean locked = false;
+
+    @Column(name = "enabled")
     private boolean enabled = true;
 
     @Override

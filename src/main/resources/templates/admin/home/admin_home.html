@@ -98,6 +98,13 @@
         <button type="button">
             <a href="/admin/equipment/knee-protection" th:text="#{side-bar.admin.knee-protection}"/>
         </button>
+        <br>
+        <button type="button">
+            <a href="/admin/equipment/broken" th:text="#{side-bar.admin.broken}"/>
+        </button>
+        <button type="button">
+            <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
+        </button>
     </div>
 
     <div class="main-screen">
@@ -126,7 +133,7 @@
                             <th></th>
                         </tr>
                         <tr th:each="oneBooking : ${currentBookings}">
-                            <td th:text="${oneBooking.id}"/>
+                            <td th:text="${oneBooking.id}" th:width="50"/>
                             <td th:text="${oneBooking.client.name}" th:align="left"/>
                             <td th:text="${oneBooking.client.phone1}"/>
                             <td th:text="${oneBooking.client.phone2}"/>
@@ -181,7 +188,7 @@
                             <th></th>
                         </tr>
                         <tr th:each="oneBooking : ${allBookings}">
-                            <td th:text="${oneBooking.id}"/>
+                            <td th:text="${oneBooking.id}" th:width="50"/>
                             <td th:text="${oneBooking.client.name}" th:align="left"/>
                             <td th:text="${oneBooking.client.phone1}"/>
                             <td th:text="${oneBooking.client.phone2}"/>

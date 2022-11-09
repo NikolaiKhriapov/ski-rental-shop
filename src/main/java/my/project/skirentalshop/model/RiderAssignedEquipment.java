@@ -8,58 +8,58 @@ import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
 
 @Entity
 @NoArgsConstructor
-//@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
+@Table(name = "rider_assigned_equipment")
 public class RiderAssignedEquipment {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "snowboard_id")
     private Equipment snowboard;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "snowboard_boots_id")
     private Equipment snowboardBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "ski_id")
     private Equipment ski;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "ski_boots_id")
     private Equipment skiBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "helmet_id")
     private Equipment helmet;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "jacket_id")
     private Equipment jacket;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "gloves_id")
     private Equipment gloves;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "pants_id")
     private Equipment pants;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "protective_shorts_id")
     private Equipment protectiveShorts;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "knee_protection_id")
     private Equipment kneeProtection;
 
     @OneToOne(mappedBy = "riderAssignedEquipment")
+    @ToString.Exclude
     private BookingRiderEquipmentLink bookingRiderEquipmentLink;
 
 

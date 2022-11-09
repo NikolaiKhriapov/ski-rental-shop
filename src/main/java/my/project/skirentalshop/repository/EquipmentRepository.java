@@ -1,6 +1,7 @@
 package my.project.skirentalshop.repository;
 
 import my.project.skirentalshop.model.Equipment;
+import my.project.skirentalshop.model.enums.EquipmentCondition;
 import my.project.skirentalshop.model.enums.TypesOfEquipment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,8 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
     //// ----- edit booking info / assign equipment to riders -----
     List<Equipment> findAllByTypeOrderBySize(TypesOfEquipment type);
+
+    // ----- show equipment by condition -----
+    List<Equipment> findAllByConditionOrderByType(EquipmentCondition condition);
+
 }
