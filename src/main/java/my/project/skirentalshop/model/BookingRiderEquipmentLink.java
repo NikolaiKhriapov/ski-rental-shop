@@ -31,7 +31,7 @@ public class BookingRiderEquipmentLink {
     private RiderAssignedEquipment riderAssignedEquipment;
 
     @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "booking_rider_equipment_link_rider_requested_equipment",
+    @CollectionTable(name = "link_requested_equipment",
             joinColumns = @JoinColumn(name = "booking_rider_equipment_link_id"))
     private List<TypesOfEquipment> riderRequestedEquipment;
 

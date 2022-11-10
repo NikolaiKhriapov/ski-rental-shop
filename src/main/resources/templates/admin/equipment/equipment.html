@@ -17,8 +17,9 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.settings}"/>
                 <div class="dropdown-content">
+                    <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
@@ -38,7 +39,7 @@
             </li>
         </ul>
     </nav>
-</div> <!-- TODO: finish-->
+</div>
 
 <div class="main">
 
@@ -121,58 +122,41 @@
                 <table>
                     <tr>
                         <!-- id -->
-                        <th th:width="50">
-                            <a th:text="#{equipment.parameter.id}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>-->
-                        </th>
+                        <th th:width="50"><a th:text="#{equipment.parameter.id}"/></th>
                         <!-- name -->
-                        <th>
-                            <a th:text="#{equipment.parameter.name}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>-->
-                        </th>
+                        <th><a th:text="#{equipment.parameter.name}"/></th>
                         <!-- condition -->
-                        <th>
-                            <a th:text="#{equipment.parameter.condition}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"/>-->
-                        </th>
+                        <th><a th:text="#{equipment.parameter.condition}"/></th>
                         <!-- snowboardSize -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:text="#{equipment.parameter.snowboard-size}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- skiSize -->
                         <th th:if="${typeOfEquipment.name == 'SKI'}">
                             <a th:text="#{equipment.parameter.ski-size}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- bootsSize -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD_BOOTS' || typeOfEquipment.name == 'SKI_BOOTS'}">
                             <a th:text="#{equipment.parameter.boots-size}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- clothesSize -->
                         <th th:if="${typeOfEquipment.name == 'HELMET'            || typeOfEquipment.name == 'JACKET' ||
                                      typeOfEquipment.name == 'GLOVES'            || typeOfEquipment.name == 'PANTS'  ||
                                      typeOfEquipment.name == 'PROTECTIVE_SHORTS' || typeOfEquipment.name == 'KNEE_PROTECTION'}">
                             <a th:text="#{equipment.parameter.clothes-size}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- stiffness -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD' || typeOfEquipment.name == 'SNOWBOARD_BOOTS' ||
                                      typeOfEquipment.name == 'SKI'       || typeOfEquipment.name == 'SKI_BOOTS'}">
                             <a th:text="#{equipment.parameter.stiffness}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- arch -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:text="#{equipment.parameter.arch}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <!-- bindingSize -->
-                        <!--/*@thymesVar id="SNOWBOARD" type="my.project.skirentalshop.model.enums.TypesOfEquipment"*/-->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:text="#{equipment.parameter.binding-size.header}"/>
-                            <!--                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"/>-->
                         </th>
                         <th></th>
                     </tr>

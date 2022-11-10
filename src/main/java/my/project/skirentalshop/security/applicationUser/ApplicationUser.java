@@ -22,6 +22,10 @@ public class ApplicationUser implements UserDetails {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "application_user_role")
+    private ApplicationUserRole applicationUserRole;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;
@@ -31,10 +35,6 @@ public class ApplicationUser implements UserDetails {
 
     @Column(name = "password")
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "application_user_role")
-    private ApplicationUserRole applicationUserRole;
 
     @Column(name = "locked")
     private boolean locked = false;
@@ -73,5 +73,12 @@ public class ApplicationUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.applicationUserRole = applicationUserRole;
+    }
+
+    public Client getClient() {
+        if (client == null) {
+            return new Client();
+        }
+        return client;
     }
 }

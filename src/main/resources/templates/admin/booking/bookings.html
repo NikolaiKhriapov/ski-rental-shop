@@ -36,8 +36,9 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="dropdown-button center" th:text="#{top-nav.settings}"/>
                 <div class="dropdown-content">
+                    <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>

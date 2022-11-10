@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="#{exception.title}"/>
+    <title th:text="#{application-users.title}"/>
     <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -13,9 +13,7 @@
 
 <body>
 
-<!--/*@thymesVar id="exception" type="java.lang.Exception"*/-->
-
-<div class="header" th:if="${#request.userPrincipal.name == 'admin'}">
+<div class="header">
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
@@ -51,38 +49,11 @@
             </li>
         </ul>
     </nav>
-</div><!--admin-->
-<div class="header" th:if="${#request.userPrincipal.name != 'admin'}">
-    <nav class="top-nav">
-        <ul class="top-nav-items">
-            <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
-                <div class="dropdown-content">
-                    <a href="/client/settings" th:text="#{top-nav.settings}"/>
-                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
-                </div>
-            </li>
-            <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{'/client?theme=theme_1'}" th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/client?theme=theme_2'}" th:text="#{top-nav.theme.theme-2}"/>
-                </div>
-            </li>
-            <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{'/client?lang=en'}">English</a>
-                    <a th:href="@{'/client?lang=ru'}">Русский</a>
-                </div>
-            </li>
-        </ul>
-    </nav>
-</div><!--client-->
+</div>
 
 <div class="main">
 
-    <div class="sidebar" th:if="${#request.userPrincipal.name == 'admin'}">
+    <div class="sidebar">
         <button type="button">
             <a href="/admin" th:text="#{side-bar.admin.home}"/>
         </button>
@@ -145,36 +116,90 @@
         <button type="button">
             <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
         </button>
-    </div><!--admin-->
-    <div class="sidebar" th:if="${#request.userPrincipal.name != 'admin'}">
-        <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
-        <br>
-        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
-        <br>
-        <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
-        <br>
-        <button type="button"><a href="/client/riders" th:text="#{side-bar.client.riders}"/></button>
-    </div><!--client-->
+    </div>
 
     <div class="main-screen">
 
         <div class="content">
 
             <div class="table">
-                <h1 th:text="#{exception.header}"></h1>
+
+                <!--Header-->
+                <h1 th:if="${action == 'showAll'}" th:text="#{application-users.header.show-all}"/>
+                <h1 th:if="${action == 'search'}" th:text="#{application-users.header.search}"/>
+
+                <!--Search-->
+                <form th:method="GET"
+                      th:action="@{/admin/application-users/search}">
+                    <label for="input-search"></label>
+                    <input id="input-search" style="width:200px"
+                           type="text" th:name="search"
+                           th:value="${search}" th:placeholder="#{application-users.button.search.placeholder}"/>
+                    <input class="button" type="submit" th:value="#{application-users.button.search}"/>
+                </form>
+
                 <br>
-                <h2 th:text="${exception.message}"></h2>
+
+                <!--Table-->
+                <table>
+                    <tr>
+                        <!-- id -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{application-users.parameter.id}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{application-users.parameter.id}"
+
+                               th:href="@{'/admin/application-users/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- applicationUserRole -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{application-users.parameter.role}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{application-users.parameter.role}"
+                               th:href="@{'/admin/application-users/sort?parameter=role&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- clientName -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{application-users.parameter.client}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{application-users.parameter.client}"
+                               th:href="@{'/admin/application-users/sort?parameter=client&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <!-- email -->
+                        <th>
+                            <a th:if="${action == 'search'}" th:text="#{application-users.parameter.email}"/>
+                            <a th:if="${action == 'showAll'}" th:text="#{application-users.parameter.email}"
+                               th:href="@{'/admin/application-users/sort?parameter=email&sortDirection=' + ${reverseSortDirection}}"/>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="oneApplicationUser : ${listOfApplicationUsers}">
+                        <td th:text="${oneApplicationUser.id}" th:width="50"/>
+                        <td th:text="${oneApplicationUser.applicationUserRole}" th:align="left"/>
+                        <td th:text="${oneApplicationUser.client.name}" th:align="left"/>
+                        <td th:text="${oneApplicationUser.email}"/>
+                        <td></td>
+                        <td th:width="1">
+                            <a th:href="@{'/admin/application-users/' + ${oneApplicationUser.id}}">
+                                <button th:if="${oneApplicationUser.locked == true}"
+                                        th:text="#{application-users.button.unlock}"/>
+                                <button th:if="${oneApplicationUser.locked == false}"
+                                        th:text="#{application-users.button.lock}"/>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
                 <br>
-                <p style="text-align: left" th:text="${exception}"></p>
+
+                <!--Return to "show-all"-->
+                <div th:if="${action == 'search'}">
+                    <a href="/admin/application-users">
+                        <button class="button" th:text="#{application-users.button.return}"/>
+                    </a>
+                </div>
+
             </div>
 
         </div>
-
-        <div class="footer" th:if="${#request.userPrincipal.name != 'admin'}">
-            <div class="text-block">
-                <div class="center" th:text="#{top-nav.contact-us}"/>
-            </div>
-        </div><!--client-->
 
     </div>
 

@@ -71,7 +71,7 @@ CREATE TABLE booking_rider_equipment_link
     rider_assigned_equipment_id BIGINT REFERENCES rider_assigned_equipment
 );
 
-CREATE TABLE booking_rider_equipment_link_rider_requested_equipment
+CREATE TABLE link_requested_equipment
 (
     booking_rider_equipment_link_id BIGINT NOT NULL REFERENCES booking_rider_equipment_link,
     rider_requested_equipment       INTEGER

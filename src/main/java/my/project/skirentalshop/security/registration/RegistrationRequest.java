@@ -9,10 +9,7 @@ import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Data
-@Custom_FieldsValueMatch.List({
-        @Custom_FieldsValueMatch(field = "email", fieldMatch = "email2", message = "{validation.application-user.email-not-matching}"),
-        @Custom_FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
-})
+@Custom_FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
 public class RegistrationRequest {
 
     @NotBlank(message = "{validation.application-user.invalid-name.not-blank}")
@@ -27,8 +24,6 @@ public class RegistrationRequest {
 
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "{validation.application-user.invalid-email}")
     private String email;
-
-    private String email2;
 
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$", message = "{validation.application-user.password-invalid}")
     private String password;

@@ -101,20 +101,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align: center" colspan="2">
-                                <br>
-                                <div th:text="#{client.settings.info.email-confirm}"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <label for="input-email2"></label>
-                                <input id="input-email2" name="email2" type="text" style="width: 300px"
-                                       th:placeholder="#{client.settings.info.email}"/>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <input name="password" type="hidden" value="Password1"/>
                                 <input name="password2" type="hidden" value="Password1"/>
@@ -150,8 +136,6 @@
                                 <input name="phone1" type="hidden"
                                        th:value="${applicationUserToBeUpdated.client.phone1}"/>
                                 <input name="email" type="hidden"
-                                       th:value="${applicationUserToBeUpdated.email}"/>
-                                <input name="email2" type="hidden"
                                        th:value="${applicationUserToBeUpdated.email}"/>
                             </td>
                         </tr>

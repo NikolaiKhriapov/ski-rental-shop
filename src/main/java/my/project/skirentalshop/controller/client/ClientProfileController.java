@@ -17,12 +17,12 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/client/settings")
-public class ClientSettingsController {
+public class ClientProfileController {
 
     private final ApplicationUserService applicationUserService;
 
     @Autowired
-    public ClientSettingsController(ApplicationUserService applicationUserService) {
+    public ClientProfileController(ApplicationUserService applicationUserService) {
         this.applicationUserService = applicationUserService;
     }
 
@@ -52,9 +52,6 @@ public class ClientSettingsController {
                                                 @ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            System.out.println("!!!!!" + registrationRequest.getPassword());
-            System.out.println("!!!!!" + registrationRequest.getPassword2());
-            System.out.println("!!!!!" + bindingResult.getAllErrors());
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
             return "client/home/settings";
         }

@@ -345,7 +345,7 @@ public class BookingService {
     // ----- mark booking completed -----
     public void changeBookingCompleted(Long bookingId) {
         Booking booking = showOneBookingById(bookingId);
-        booking.setCompleted(booking.isCompleted() ? false : true); //TODO: check
+        booking.setCompleted(!booking.isCompleted());
         bookingRepository.save(booking);
     }
 
@@ -362,8 +362,6 @@ public class BookingService {
         return bookingRepository.findAll(sort);
     }
 
-
-    ///TODO: remove
     // ----- AdminHomeController / show all incomplete bookings -----
     public List<Booking> showAllIncompleteBookings() {
         return bookingRepository.findAllByCompletedFalseOrderByDateOfArrivalAsc();
@@ -419,6 +417,6 @@ public class BookingService {
 
     // ----- ClientHomeController / show upcoming bookings for the client -----
     public List<Booking> showCurrentBookingsForClient(Long clientId) {
-        return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date()); //TODO: check result
+        return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date());
     }
 }

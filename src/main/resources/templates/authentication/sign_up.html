@@ -60,7 +60,6 @@
                 <input id="input-name" class="form-control"
                        type="text" th:field="*{name}" th:placeholder="#{auth.sign-up.placeholder.name}"/>
                 <a style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></a>
-                <!-- TODO: change style to CSS class -->
             </span>
             <span>
                 <label for="input-phone1"></label>
@@ -74,11 +73,6 @@
                 <input id="input-email" class="form-control"
                        type="text" th:field="*{email}" th:placeholder="#{auth.sign-up.placeholder.email}">
                 <a style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></a>
-            </span>
-            <span>
-                <label for="input-email2"></label>
-                <input id="input-email2" class="form-control"
-                       type="text" th:field="*{email2}" th:placeholder="#{auth.sign-up.placeholder.email}">
             </span>
             <span>
                 <label for="input-password"></label>
