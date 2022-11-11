@@ -24,22 +24,20 @@ public class RiderController {
 
     // ----- show all -----
     @GetMapping
-    public String showAll(@PathVariable("applicationUserRole") String applicationUserRole,
-                          Model model) {
+    public String showAll(Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfRiders", riderService.showAllRiders());
-        return applicationUserRole + "/rider/riders";
+        return "riders";
     }
 
     // ----- add new -----
     @GetMapping("/new")
-    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
-                         @RequestParam(value = "bookingId", required = false) Long bookingId,
+    public String create( @RequestParam(value = "bookingId", required = false) Long bookingId,
                          Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("rider", new Rider());
         model.addAttribute("bookingId", bookingId);
-        return applicationUserRole + "/rider/riders";
+        return "riders";
     }
 
     @PostMapping
@@ -49,7 +47,7 @@ public class RiderController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
-            return applicationUserRole + "/rider/riders";
+            return "riders";
         }
         riderService.addNewRiderToDB(rider, bookingId);
 
@@ -62,8 +60,7 @@ public class RiderController {
 
     // ----- edit -----
     @GetMapping("/{riderId}")
-    public String showOne(@PathVariable("applicationUserRole") String applicationUserRole,
-                          @PathVariable("riderId") Long riderId,
+    public String showOne(@PathVariable("riderId") Long riderId,
                           @RequestParam(value = "bookingId", required = false) Long bookingId,
                           Model model) {
         model.addAttribute("action", "update");
@@ -71,7 +68,7 @@ public class RiderController {
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("riderId", riderId);
         model.addAttribute("link", riderService.getBookingRiderEquipmentLink(bookingId, riderId));
-        return applicationUserRole + "/rider/riders";
+        return "riders";
     }
 
     @PatchMapping("/{riderId}")
@@ -85,7 +82,7 @@ public class RiderController {
             model.addAttribute("riderId", riderId);
             model.addAttribute("bookingId", bookingId);
             model.addAttribute("link", riderService.getBookingRiderEquipmentLink(bookingId, riderId));
-            return applicationUserRole + "/rider/riders";
+            return "riders";
         }
         riderService.updateRiderById(riderId, updatedRider);
 
@@ -106,24 +103,22 @@ public class RiderController {
 
     // ----- search -----
     @GetMapping("/search")
-    public String showAllBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
-                                  @RequestParam("search") String search,
+    public String showAllBySearch(@RequestParam("search") String search,
                                   Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfRiders", riderService.showRidersBySearch(search));
         model.addAttribute("search", search);
-        return applicationUserRole + "/rider/riders";
+        return "riders";
     }
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortAllByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
-                                     @RequestParam("parameter") String parameter,
+    public String sortAllByParameter(@RequestParam("parameter") String parameter,
                                      @RequestParam("sortDirection") String sortDirection,
                                      Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfRiders", riderService.sortAllRidersByParameter(parameter, sortDirection));
-        return applicationUserRole + "/rider/riders";
+        return "riders";
     }
 }
