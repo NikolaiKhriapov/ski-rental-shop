@@ -5,7 +5,7 @@ import my.project.skirentalshop.entity.Booking;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class Custom_BookingDatesValidator implements ConstraintValidator<Custom_BookingDates, Booking> {
+public class BookingDatesValidator implements ConstraintValidator<BookingDates, Booking> {
 
     public boolean isValid(Booking booking, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();

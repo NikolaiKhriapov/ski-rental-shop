@@ -1,7 +1,7 @@
 package my.project.skirentalshop.security.registration;
 
 import lombok.*;
-import my.project.skirentalshop.validation.Custom_FieldsValueMatch;
+import my.project.skirentalshop.validation.FieldsValueMatch;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Data
-@Custom_FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
+@FieldsValueMatch(field = "password", fieldMatch = "password2", message = "{validation.application-user.password-not-matching}")
 public class RegistrationRequest {
 
     @NotBlank(message = "{validation.application-user.invalid-name.not-blank}")

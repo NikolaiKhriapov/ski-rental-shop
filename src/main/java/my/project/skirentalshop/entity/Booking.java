@@ -1,7 +1,7 @@
 package my.project.skirentalshop.entity;
 
 import lombok.*;
-import my.project.skirentalshop.validation.Custom_BookingDates;
+import my.project.skirentalshop.validation.BookingDates;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,7 +13,7 @@ import java.util.*;
 @Entity
 @NoArgsConstructor
 @Data
-@Custom_BookingDates
+@BookingDates
 @Table(name = "booking")
 public class Booking {
 

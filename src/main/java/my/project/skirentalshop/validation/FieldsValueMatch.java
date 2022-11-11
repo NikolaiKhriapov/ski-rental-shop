@@ -7,13 +7,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = Custom_BookingDatesValidator.class)
+@Constraint(validatedBy = FieldsValueMatchValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Custom_BookingDates {
+public @interface FieldsValueMatch {
 
     String message() default "Fields values don't match!";
+    String field();
+    String fieldMatch();
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface List {
+        FieldsValueMatch[] value();
+    }
 }

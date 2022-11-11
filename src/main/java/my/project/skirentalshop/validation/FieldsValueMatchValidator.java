@@ -5,12 +5,12 @@ import org.springframework.beans.BeanWrapperImpl;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class Custom_FieldsValueMatchValidator implements ConstraintValidator<Custom_FieldsValueMatch, Object> {
+public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch, Object> {
 
     private String field;
     private String fieldMatch;
 
-    public void initialize(Custom_FieldsValueMatch constraintAnnotation) {
+    public void initialize(FieldsValueMatch constraintAnnotation) {
         this.field = constraintAnnotation.field();
         this.fieldMatch = constraintAnnotation.fieldMatch();
     }

@@ -2,7 +2,7 @@ package my.project.skirentalshop.entity;
 
 import lombok.*;
 import my.project.skirentalshop.entity.enums.*;
-import my.project.skirentalshop.validation.Custom_EquipmentSize;
+import my.project.skirentalshop.validation.EquipmentSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Entity
 @NoArgsConstructor
 @Data
-@Custom_EquipmentSize
+@EquipmentSize
 @Table(name = "equipment")
 public class Equipment {
 
