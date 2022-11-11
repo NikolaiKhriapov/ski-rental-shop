@@ -220,8 +220,8 @@
                             <a th:if="${action == 'showAll'}" th:text="#{riders.parameter.foot-size.header}"
                                th:href="@{'/' + ${role} + '/riders/sort?parameter=footSize&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
-                        <th></th>
-                        <th></th>
+                        <th th:if="${role == 'admin'}"></th>
+                        <th th:if="${role == 'admin'}"></th>
                     </tr>
                     <tr th:each="oneRider : ${listOfRiders}">
                         <td th:text="${oneRider.id}" th:width="50"/>

@@ -208,7 +208,7 @@
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{bookings.parameter.client}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{bookings.parameter.client}"
-                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=client&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- phone1 -->
                         <th><a th:text="#{bookings.parameter.phone1}"/></th>
@@ -229,9 +229,9 @@
                         </th>
                         <th><a th:text="#{bookings.parameter.number-of-riders}"/></th>
                         <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th th:if="${role == 'admin'}"></th>
+                        <th th:if="${role == 'admin'}"></th>
+                        <th th:if="${role == 'admin'}"></th>
                     </tr>
                     <tr th:each="oneBooking : ${listOfBookings}">
                         <td th:text="${oneBooking.id}" th:width="50"/>
