@@ -62,6 +62,24 @@ h2 {
     color: black;
 }
 
+.header .top-nav .top-nav-user-photo {
+    height: 50px;
+    width: 50px
+}
+
+.image-cropper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.image-cropper img {
+    display: inline;
+    margin: 0 auto;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .dropdown .dropdown-button {
     font-size: 16px;
     padding: 15px;

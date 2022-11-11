@@ -14,7 +14,8 @@ CREATE TABLE application_user
     email                 VARCHAR(255),
     password              VARCHAR(255),
     locked                BOOLEAN NOT NULL,
-    enabled               BOOLEAN NOT NULL
+    enabled               BOOLEAN NOT NULL,
+    photo                 VARCHAR(255)
 );
 
 CREATE TABLE booking

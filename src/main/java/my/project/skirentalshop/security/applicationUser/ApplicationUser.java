@@ -42,6 +42,9 @@ public class ApplicationUser implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled = true;
 
+    @Column(name = "photo")
+    private String photo;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(applicationUserRole.name());

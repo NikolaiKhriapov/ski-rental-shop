@@ -8,8 +8,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 import static my.project.skirentalshop.security.applicationUser.ApplicationUserRole.*;
 
@@ -66,6 +72,36 @@ public class ApplicationUserService implements UserDetailsService {
         applicationUserToBeUpdated.setPassword(encodedPassword);
 
         applicationUserRepository.save(applicationUserToBeUpdated);
+    }
+
+    public void updatePhoto(ApplicationUser applicationUser, MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            String fileName = applicationUser.getId() + "-user-photo" + Objects.requireNonNull(file.getOriginalFilename())
+                    .substring(file.getOriginalFilename().lastIndexOf("."));
+            String uploadDirectory = "src/main/resources/static/images/user-photos/";
+
+            if (applicationUser.getPhoto() != null) {
+                Path oldFileNameAndPath = Paths.get(uploadDirectory, applicationUser.getPhoto());
+                Files.delete(oldFileNameAndPath);
+            }
+
+            Path newFileNameAndPath = Paths.get(uploadDirectory, fileName);
+            Files.write(newFileNameAndPath, file.getBytes());
+
+            applicationUser.setPhoto(fileName);
+            applicationUserRepository.save(applicationUser);
+        }
+    }
+
+    public void deletePhoto(ApplicationUser applicationUser) throws IOException {
+        if (applicationUser.getPhoto() != null) {
+
+            String uploadDirectory = "src/main/resources/static/images/user-photos/";
+            Path oldFileNameAndPath = Paths.get(uploadDirectory, applicationUser.getPhoto());
+            Files.delete(oldFileNameAndPath);
+
+            applicationUser.setPhoto(null);
+        }
     }
 
     public List<ApplicationUser> showAllApplicationUsers() {
