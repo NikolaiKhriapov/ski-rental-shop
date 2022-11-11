@@ -1,6 +1,6 @@
 package my.project.skirentalshop.controller;
 
-import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.entity.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+import static my.project.skirentalshop.entity.enums.TypesOfEquipment.*;
 
 @Controller
 @RequestMapping("/{applicationUserRole}/bookings")

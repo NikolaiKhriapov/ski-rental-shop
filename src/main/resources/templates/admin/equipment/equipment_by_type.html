@@ -17,7 +17,11 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.settings}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         src="/images/user-photos/no-user-photo.jpeg"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
@@ -209,7 +213,7 @@
                                th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- bindingSize -->
-                        <!--/*@thymesVar id="SNOWBOARD" type="my.project.skirentalshop.model.enums.TypesOfEquipment"*/-->
+                        <!--/*@thymesVar id="SNOWBOARD" type="my.project.skirentalshop.entity.enums.TypesOfEquipment"*/-->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.binding-size.header}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.binding-size.header}"
@@ -333,7 +337,7 @@
                                 <td>
                                     <label for="select-condition"></label>
                                     <select id="select-condition" name="condition">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.EquipmentCondition).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.EquipmentCondition).values}"
                                                 th:value="${i.name}"
                                                 th:text="#{${'equipment.condition.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
@@ -370,7 +374,7 @@
                                 <td>
                                     <label for="select-foot-size"></label>
                                     <select id="select-foot-size" name="size">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.FootSize).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.FootSize).values}"
                                                 th:value="${i.name}"
                                                 th:text="#{${'equipment.foot-size.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
@@ -389,7 +393,7 @@
                                 <td>
                                     <label for="select-clothes-size"></label>
                                     <select id="select-clothes-size" name="size">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.ClothesSize).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.ClothesSize).values}"
                                                 th:value="${i.name}"
                                                 th:text="${i}"
                                                 th:selected="${action == 'create'} ? false :
@@ -407,7 +411,7 @@
                                 <td>
                                     <label for="select-stiffness"></label>
                                     <select id="select-stiffness" name="stiffness">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Stiffness).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.Stiffness).values}"
                                                 th:value="${i.name}"
                                                 th:text="#{${'equipment.stiffness.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
@@ -422,7 +426,7 @@
                                 <td>
                                     <label for="select-arch"></label>
                                     <select id="select-arch" name="arch">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.Arch).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.Arch).values}"
                                                 th:value="${i.name}"
                                                 th:text="#{${'equipment.arch.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
@@ -437,7 +441,7 @@
                                 <td>
                                     <label for="select-binding-size"></label>
                                     <select id="select-binding-size" name="bindingSize">
-                                        <option th:each="i : ${T(my.project.skirentalshop.model.enums.BindingSize).values}"
+                                        <option th:each="i : ${T(my.project.skirentalshop.entity.enums.BindingSize).values}"
                                                 th:value="${i.name}"
                                                 th:text="${i}"
                                                 th:selected="${action == 'create'} ? false :

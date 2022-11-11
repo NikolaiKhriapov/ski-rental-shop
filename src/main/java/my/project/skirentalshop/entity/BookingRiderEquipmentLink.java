@@ -1,7 +1,7 @@
-package my.project.skirentalshop.model;
+package my.project.skirentalshop.entity;
 
 import lombok.*;
-import my.project.skirentalshop.model.enums.TypesOfEquipment;
+import my.project.skirentalshop.entity.enums.TypesOfEquipment;
 
 import javax.persistence.*;
 import java.util.List;

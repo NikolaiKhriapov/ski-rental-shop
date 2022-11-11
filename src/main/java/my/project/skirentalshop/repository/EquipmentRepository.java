@@ -1,8 +1,8 @@
 package my.project.skirentalshop.repository;
 
-import my.project.skirentalshop.model.Equipment;
-import my.project.skirentalshop.model.enums.EquipmentCondition;
-import my.project.skirentalshop.model.enums.TypesOfEquipment;
+import my.project.skirentalshop.entity.Equipment;
+import my.project.skirentalshop.entity.enums.EquipmentCondition;
+import my.project.skirentalshop.entity.enums.TypesOfEquipment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -58,13 +58,13 @@ h2 {
     float: right;
 
     list-style: none;
-    font-size: 18px;
     color: black;
 }
 
 .header .top-nav .top-nav-user-photo {
-    height: 50px;
-    width: 50px
+    padding: 5px;
+    height: 40px;
+    width: 40px
 }
 
 .image-cropper {

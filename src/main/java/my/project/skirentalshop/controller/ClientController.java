@@ -1,6 +1,6 @@
 package my.project.skirentalshop.controller;
 
-import my.project.skirentalshop.model.Client;
+import my.project.skirentalshop.entity.Client;
 import my.project.skirentalshop.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

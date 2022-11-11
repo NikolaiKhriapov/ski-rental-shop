@@ -1,4 +1,4 @@
-package my.project.skirentalshop.model.enums;
+package my.project.skirentalshop.entity.enums;
 
 import java.util.ResourceBundle;
 

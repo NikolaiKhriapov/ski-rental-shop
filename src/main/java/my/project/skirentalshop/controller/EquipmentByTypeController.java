@@ -1,7 +1,7 @@
 package my.project.skirentalshop.controller;
 
-import my.project.skirentalshop.model.Equipment;
-import my.project.skirentalshop.model.enums.TypesOfEquipment;
+import my.project.skirentalshop.entity.Equipment;
+import my.project.skirentalshop.entity.enums.TypesOfEquipment;
 import my.project.skirentalshop.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

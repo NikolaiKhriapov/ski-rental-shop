@@ -19,8 +19,8 @@
             <li class="dropdown">
                 <div class="image-cropper">
                     <img class="top-nav-user-photo"
-                         th:src="${applicationUserToBeUpdated.getPhoto() != null}
-                         ? '/images/user-photos/' + ${applicationUserToBeUpdated.getPhoto()}
+                         th:src="${#authentication.principal.photo != null}
+                         ? '/images/user-photos/' + ${#authentication.principal.photo}
                          : '/images/user-photos/no-user-photo.jpeg'"
                          alt="user-photo"/>
                 </div>
@@ -67,6 +67,8 @@
 
                 <!--Update name, surname, phone, email-->
                 <h1 th:text="#{client.settings.info.header}"/>
+
+<!--                <div th:text="${#authentication.principal.photo}"></div> TODO:-->
 
                 <form th:method="PATCH"
                       th:action="@{/client/settings/photo}"

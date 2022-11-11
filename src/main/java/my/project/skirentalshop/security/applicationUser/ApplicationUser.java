@@ -1,7 +1,7 @@
 package my.project.skirentalshop.security.applicationUser;
 
 import lombok.*;
-import my.project.skirentalshop.model.Client;
+import my.project.skirentalshop.entity.Client;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

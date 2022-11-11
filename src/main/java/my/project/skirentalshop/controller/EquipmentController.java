@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static my.project.skirentalshop.model.enums.EquipmentCondition.BROKEN;
-import static my.project.skirentalshop.model.enums.EquipmentCondition.SERVICE;
+import static my.project.skirentalshop.entity.enums.EquipmentCondition.BROKEN;
+import static my.project.skirentalshop.entity.enums.EquipmentCondition.SERVICE;
 
 @Controller
 @RequestMapping("/admin/equipment")

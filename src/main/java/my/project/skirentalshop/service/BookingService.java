@@ -1,8 +1,8 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.*;
-import my.project.skirentalshop.model.enums.EquipmentCondition;
-import my.project.skirentalshop.model.enums.TypesOfEquipment;
+import my.project.skirentalshop.entity.*;
+import my.project.skirentalshop.entity.enums.EquipmentCondition;
+import my.project.skirentalshop.entity.enums.TypesOfEquipment;
 import my.project.skirentalshop.repository.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;

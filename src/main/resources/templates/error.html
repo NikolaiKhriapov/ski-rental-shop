@@ -13,7 +13,7 @@
 
 <body>
 
-<div class="header" th:if="${#request.userPrincipal.name == 'admin'}">
+<div class="header" th:if="${#authentication.principal.applicationUserRole == 'admin'}">
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
@@ -50,11 +50,17 @@
         </ul>
     </nav>
 </div><!--admin-->
-<div class="header" th:if="${#request.userPrincipal.name != 'admin'}">
+<div class="header" th:if="${#authentication.principal.applicationUserRole != 'admin'}">
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         th:src="${#authentication.principal.photo != null}
+                         ? '/images/user-photos/' + ${#authentication.principal.photo}
+                         : '/images/user-photos/no-user-photo.jpeg'"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/client/settings" th:text="#{top-nav.settings}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>

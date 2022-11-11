@@ -13,10 +13,10 @@
 
 <body>
 
-<!--/*@thymesVar id="listOfRiders" type="java.util.List<my.project.skirentalshop.model.Rider>"*/-->
-<!--/*@thymesVar id="rider" type="my.project.skirentalshop.model.Rider"*/-->
-<!--/*@thymesVar id="link" type="my.project.skirentalshop.model.BookingRiderEquipmentLink"*/-->
-<!--/*@thymesVar id="Sex" type="my.project.skirentalshop.model.Rider.Sex"*/-->
+<!--/*@thymesVar id="listOfRiders" type="java.util.List<my.project.skirentalshop.entity.Rider>"*/-->
+<!--/*@thymesVar id="rider" type="my.project.skirentalshop.entity.Rider"*/-->
+<!--/*@thymesVar id="link" type="my.project.skirentalshop.entity.BookingRiderEquipmentLink"*/-->
+<!--/*@thymesVar id="Sex" type="my.project.skirentalshop.entity.Rider.Sex"*/-->
 <!--/*@thymesVar id="action" type="java.lang.String"*/-->
 <!--/*@thymesVar id="bookingId" type="java.lang.Long"*/-->
 <!--/*@thymesVar id="riderId" type="java.lang.Long"*/-->
@@ -25,7 +25,13 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         th:src="${#authentication.principal.photo != null}
+                         ? '/images/user-photos/' + ${#authentication.principal.photo}
+                         : '/images/user-photos/no-user-photo.jpeg'"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/client/settings" th:text="#{top-nav.settings}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
@@ -139,7 +145,7 @@
                             <td>
                                 <label for="select-sex"></label>
                                 <select id="select-sex" name="sex">
-                                    <option th:each="i : ${T(my.project.skirentalshop.model.enums.Sex).values}"
+                                    <option th:each="i : ${T(my.project.skirentalshop.entity.enums.Sex).values}"
                                             th:value="${i.name}"
                                             th:text="#{${'riders.sex.' + i}}"
                                             th:selected="${action == 'create'} ? false :
@@ -178,7 +184,7 @@
                             <td>
                                 <label for="select-foot-size"></label>
                                 <select id="select-foot-size" name="footSize">
-                                    <option th:each="i : ${T(my.project.skirentalshop.model.enums.FootSize).values}"
+                                    <option th:each="i : ${T(my.project.skirentalshop.entity.enums.FootSize).values}"
                                             th:value="${i.name}"
                                             th:text="#{${'equipment.foot-size.' + i}}"
                                             th:selected="${action == 'create'} ? false :
@@ -211,7 +217,7 @@
                         <tr>
                             <td th:text="#{riders.parameter.equipment} + ': '" th:align="top"/>
                             <td>
-                                <div th:each="i : ${T(my.project.skirentalshop.model.enums.TypesOfEquipment).values}">
+                                <div th:each="i : ${T(my.project.skirentalshop.entity.enums.TypesOfEquipment).values}">
                                     <label for="input-equipment"></label>
                                     <input id="input-equipment" type="checkbox"
                                            th:field="*{riderRequestedEquipment}"

@@ -13,9 +13,9 @@
 
 <body>
 
-<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.model.Booking>"*/-->
-<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.model.Rider>"*/-->
-<!--/*@thymesVar id="booking" type="my.project.skirentalshop.model.Booking"*/-->
+<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.entity.Booking>"*/-->
+<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.entity.Rider>"*/-->
+<!--/*@thymesVar id="booking" type="my.project.skirentalshop.entity.Booking"*/-->
 <!--/*@thymesVar id="action" type="java.lang.String"*/-->
 <!--/*@thymesVar id="bookingId" type="java.lang.String"*/-->
 <!--/*@thymesVar id="existingRiderToBeAddedId" type="java.lang.Long"*/-->
@@ -24,7 +24,13 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.account}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         th:src="${#authentication.principal.photo != null}
+                         ? '/images/user-photos/' + ${#authentication.principal.photo}
+                         : '/images/user-photos/no-user-photo.jpeg'"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/client/settings" th:text="#{top-nav.settings}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>

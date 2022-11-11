@@ -13,19 +13,19 @@
 
 <body>
 
-<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.model.Booking>"*/-->
-<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.model.Client>"*/-->
-<!--/*@thymesVar id="allAvailableSnowboards" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableSnowboardBoots" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableSki" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableSkiBoots" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableHelmets" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableJackets" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableGloves" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailablePants" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableProtectiveShorts" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="allAvailableKneeProtection" type="java.util.List<my.project.skirentalshop.model.Equipment>"*/-->
-<!--/*@thymesVar id="booking" type="my.project.skirentalshop.model.Booking"*/-->
+<!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.entity.Booking>"*/-->
+<!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.entity.Client>"*/-->
+<!--/*@thymesVar id="allAvailableSnowboards" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSnowboardBoots" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSki" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableSkiBoots" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableHelmets" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableJackets" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableGloves" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailablePants" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableProtectiveShorts" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="allAvailableKneeProtection" type="java.util.List<my.project.skirentalshop.entity.Equipment>"*/-->
+<!--/*@thymesVar id="booking" type="my.project.skirentalshop.entity.Booking"*/-->
 <!--/*@thymesVar id="existingRiderToBeAddedId" type="java.lang.Long"*/-->
 <!--/*@thymesVar id="action" type="java.lang.String"*/-->
 <!--/*@thymesVar id="search" type="java.lang.String"*/-->
@@ -36,7 +36,11 @@
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.settings}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         src="/images/user-photos/no-user-photo.jpeg"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>

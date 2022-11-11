@@ -1,6 +1,6 @@
 package my.project.skirentalshop.validation;
 
-import my.project.skirentalshop.model.Equipment;
+import my.project.skirentalshop.entity.Equipment;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

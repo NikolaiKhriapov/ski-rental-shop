@@ -1,6 +1,6 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.*;
+import my.project.skirentalshop.entity.*;
 import my.project.skirentalshop.repository.BookingRepository;
 import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;

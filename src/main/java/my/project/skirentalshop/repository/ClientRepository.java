@@ -1,6 +1,6 @@
 package my.project.skirentalshop.repository;
 
-import my.project.skirentalshop.model.Client;
+import my.project.skirentalshop.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

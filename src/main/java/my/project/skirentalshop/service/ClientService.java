@@ -1,6 +1,6 @@
 package my.project.skirentalshop.service;
 
-import my.project.skirentalshop.model.Client;
+import my.project.skirentalshop.entity.Client;
 import my.project.skirentalshop.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

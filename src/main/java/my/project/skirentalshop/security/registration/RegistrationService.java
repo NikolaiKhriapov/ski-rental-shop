@@ -1,6 +1,6 @@
 package my.project.skirentalshop.security.registration;
 
-import my.project.skirentalshop.model.Client;
+import my.project.skirentalshop.entity.Client;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;

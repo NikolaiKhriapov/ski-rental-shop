@@ -1,10 +1,10 @@
-package my.project.skirentalshop.model;
+package my.project.skirentalshop.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-import static my.project.skirentalshop.model.enums.TypesOfEquipment.*;
+import static my.project.skirentalshop.entity.enums.TypesOfEquipment.*;
 
 @Entity
 @NoArgsConstructor

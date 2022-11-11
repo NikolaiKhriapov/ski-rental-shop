@@ -1,8 +1,8 @@
-package my.project.skirentalshop.model;
+package my.project.skirentalshop.entity;
 
 import lombok.*;
-import my.project.skirentalshop.model.enums.FootSize;
-import my.project.skirentalshop.model.enums.Sex;
+import my.project.skirentalshop.entity.enums.FootSize;
+import my.project.skirentalshop.entity.enums.Sex;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

@@ -1,16 +1,17 @@
-package my.project.skirentalshop.model.enums;
+package my.project.skirentalshop.entity.enums;
 
 import java.util.ResourceBundle;
 
-public enum Stiffness {
+public enum Arch {
     UNKNOWN,
-    SOFT,
-    MEDIUM,
-    HARD;
+    CAMBER,
+    FLAT,
+    ROCKER;
 
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
+    @Override
     public String toString() {
-        return resourceBundle.getString("equipment.stiffness." + name());
+        return resourceBundle.getString("equipment.arch." + name());
     }
 }

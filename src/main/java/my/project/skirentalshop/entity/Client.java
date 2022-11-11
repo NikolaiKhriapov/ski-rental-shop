@@ -1,4 +1,4 @@
-package my.project.skirentalshop.model;
+package my.project.skirentalshop.entity;
 
 import lombok.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
