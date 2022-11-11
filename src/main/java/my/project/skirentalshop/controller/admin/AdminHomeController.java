@@ -24,7 +24,7 @@ public class AdminHomeController {
     public String showAdminHome(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
         model.addAttribute("currentBookings", bookingService.showAllCurrentBookings());
-        return "admin/home/admin_home";
+        return "admin/admin_home";
     }
 
     // ----- bookings for today -----
@@ -35,7 +35,7 @@ public class AdminHomeController {
 
         model.addAttribute("date", todayBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(todayBeginning, todayEnd));
-        return "admin/home/bookings_by_date";
+        return "admin/bookings_by_date";
     }
 
     // ----- bookings for tomorrow -----
@@ -46,7 +46,7 @@ public class AdminHomeController {
 
         model.addAttribute("date", tomorrowBeginning);
         model.addAttribute("bookingsForTheDate", bookingService.showBookingsForTheDate(tomorrowBeginning, tomorrowEnd));
-        return "admin/home/bookings_by_date";
+        return "admin/bookings_by_date";
     }
 
     // ----- mark booking completed -----

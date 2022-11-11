@@ -31,7 +31,7 @@ public class ClientProfileController {
                                Model model) {
         model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
         model.addAttribute("registrationRequest", new RegistrationRequest());
-        return "client/home/settings";
+        return "client/settings";
     }
 
     @PatchMapping("/personal-info")
@@ -40,7 +40,7 @@ public class ClientProfileController {
                                             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
-            return "client/home/settings";
+            return "client/settings";
         }
         applicationUserService.updatePersonalInfo(applicationUserToBeUpdated, registrationRequest);
         return "redirect:/client/settings";
@@ -52,7 +52,7 @@ public class ClientProfileController {
                                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
-            return "client/home/settings";
+            return "client/settings";
         }
         applicationUserService.updatePassword(applicationUserToBeUpdated, registrationRequest.getPassword());
         return "redirect:/client/settings";

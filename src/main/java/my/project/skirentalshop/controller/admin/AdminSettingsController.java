@@ -25,7 +25,7 @@ public class AdminSettingsController {
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfApplicationUsers", applicationUserService.showAllApplicationUsers());
-        return "admin/application_user/application_user";
+        return "authentication/application_user";
     }
 
     // ----- lock one -----
@@ -43,7 +43,7 @@ public class AdminSettingsController {
         model.addAttribute("listOfApplicationUsers",
                 applicationUserService.showApplicationUsersBySearch(search));
         model.addAttribute("search", search);
-        return "admin/application_user/application_user";
+        return "authentication/application_user";
     }
 
     // ----- sort -----
@@ -55,6 +55,6 @@ public class AdminSettingsController {
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfApplicationUsers",
                 applicationUserService.sortAllApplicationUsersByParameter(parameter, sortDirection));
-        return "admin/application_user/application_user";
+        return "authentication/application_user";
     }
 }

@@ -33,6 +33,6 @@ public class ClientHomeController {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long clientId = applicationUser.getClient().getId();
         model.addAttribute("currentBookingsForClient", bookingService.showCurrentBookingsForClient(clientId));
-        return "client/home/main_page";
+        return "client/main_page";
     }
 }

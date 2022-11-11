@@ -26,7 +26,7 @@ public class ClientController {
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfClients", clientService.showAllClients());
-        return "admin/client/clients";
+        return "clients";
     }
 
     // ----- add new -----
@@ -34,7 +34,7 @@ public class ClientController {
     public String create(Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("client", new Client());
-        return "admin/client/clients";
+        return "clients";
     }
 
     @PostMapping
@@ -42,7 +42,7 @@ public class ClientController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
-            return "admin/client/clients";
+            return "clients";
         }
         clientService.addNewClientToDB(client);
         return "redirect:/admin/clients";
@@ -53,7 +53,7 @@ public class ClientController {
     public String showOne(@PathVariable("clientId") Long clientId, Model model) {
         model.addAttribute("action", "update");
         model.addAttribute("client", clientService.showOneClientById(clientId));
-        return "admin/client/clients";
+        return "clients";
     }
 
     @PatchMapping("/{clientId}")
@@ -62,7 +62,7 @@ public class ClientController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
-            return "admin/client/clients";
+            return "clients";
         }
         clientService.updateClientById(clientId, updatedClient);
         return "redirect:/admin/clients";
@@ -82,7 +82,7 @@ public class ClientController {
         model.addAttribute("action", "search");
         model.addAttribute("listOfClients", clientService.showClientsBySearch(search));
         model.addAttribute("search", search);
-        return "admin/client/clients";
+        return "clients";
     }
 
     // ----- sort -----
@@ -93,6 +93,6 @@ public class ClientController {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfClients", clientService.sortAllClientsByParameter(parameter, sortDirection));
-        return "admin/client/clients";
+        return "clients";
     }
 }

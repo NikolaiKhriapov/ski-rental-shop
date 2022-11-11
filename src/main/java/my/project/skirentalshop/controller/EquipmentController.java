@@ -26,7 +26,7 @@ public class EquipmentController {
     public String showBroken(Model model) {
         model.addAttribute("equipmentCondition", BROKEN);
         model.addAttribute("listOfEquipment", equipmentService.showEquipmentByCondition(BROKEN));
-        return "admin/equipment/equipment";
+        return "equipment";
     }
 
     // ----- show equipment in service -----
@@ -34,6 +34,6 @@ public class EquipmentController {
     public String showInService(Model model) {
         model.addAttribute("equipmentCondition", SERVICE);
         model.addAttribute("listOfEquipment", equipmentService.showEquipmentByCondition(SERVICE));
-        return "admin/equipment/equipment";
+        return "equipment";
     }
 }

@@ -32,7 +32,7 @@ public class EquipmentByTypeController {
     public String showAll(@PathVariable("type") String type, Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(type));
-        return "admin/equipment/equipment_by_type";
+        return "equipment_by_type";
     }
 
     // ----- add new -----
@@ -41,7 +41,7 @@ public class EquipmentByTypeController {
                          Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("equipment", equipmentService.createNewEquipmentByType(type));
-        return "admin/equipment/equipment_by_type";
+        return "equipment_by_type";
     }
 
     @PostMapping
@@ -50,7 +50,7 @@ public class EquipmentByTypeController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
-            return "admin/equipment/equipment_by_type";
+            return "equipment_by_type";
         }
         equipmentService.addNewEquipmentToDB(oneEquipment);
         return "redirect:/admin/equipment/" + type;
@@ -64,7 +64,7 @@ public class EquipmentByTypeController {
         model.addAttribute("action", "update");
         model.addAttribute("equipment",
                 equipmentService.showOneEquipmentById(equipmentId, type));
-        return "admin/equipment/equipment_by_type";
+        return "equipment_by_type";
     }
 
     @PatchMapping("/{equipmentId}")
@@ -74,7 +74,7 @@ public class EquipmentByTypeController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "update");
-            return "admin/equipment/equipment_by_type";
+            return "equipment_by_type";
         }
         equipmentService.updateEquipmentById(equipmentId, updatedEquipment, type);
         return "redirect:/admin/equipment/" + type;
@@ -96,7 +96,7 @@ public class EquipmentByTypeController {
         model.addAttribute("action", "search");
         model.addAttribute("listOfEquipment", equipmentService.showEquipmentBySearch(search, type));
         model.addAttribute("search", search);
-        return "admin/equipment/equipment_by_type";
+        return "equipment_by_type";
     }
 
     // ----- sort -----
@@ -110,6 +110,6 @@ public class EquipmentByTypeController {
         model.addAttribute("listOfEquipment", equipmentService.sortAllEquipmentByParameter(
                 parameter, sortDirection, type)
         );
-        return "admin/equipment/equipment_by_type";
+        return "equipment_by_type";
     }
 }
