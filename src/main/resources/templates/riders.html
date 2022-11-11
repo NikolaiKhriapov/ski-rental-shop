@@ -35,9 +35,14 @@
                          alt="user-photo"/>
                 </div>
                 <div class="dropdown-content">
-                    <a th:href="@{'/' + ${role} + '/application-users'}"
-                       th:text="#{top-nav.lock-users}"/>
-                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
+                    <div th:if="${role == 'admin'}">
+                        <a th:href="'/' + ${role} + '/application-users'" th:text="#{top-nav.lock-users}"/>
+                        <a th:href="'/sign-out'" th:text="#{top-nav.sign-out}"/>
+                    </div>
+                    <div th:if="${role == 'client'}">
+                        <a th:href="'/' + ${role} + '/settings'" th:text="#{top-nav.settings}"/>
+                        <a th:href="'/sign-out'" th:text="#{top-nav.sign-out}"/>
+                    </div>
                 </div>
             </li>
             <li class="dropdown">

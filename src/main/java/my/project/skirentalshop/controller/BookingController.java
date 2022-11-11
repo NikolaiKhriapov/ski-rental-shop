@@ -28,20 +28,18 @@ public class BookingController {
 
     // ----- show all -----
     @GetMapping
-    public String showAll(@PathVariable("applicationUserRole") String applicationUserRole,
-                          Model model) {
+    public String showAll(Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("listOfBookings", bookingService.showAllBookings());
-        return applicationUserRole + "/booking/bookings";
+        return "bookings";
     }
 
     // ----- add new -----
     @GetMapping("/new")
-    public String create(@PathVariable("applicationUserRole") String applicationUserRole,
-                         Model model) {
+    public String create(Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("booking", bookingService.createNewBooking());
-        return applicationUserRole + "/booking/bookings";
+        return "bookings";
     }
 
     @PostMapping
@@ -50,7 +48,7 @@ public class BookingController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("action", "create");
-            return applicationUserRole + "/booking/bookings";
+            return "bookings";
         }
         bookingService.addNewBookingToDB(newBooking);
         return "redirect:/" + applicationUserRole + "/riders/new?bookingId=" + newBooking.getId();
@@ -78,7 +76,7 @@ public class BookingController {
         model.addAttribute("allAvailablePants", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PANTS));
         model.addAttribute("allAvailableProtectiveShorts", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PROTECTIVE_SHORTS));
         model.addAttribute("allAvailableKneeProtection", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, KNEE_PROTECTION));
-        return applicationUserRole + "/booking/bookings";
+        return "bookings";
     }
 
     @PatchMapping("/{bookingId}")
@@ -93,7 +91,7 @@ public class BookingController {
             model.addAttribute("existingRiderToBeAddedId", 0L);
             model.addAttribute("allAvailableRidersForClient",
                     bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
-            return applicationUserRole + "/booking/bookings";
+            return "bookings";
         }
         bookingService.updateBookingById(bookingToBeUpdatedId, updatedBookingInfo);
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
@@ -169,7 +167,7 @@ public class BookingController {
         model.addAttribute("action", "search");
         model.addAttribute("listOfBookings", bookingService.showBookingsBySearch(search));
         model.addAttribute("search", search);
-        return applicationUserRole + "/booking/bookings";
+        return "bookings";
     }
 
     // ----- sort -----
@@ -182,6 +180,6 @@ public class BookingController {
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
         model.addAttribute("listOfBookings",
                 bookingService.sortAllBookingsByParameter(parameter, sortDirection));
-        return applicationUserRole + "/booking/bookings";
+        return "bookings";
     }
 }

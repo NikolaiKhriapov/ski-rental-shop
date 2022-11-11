@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
-<body>
+<body th:with="role=${#authentication.principal.applicationUserRole.toString.toLowerCase}">
 
 <!--/*@thymesVar id="listOfBookings" type="java.util.List<my.project.skirentalshop.entity.Booking>"*/-->
 <!--/*@thymesVar id="allAvailableRidersForClient" type="java.util.List<my.project.skirentalshop.entity.Client>"*/-->
@@ -38,12 +38,20 @@
             <li class="dropdown">
                 <div class="image-cropper">
                     <img class="top-nav-user-photo"
-                         src="/images/user-photos/no-user-photo.jpeg"
+                         th:src="${#authentication.principal.photo != null}
+                         ? '/images/user-photos/' + ${#authentication.principal.photo}
+                         : '/images/user-photos/no-user-photo.jpeg'"
                          alt="user-photo"/>
                 </div>
                 <div class="dropdown-content">
-                    <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
-                    <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
+                    <div th:if="${role == 'admin'}">
+                        <a th:href="'/' + ${role} + '/application-users'" th:text="#{top-nav.lock-users}"/>
+                        <a th:href="'/sign-out'" th:text="#{top-nav.sign-out}"/>
+                    </div>
+                    <div th:if="${role == 'client'}">
+                        <a th:href="'/' + ${role} + '/settings'" th:text="#{top-nav.settings}"/>
+                        <a th:href="'/sign-out'" th:text="#{top-nav.sign-out}"/>
+                    </div>
                 </div>
             </li>
             <li class="dropdown">
@@ -84,7 +92,7 @@
 
 <div class="main">
 
-    <div class="sidebar">
+    <div class="sidebar" th:if="${role == 'admin'}">
         <button type="button">
             <a href="/admin" th:text="#{side-bar.admin.home}"/>
         </button>
@@ -148,6 +156,15 @@
             <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
         </button>
     </div>
+    <div class="sidebar" th:if="${role == 'client'}">
+        <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
+        <br>
+        <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
+        <br>
+        <button type="button"><a href="/client/bookings" th:text="#{side-bar.client.history}"/></button>
+        <br>
+        <button type="button"><a href="/client/riders" th:text="#{side-bar.client.riders}"/></button>
+    </div>
 
     <div class="main-screen">
 
@@ -156,18 +173,25 @@
             <div th:if="${action == 'showAll' || action == 'search'}" class="table">
 
                 <!--Header-->
-                <h1 th:if="${action == 'showAll'}" th:text="#{bookings.header.show-all}"/>
-                <h1 th:if="${action == 'search'}" th:text="#{bookings.header.search}"/>
+                <div th:if="${role == 'admin'}">
+                    <h1 th:if="${action == 'showAll'}" th:text="#{bookings.header.show-all}"/>
+                    <h1 th:if="${action == 'search'}" th:text="#{bookings.header.search}"/>
+                </div>
+                <div th:if="${role == 'client'}">
+                    <h1 th:text="#{client.history.table.all-bookings}"/>
+                </div>
 
                 <!--Search-->
-                <form th:method="GET"
-                      th:action="@{/admin/bookings/search}">
-                    <label for="input-search"></label>
-                    <input id="input-search" style="width:200px"
-                           type="text" th:name="search"
-                           th:value="${search}" th:placeholder="#{bookings.button.search.placeholder}"/>
-                    <input class="button" type="submit" th:value="#{bookings.button.search}"/>
-                </form>
+                <div th:if="${role == 'admin'}">
+                    <form th:method="GET"
+                          th:action="@{'/' + ${role} + '/bookings/search'}">
+                        <label for="input-search"></label>
+                        <input id="input-search" style="width:200px"
+                               type="text" th:name="search"
+                               th:value="${search}" th:placeholder="#{bookings.button.search.placeholder}"/>
+                        <input class="button" type="submit" th:value="#{bookings.button.search}"/>
+                    </form>
+                </div>
 
                 <br>
 
@@ -178,13 +202,13 @@
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{bookings.parameter.id}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{bookings.parameter.id}"
-                               th:href="@{'/admin/bookings/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- client -->
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{bookings.parameter.client}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{bookings.parameter.client}"
-                               th:href="@{'/admin/bookings/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- phone1 -->
                         <th><a th:text="#{bookings.parameter.phone1}"/></th>
@@ -194,13 +218,13 @@
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{bookings.parameter.date-of-arrival}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{bookings.parameter.date-of-arrival}"
-                               th:href="@{'/admin/bookings/sort?parameter=dateOfArrival&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=dateOfArrival&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- date of return -->
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{bookings.parameter.date-of-return}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{bookings.parameter.date-of-return}"
-                               th:href="@{'/admin/bookings/sort?parameter=dateOfReturn&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/' + ${role} + '/bookings/sort?parameter=dateOfReturn&sortDirection=' + ${reverseSortDirection}}"/>
                             <!-- number of riders -->
                         </th>
                         <th><a th:text="#{bookings.parameter.number-of-riders}"/></th>
@@ -218,9 +242,9 @@
                         <td th:text="${#dates.format(oneBooking.dateOfReturn, 'dd MMM yyyy HH:mm')}"/>
                         <td th:text="${oneBooking.listOfBookingRiderEquipmentLinks.size}"/>
                         <td></td>
-                        <td th:width="1">
+                        <td th:if="${role == 'admin'}" th:width="1">
                             <form th:method="GET"
-                                  th:action="@{'/admin/bookings/' + ${oneBooking.id} + '/change-completed' }">
+                                  th:action="@{'/' + ${role} + '/bookings/' + ${oneBooking.id} + '/change-completed' }">
                                 <span th:if="${oneBooking.completed == false}">
                                     <input class="button" type="submit" th:value="#{bookings.button.mark-completed}"/>
                                 </span>
@@ -229,13 +253,13 @@
                                 </span>
                             </form>
                         </td>
-                        <td th:width="1">
-                            <form th:method="GET" th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
+                        <td th:if="${role == 'admin'}" th:width="1">
+                            <form th:method="GET" th:action="@{'/' + ${role} + '/bookings/' + ${oneBooking.id}}">
                                 <input class="button" type="submit" th:value="#{bookings.button.edit-booking}"/>
                             </form>
                         </td>
-                        <td th:width="1">
-                            <form th:method="DELETE" th:action="@{'/admin/bookings/' + ${oneBooking.id}}">
+                        <td th:if="${role == 'admin'}" th:width="1">
+                            <form th:method="DELETE" th:action="@{'/' + ${role} + '/bookings/' + ${oneBooking.id}}">
                                 <input class="button" type="submit" th:value="#{bookings.button.delete}"/>
                             </form>
                         </td>
@@ -246,14 +270,14 @@
 
                 <!--Go to "add-new"-->
                 <div th:if="${action == 'showAll'}">
-                    <a href="/admin/bookings/new">
+                    <a th:href="'/' + ${role} + '/bookings/new'">
                         <button class="button" th:text="#{bookings.button.add-booking}"/>
                     </a>
                 </div>
 
                 <!--Return to "show-all"-->
                 <div th:if="${action == 'search'}">
-                    <a href="/admin/bookings">
+                    <a th:href="'/' + ${role} + '/bookings'">
                         <button class="button" th:text="#{bookings.button.return}"/>
                     </a>
                 </div>
@@ -273,8 +297,8 @@
                     <!--Input parameters-->
                     <form th:method="${action == 'create'} ? POST :
                                     (${action == 'update'} ? PATCH : '')"
-                          th:action="@{'/admin/bookings' + ${action == 'create' ? '' : ''}
-                                                         + ${action == 'update' ? '/' + bookingId : ''}}"
+                          th:action="@{'/' + ${role} + '/bookings' + ${action == 'create' ? '' : ''}
+                                                                   + ${action == 'update' ? '/' + bookingId : ''}}"
                           th:object="${booking}">
                         <table>
                             <!-- id -->
@@ -336,7 +360,7 @@
                                          th:if="${#fields.hasErrors('dateOfReturn')}" th:errors="*{dateOfReturn}">
                                     </div>
                                     <div class="validation-message"
-                                    th:if="${#fields.hasErrors('${booking}')}" th:errors="${booking}">
+                                         th:if="${#fields.hasErrors('${booking}')}" th:errors="${booking}">
                                     </div>
                                 </td>
                             </tr>
@@ -374,7 +398,8 @@
                                         <div th:text="#{'equipment.type.' + ${oneEquipment.name}}"/>
                                     </div>
                                 </td>
-                                <form th:method="PATCH"
+                                <form th:if="${role == 'admin'}"
+                                      th:method="PATCH"
                                       th:action="@{'/admin/bookings/' + ${bookingId} + '/rider-assigned-equipment/' + ${oneLink.rider.id}}"
                                       th:object="${oneLink.riderAssignedEquipment}">
                                     <td th:width="10" style="vertical-align:center" th:align="left">
@@ -650,12 +675,12 @@
                                     </td>
                                 </form>
                                 <td th:width="10">
-                                    <a th:href="'/admin/riders/' + ${oneLink.rider.id} + '?bookingId=' + ${booking.id}">
+                                    <a th:href="'/' + ${role} + '/riders/' + ${oneLink.rider.id} + '?bookingId=' + ${booking.id}">
                                         <button class="button" th:text="#{bookings.button.edit-rider}"/>
                                     </a>
                                 </td>
                                 <td th:width="10">
-                                    <a th:href="@{'/admin/bookings/' + ${booking.id} + '/remove-rider/' + ${oneLink.rider.id}}">
+                                    <a th:href="@{'/' + ${role} + '/bookings/' + ${booking.id} + '/remove-rider/' + ${oneLink.rider.id}}">
                                         <button class="button" th:text="#{bookings.button.remove-rider}"/>
                                     </a>
                                 </td>
@@ -667,22 +692,49 @@
                     <br>
                 </div>
 
+                <!--Add existing Rider to Booking-->
+                <div th:if="${role == 'client' && action == 'update'}">
+                    <div th:if="${allAvailableRidersForClient.size > 0}">
+                        <form th:method="PATCH"
+                              th:action="@{'/client/bookings/' + ${bookingId} + '/new-existing-rider'}"
+                              th:object="${existingRiderToBeAddedId}">
+                            <label for="select-existing-rider-id"></label>
+                            <select id="select-existing-rider-id" name="existingRiderToBeAddedId">
+                                <option th:each="oneRider : ${allAvailableRidersForClient}"
+                                        th:value="${oneRider.id}"
+                                        th:text="${oneRider.name}">
+                                </option>
+                            </select>
+                            <input class="button" type="submit" th:value="#{bookings.button.add-existing-rider}"/>
+                        </form>
+
+                        <br>
+                    </div>
+                </div>
+
                 <!--Add new rider-->
                 <div th:if="${action == 'update'}">
-                    <a th:href="@{'/admin/riders/new?bookingId=' + ${booking.id}}">
+                    <a th:href="@{'/' + ${role} + '/riders/new?bookingId=' + ${booking.id}}">
                         <button class="button" th:text="#{bookings.button.add-new-rider}"/>
                     </a>
 
                     <br><br>
                 </div>
 
-                <!--Return to "show-all"-->
-                <a href="/admin/bookings">
+                <!--Return-->
+                <a th:href="@{${role == 'admin' ? '/' + role + '/bookings' : ''} +
+                              ${role == 'client' ? '/' + role + 'client' : ''}}">
                     <button class="button" th:text="#{bookings.button.return}"/>
                 </a>
 
             </div>
 
+        </div>
+
+        <div class="footer" th:if="${role == 'client'}">
+            <div class="text-block">
+                <div class="center" th:text="#{top-nav.contact-us}"/>
+            </div>
         </div>
 
     </div>
