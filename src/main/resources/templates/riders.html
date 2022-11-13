@@ -236,7 +236,7 @@
                                 <button class="button" th:text="#{riders.button.edit}"/>
                             </a>
                         </td>
-                        <td th:if="${role == 'admin'}"
+                        <td th:if="${role == 'admin' && oneRider.listOfBookingRiderEquipmentLinks.size == 0}"
                             th:width="1">
                             <form th:method="DELETE" th:action="@{'/' + ${role} + '/riders/' + ${oneRider.id}}">
                                 <input class="button" type="submit" th:value="#{riders.button.delete}"/>

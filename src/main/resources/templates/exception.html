@@ -11,15 +11,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@350&display=swap"/>
 </head>
 
-<body>
+<body th:with="role=${#authentication.principal.applicationUserRole.toString.toLowerCase}">
 
 <!--/*@thymesVar id="exception" type="java.lang.Exception"*/-->
 
-<div class="header" th:if="${#authentication.principal.applicationUserRole == 'admin'}">
+<div class="header" th:if="${role == 'admin'}">
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
-                <div class="dropdown-button center" th:text="#{top-nav.settings}"/>
+                <div class="image-cropper">
+                    <img class="top-nav-user-photo"
+                         src="/images/user-photos/no-user-photo.jpeg"
+                         alt="user-photo"/>
+                </div>
                 <div class="dropdown-content">
                     <a href="/admin/application-users" th:text="#{top-nav.lock-users}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
@@ -27,59 +31,34 @@
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
-                                  ${action == 'search' ? 'search?search=' + search + '&' : ''} +
-                                                                                                       'theme=theme_1'}"
-                       th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
-                                  ${action == 'search' ? 'search?search=' + search + '&' : ''} +
-                                                                                                       'theme=theme_2'}"
-                       th:text="#{top-nav.theme.theme-2}"/>
-                </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
-                                  ${action == 'search' ? 'search?search=' + search + '&' : ''} +
-                                                                                                 'lang=en'}">English</a>
-                    <a th:href="@{${action == 'showAll' ? '?' : ''} +
-                                  ${action == 'search' ? 'search?search=' + search + '&' : ''} +
-                                                                                                 'lang=ru'}">Русский</a>
-                </div>
             </li>
         </ul>
     </nav>
 </div><!--admin-->
-<div class="header" th:if="${#authentication.principal.applicationUserRole != 'admin'}">
+<div class="header" th:if="${role != 'admin'}">
     <nav class="top-nav">
         <ul class="top-nav-items">
             <li class="dropdown">
                 <div class="image-cropper">
                     <img class="top-nav-user-photo"
                          th:src="${#authentication.principal.photo != null}
-                         ? '/images/user-photos/' + ${#authentication.principal.photo}
-                         : '/images/user-photos/no-user-photo.jpeg'"
+                            ? '/images/user-photos/' + ${#authentication.principal.photo}
+                            : '/images/user-photos/no-user-photo.jpeg'"
                          alt="user-photo"/>
-                </div>                <div class="dropdown-content">
+                </div>
+                <div class="dropdown-content">
                     <a href="/client/settings" th:text="#{top-nav.settings}"/>
                     <a href="/sign-out" th:text="#{top-nav.sign-out}"/>
                 </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.theme}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{'/client?theme=theme_1'}" th:text="#{top-nav.theme.theme-1}"/>
-                    <a th:href="@{'/client?theme=theme_2'}" th:text="#{top-nav.theme.theme-2}"/>
-                </div>
             </li>
             <li class="dropdown">
                 <div class="dropdown-button center" th:text="#{top-nav.lang}"/>
-                <div class="dropdown-content">
-                    <a th:href="@{'/client?lang=en'}">English</a>
-                    <a th:href="@{'/client?lang=ru'}">Русский</a>
-                </div>
             </li>
         </ul>
     </nav>
@@ -87,7 +66,7 @@
 
 <div class="main">
 
-    <div class="sidebar" th:if="${#request.userPrincipal.name == 'admin'}">
+    <div class="sidebar" th:if="${role == 'admin'}">
         <button type="button">
             <a href="/admin" th:text="#{side-bar.admin.home}"/>
         </button>
@@ -151,7 +130,7 @@
             <a href="/admin/equipment/in-service" th:text="#{side-bar.admin.in-service}"/>
         </button>
     </div><!--admin-->
-    <div class="sidebar" th:if="${#request.userPrincipal.name != 'admin'}">
+    <div class="sidebar" th:if="${role != 'admin'}">
         <button type="button"><a href="/client" th:text="#{side-bar.client.home}"/></button>
         <br>
         <button type="button"><a href="/client/bookings/new" th:text="#{side-bar.client.new-booking}"/></button>
@@ -169,13 +148,21 @@
                 <h1 th:text="#{exception.header}"></h1>
                 <br>
                 <h2 th:text="${exception.message}"></h2>
-                <br>
-                <p style="text-align: left" th:text="${exception}"></p>
+
+                <form>
+                    <br>
+                    <input class="button" type="button" value="Go back!" onclick="history.back()">
+                </form>
+
+<!--                <div th:if="${role == 'admin'}">-->
+<!--                    <br>-->
+<!--                    <p style="text-align: left" th:text="${exception}"></p>-->
+<!--                </div>-->
             </div>
 
         </div>
 
-        <div class="footer" th:if="${#request.userPrincipal.name != 'admin'}">
+        <div class="footer" th:if="${role != 'admin'}">
             <div class="text-block">
                 <div class="center" th:text="#{top-nav.contact-us}"/>
             </div>

@@ -6,13 +6,13 @@ import my.project.skirentalshop.repository.RiderRepository;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class RiderService {
@@ -50,14 +50,17 @@ public class RiderService {
                 }
                 return allRidersForClient;
             }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + role + " not found!");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
     }
 
     // ----- add new -----
     public Booking showOneBookingById(Long bookingId) {
-        return bookingRepository.findById(bookingId).orElseThrow(() ->
-                new IllegalStateException("Booking with id = " + bookingId + " not found!"));
+        return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
+        ));
     }
 
     public void addNewRiderToDB(Rider rider, Long bookingId) {
@@ -76,9 +79,10 @@ public class RiderService {
     }
 
     // ----- edit -----
-    public Rider showOneRiderById(Long id) {
-        return riderRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Rider with id = " + id + " not found!"));
+    public Rider showOneRiderById(Long riderId) {
+        return riderRepository.findById(riderId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.rider.id-not-found", riderId.toString())
+        ));
     }
 
     public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Long bookingId, Long riderId) {
@@ -108,8 +112,15 @@ public class RiderService {
     }
 
     // ----- delete -----
-    public void deleteRiderById(Long id) {
-        riderRepository.deleteById(id);
+    public void deleteRiderById(Long riderId) {
+        try {
+            riderRepository.deleteById(riderId);
+        } catch (DataIntegrityViolationException e) {
+            String riderName = showOneRiderById(riderId).getName();
+            throw new DataIntegrityViolationException(
+                    getExceptionMessage("exception.rider.cannot-be-deleted", riderName)
+            );
+        }
     }
 
     // ----- search -----
@@ -122,5 +133,15 @@ public class RiderService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return riderRepository.findAll(sort);
+    }
+
+    // ----- supplementary -----
+    public String getExceptionMessage(String propertyKey, String parameter) {
+        return String.format(
+                ResourceBundle
+                        .getBundle("exception", LocaleContextHolder.getLocale())
+                        .getString(propertyKey),
+                parameter
+        );
     }
 }

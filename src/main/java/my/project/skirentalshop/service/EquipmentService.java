@@ -5,11 +5,13 @@ import my.project.skirentalshop.entity.enums.EquipmentCondition;
 import my.project.skirentalshop.entity.enums.TypesOfEquipment;
 import my.project.skirentalshop.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 @Service
 public class EquipmentService {
@@ -41,7 +43,9 @@ public class EquipmentService {
     public Equipment showOneEquipmentById(Long id, String type) {
         Equipment equipment = equipmentRepository.findByIdAndType(id, TypesOfEquipment.convertToEnumField(type));
         if (equipment == null) {
-            throw new IllegalStateException(String.format("Equipment with id=%s not found!", id));
+            throw new IllegalStateException(
+                    getExceptionMessage("exception.equipment.id-not-found", id.toString())
+            );
         }
         return equipment;
     }
@@ -99,4 +103,15 @@ public class EquipmentService {
     public List<Equipment> showEquipmentByCondition(EquipmentCondition condition) {
         return equipmentRepository.findAllByConditionOrderByType(condition);
     }
+
+    // ----- supplementary -----
+    public String getExceptionMessage(String propertyKey, String parameter) {
+        return String.format(
+                ResourceBundle
+                        .getBundle("exception", LocaleContextHolder.getLocale())
+                        .getString(propertyKey),
+                parameter
+        );
+    }
+
 }

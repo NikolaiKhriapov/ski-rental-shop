@@ -52,15 +52,6 @@ public class AuthenticationController {
     public String defaultAfterLogin() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-        switch (applicationUserRole) {
-            case ADMIN -> {
-                return "redirect:/admin";
-            }
-            case CLIENT -> {
-                return "redirect:/client";
-            }
-            default ->
-                    throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " does not exist!");
-        }
+        return "redirect:/" + applicationUserRole;
     }
 }

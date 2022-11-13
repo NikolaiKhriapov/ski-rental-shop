@@ -3,10 +3,13 @@ package my.project.skirentalshop.service;
 import my.project.skirentalshop.entity.Client;
 import my.project.skirentalshop.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Service
 public class ClientService {
@@ -29,9 +32,12 @@ public class ClientService {
     }
 
     // ----- edit -----
-    public Client showOneClientById(Long id) {
-        return clientRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Client with id = " + id + " not found!"));
+    public Client showOneClientById(Long clientId) {
+        return clientRepository.findById(clientId).orElseThrow(() ->
+                new IllegalStateException(
+                        getExceptionMessage("exception.client.id-not-found", clientId.toString())
+                )
+        );
     }
 
     public void updateClientById(Long clientId, Client updatedClientInfo) {
@@ -45,8 +51,15 @@ public class ClientService {
     }
 
     // ----- delete -----
-    public void deleteClientById(Long id) {
-        clientRepository.deleteById(id);
+    public void deleteClientById(Long clientId) {
+        try {
+            clientRepository.deleteById(clientId);
+        } catch (DataIntegrityViolationException e) {
+            String clientName = showOneClientById(clientId).getName();
+            throw new DataIntegrityViolationException(
+                    getExceptionMessage("exception.client.cannot-be-deleted", clientName)
+            );
+        }
     }
 
     // ----- search -----
@@ -60,5 +73,15 @@ public class ClientService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return clientRepository.findAll(sort);
+    }
+
+    // ----- supplementary -----
+    public String getExceptionMessage(String propertyKey, String parameter) {
+        return String.format(
+                ResourceBundle
+                        .getBundle("exception", LocaleContextHolder.getLocale())
+                        .getString(propertyKey),
+                parameter
+        );
     }
 }

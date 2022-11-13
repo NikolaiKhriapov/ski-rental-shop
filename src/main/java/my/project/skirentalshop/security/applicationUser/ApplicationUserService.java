@@ -2,6 +2,7 @@ package my.project.skirentalshop.security.applicationUser;
 
 import my.project.skirentalshop.security.registration.RegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,11 +17,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static my.project.skirentalshop.security.applicationUser.ApplicationUserRole.*;
 
 @Service
 public class ApplicationUserService implements UserDetailsService {
+
+    private static final String DIRECTORY_FOR_USER_PHOTOS = "src/main/resources/static/images/user-photos/";
 
     private final ApplicationUserRepository applicationUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,19 +38,20 @@ public class ApplicationUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return applicationUserRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException("User with email " + email + " not found!"));
+        return applicationUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(
+                getExceptionMessage("exception.app-user.email-not-found", email)
+        ));
     }
 
     public void signUpUser(ApplicationUser applicationUser) {
         boolean userExists = checkIfExists(applicationUser.getEmail());
         if (userExists) {
-            throw new IllegalStateException("Email already taken!");
+            throw new IllegalStateException(
+                    getExceptionMessage("exception.app-user.email-taken", applicationUser.getEmail())
+            );
         }
-
         String encodedPassword = bCryptPasswordEncoder.encode(applicationUser.getPassword());
         applicationUser.setPassword(encodedPassword);
-
         applicationUserRepository.save(applicationUser);
     }
 
@@ -78,14 +83,13 @@ public class ApplicationUserService implements UserDetailsService {
         if (!file.isEmpty()) {
             String fileName = applicationUser.getId() + "-user-photo" + Objects.requireNonNull(file.getOriginalFilename())
                     .substring(file.getOriginalFilename().lastIndexOf("."));
-            String uploadDirectory = "src/main/resources/static/images/user-photos/";
 
             if (applicationUser.getPhoto() != null) {
-                Path oldFileNameAndPath = Paths.get(uploadDirectory, applicationUser.getPhoto());
+                Path oldFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, applicationUser.getPhoto());
                 Files.delete(oldFileNameAndPath);
             }
 
-            Path newFileNameAndPath = Paths.get(uploadDirectory, fileName);
+            Path newFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, fileName);
             Files.write(newFileNameAndPath, file.getBytes());
 
             applicationUser.setPhoto(fileName);
@@ -96,8 +100,7 @@ public class ApplicationUserService implements UserDetailsService {
     public void deletePhoto(ApplicationUser applicationUser) throws IOException {
         if (applicationUser.getPhoto() != null) {
 
-            String uploadDirectory = "src/main/resources/static/images/user-photos/";
-            Path oldFileNameAndPath = Paths.get(uploadDirectory, applicationUser.getPhoto());
+            Path oldFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, applicationUser.getPhoto());
             Files.delete(oldFileNameAndPath);
 
             applicationUser.setPhoto(null);
@@ -110,7 +113,10 @@ public class ApplicationUserService implements UserDetailsService {
 
     public void changeApplicationUserLocked(Long applicationUserId) {
         ApplicationUser user = applicationUserRepository.findById(applicationUserId).orElseThrow(() ->
-                new IllegalStateException("User with id " + applicationUserId + " not found!"));
+                new IllegalStateException(getExceptionMessage(
+                        "exception.app-user.id-not-found", applicationUserId.toString())
+                )
+        );
         user.setLocked(!user.isLocked());
         applicationUserRepository.save(user);
     }
@@ -128,5 +134,15 @@ public class ApplicationUserService implements UserDetailsService {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return applicationUserRepository.findAll(sort);
+    }
+
+    // ----- supplementary -----
+    public String getExceptionMessage(String propertyKey, String parameter) {
+        return String.format(
+                ResourceBundle
+                        .getBundle("exception", LocaleContextHolder.getLocale())
+                        .getString(propertyKey),
+                parameter
+        );
     }
 }

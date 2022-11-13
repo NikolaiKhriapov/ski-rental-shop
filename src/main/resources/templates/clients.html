@@ -192,11 +192,12 @@
                                 <button class="button" th:text="#{clients.button.edit}"/>
                             </a>
                         </td>
-                        <td th:width="1">
+                        <td th:width="1" th:if="${oneClient.getApplicationUser == null && oneClient.getListOfBookings.size == 0}">
                             <form th:method="DELETE" th:action="@{'/admin/clients/' + ${oneClient.id}}">
                                 <input class="button" type="submit" th:value="#{clients.button.delete}"/>
                             </form>
                         </td>
+                        <td th:width="1" th:if="${oneClient.getApplicationUser != null}"></td>
                     </tr>
                 </table>
 

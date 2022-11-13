@@ -7,6 +7,7 @@ import my.project.skirentalshop.repository.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,25 +35,27 @@ public class BookingService {
     // ----- show all bookings -----
     public List<Booking> showAllBookings() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-        switch (applicationUserRole) {
+        ApplicationUserRole role = applicationUser.getApplicationUserRole();
+        switch (role) {
             case ADMIN -> {
                 return bookingRepository.findAllByOrderById();
             }
             case CLIENT -> {
                 return bookingRepository.findAllByClientId(applicationUser.getClient().getId());
             }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
     }
 
     // ----- add new booking -----
     public Booking createNewBooking() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
+        ApplicationUserRole role = applicationUser.getApplicationUserRole();
 
         Booking newBooking = new Booking();
-        switch (applicationUserRole) {
+        switch (role) {
             case ADMIN -> {
                 return newBooking;
             }
@@ -60,34 +63,43 @@ public class BookingService {
                 newBooking.setClient(applicationUser.getClient());
                 return newBooking;
             }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
     }
 
     public void addNewBookingToDB(Booking newBooking) {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-        switch (applicationUserRole) {
+        ApplicationUserRole role = applicationUser.getApplicationUserRole();
+        switch (role) {
             case ADMIN -> {
             }
             case CLIENT -> {
+                Long clientId = applicationUser.getClient().getId();
                 Client updatedClient = clientRepository.findById(applicationUser.getClient().getId()).orElseThrow(() ->
-                        new IllegalStateException("Client with id = " + applicationUser.getClient().getId() + " not found!"));
+                        new IllegalStateException(getExceptionMessage(
+                                "exception.client.id-not-found", clientId.toString()
+                        ))
+                );
                 updatedClient.setName(newBooking.getClient().getName());
                 updatedClient.setPhone1(newBooking.getClient().getPhone1());
 
                 newBooking.setClient(updatedClient);
                 applicationUser.setClient(newBooking.getClient());
             }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
         bookingRepository.save(newBooking);
     }
 
     // ----- edit booking info / show one booking -----
-    public Booking showOneBookingById(Long id) {
-        return bookingRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Booking with id = " + id + " not found!"));
+    public Booking showOneBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
+        ));
     }
 
     public List<Rider> showAvailableExistingRidersForClientForBooking(Long bookingToBeUpdatedId) {
@@ -122,7 +134,9 @@ public class BookingService {
 
                 return allRidersForClient;
             }
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + role + " does not exist");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
     }
 
@@ -189,12 +203,14 @@ public class BookingService {
         bookingToBeUpdated.getClient().setPhone1(updatedBookingInfo.getClient().getPhone1());
         //update applicationUser, if needed (applicationUser gets updated anyway, but after reauthorization)
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-        switch (applicationUserRole) {
+        ApplicationUserRole role = applicationUser.getApplicationUserRole();
+        switch (role) {
             case ADMIN -> {
             }
             case CLIENT -> applicationUser.setClient(bookingToBeUpdated.getClient());
-            default -> throw new IllegalArgumentException("ApplicationUserRole " + applicationUserRole + " not found!");
+            default -> throw new IllegalArgumentException(
+                    getExceptionMessage("exception.app-user.role-not-found", role.toString())
+            );
         }
         //update booking
         bookingToBeUpdated.setDateOfArrival(updatedBookingInfo.getDateOfArrival());
@@ -265,7 +281,9 @@ public class BookingService {
                 .toList();
 
         if (equipment.size() > 1) {
-            throw new IllegalStateException("More than 2 pieces of equipment of type " + type + " have been chosen!");
+            throw new IllegalStateException(
+                    getExceptionMessage("exception.equipment.many-of-type", type.toString())
+            );
         } else if (equipment.size() < 1) {
             return null;
         } else {
@@ -295,9 +313,10 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public Rider showOneRiderById(Long id) {
-        return riderRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Rider with id = " + id + " not found!"));
+    public Rider showOneRiderById(Long riderId) {
+        return riderRepository.findById(riderId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.rider.id-not-found", riderId.toString())
+        ));
     }
 
     // ----- delete booking -----
@@ -389,5 +408,15 @@ public class BookingService {
     // ----- ClientHomeController / show upcoming bookings for the client -----
     public List<Booking> showCurrentBookingsForClient(Long clientId) {
         return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date());
+    }
+
+    // ----- supplementary -----
+    public String getExceptionMessage(String propertyKey, String parameter) {
+        return String.format(
+                ResourceBundle
+                        .getBundle("exception", LocaleContextHolder.getLocale())
+                        .getString(propertyKey),
+                parameter
+        );
     }
 }

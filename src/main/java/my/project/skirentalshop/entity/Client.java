@@ -30,7 +30,7 @@ public class Client {
     @ToString.Exclude
     private List<Booking> listOfBookings;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL) //TODO: check
+    @OneToOne(mappedBy = "client", cascade = CascadeType.MERGE)
     @ToString.Exclude
     private ApplicationUser applicationUser;
 
