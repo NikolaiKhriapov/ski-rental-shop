@@ -52,6 +52,6 @@ public class AuthenticationController {
     public String defaultAfterLogin() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-        return "redirect:/" + applicationUserRole;
+        return "redirect:/" + applicationUserRole.toString().toLowerCase();
     }
 }
