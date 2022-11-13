@@ -49,31 +49,21 @@ CREATE TABLE equipment
     binding_size VARCHAR(255)
 );
 
-CREATE TABLE rider_assigned_equipment
-(
-    id                   BIGINT NOT NULL PRIMARY KEY,
-    snowboard_id         BIGINT REFERENCES equipment,
-    snowboard_boots_id   BIGINT REFERENCES equipment,
-    ski_id               BIGINT REFERENCES equipment,
-    ski_boots_id         BIGINT REFERENCES equipment,
-    helmet_id            BIGINT REFERENCES equipment,
-    jacket_id            BIGINT REFERENCES equipment,
-    gloves_id            BIGINT REFERENCES equipment,
-    pants_id             BIGINT REFERENCES equipment,
-    protective_shorts_id BIGINT REFERENCES equipment,
-    knee_protection_id   BIGINT REFERENCES equipment
-);
-
 CREATE TABLE booking_rider_equipment_link
 (
-    id                          BIGINT NOT NULL PRIMARY KEY,
-    booking_id                  BIGINT REFERENCES booking,
-    rider_id                    BIGINT REFERENCES rider,
-    rider_assigned_equipment_id BIGINT REFERENCES rider_assigned_equipment
+    id         BIGINT NOT NULL PRIMARY KEY,
+    booking_id BIGINT REFERENCES booking,
+    rider_id   BIGINT REFERENCES rider
 );
 
-CREATE TABLE link_requested_equipment
+CREATE TABLE link_to_requested_equipment
 (
     booking_rider_equipment_link_id BIGINT NOT NULL REFERENCES booking_rider_equipment_link,
-    rider_requested_equipment       INTEGER
+    rider_requested_equipment       VARCHAR(255)
+);
+
+CREATE TABLE link_to_assigned_equipment
+(
+    booking_rider_equipment_link_id BIGINT NOT NULL REFERENCES booking_rider_equipment_link,
+    rider_assigned_equipment_id     BIGINT NOT NULL REFERENCES equipment
 );

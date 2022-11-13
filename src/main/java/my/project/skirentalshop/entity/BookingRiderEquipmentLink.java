@@ -23,10 +23,12 @@ public class BookingRiderEquipmentLink {
     private Rider rider;
 
     @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
-    @CollectionTable(joinColumns = @JoinColumn)
+    @CollectionTable(name = "link_to_requested_equipment")
+    @Enumerated(EnumType.STRING)
     private List<TypesOfEquipment> riderRequestedEquipment;
 
     @ManyToMany
+    @JoinTable(name = "link_to_assigned_equipment")
     private List<Equipment> riderAssignedEquipment;
 
     public BookingRiderEquipmentLink(Booking booking,
