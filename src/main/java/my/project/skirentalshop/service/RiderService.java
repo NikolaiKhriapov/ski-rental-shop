@@ -55,14 +55,18 @@ public class RiderService {
     }
 
     // ----- add new -----
+    public Booking showOneBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElseThrow(() ->
+                new IllegalStateException("Booking with id = " + bookingId + " not found!"));
+    }
+
     public void addNewRiderToDB(Rider rider, Long bookingId) {
         riderRepository.save(rider);
 
         if (bookingId != null) {
             List<BookingRiderEquipmentLink> links = rider.getListOfBookingRiderEquipmentLinks();
             links.add(new BookingRiderEquipmentLink(
-                    bookingRepository.findById(bookingId).orElseThrow(() ->
-                            new IllegalStateException("Booking with id = " + bookingId + " not found!")),
+                    showOneBookingById(bookingId),
                     rider,
                     new ArrayList<>(),
                     new ArrayList<>())

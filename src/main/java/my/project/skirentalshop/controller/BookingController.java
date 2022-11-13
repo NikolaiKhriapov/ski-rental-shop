@@ -93,7 +93,7 @@ public class BookingController {
                                                 @PathVariable("riderId") Long riderToBeUpdatedId,
                                                 @ModelAttribute("link") BookingRiderEquipmentLink updatedLink) {
         bookingService.updateRiderRequestedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, updatedLink);
-        return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
+        return "redirect:/" + applicationUserRole + "/riders/" + riderToBeUpdatedId + "?bookingId=" + bookingToBeUpdatedId;
     }
 
     @PatchMapping("/{bookingId}/rider-assigned-equipment/{riderId}")

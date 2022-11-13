@@ -274,7 +274,7 @@
                                 (${action == 'update'} ? PATCH : '')"
                       th:action="@{'/' + ${role} + '/riders' + ${action == 'create' ? (bookingId != null ? '?bookingId=' + bookingId : '')
                                                                           : ''}
-                                                   + ${action == 'update' ? '/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
+                                                             + ${action == 'update' ? '/' + riderId + (bookingId != null ? '?bookingId=' + bookingId : '')
                                                                           : ''}}"
                       th:object="${rider}">
                     <table>

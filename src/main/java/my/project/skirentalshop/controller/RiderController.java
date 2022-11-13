@@ -32,7 +32,7 @@ public class RiderController {
 
     // ----- add new -----
     @GetMapping("/new")
-    public String create( @RequestParam(value = "bookingId", required = false) Long bookingId,
+    public String create(@RequestParam(value = "bookingId", required = false) Long bookingId,
                          Model model) {
         model.addAttribute("action", "create");
         model.addAttribute("rider", new Rider());
@@ -54,7 +54,7 @@ public class RiderController {
         if (bookingId == null) {
             return "redirect:/" + applicationUserRole + "/riders/";
         } else {
-            return "redirect:/" + applicationUserRole + "/riders/new?bookingId=" + bookingId;
+            return "redirect:/" + applicationUserRole + "/riders/" + rider.getId() + "?bookingId=" + bookingId;
         }
     }
 
@@ -89,7 +89,7 @@ public class RiderController {
         if (bookingId == null) {
             return "redirect:/" + applicationUserRole + "/riders";
         } else {
-            return "redirect:/" + applicationUserRole + "/bookings/" + bookingId;
+            return "redirect:/" + applicationUserRole + "/riders/" + riderId + "?bookingId=" + bookingId;
         }
     }
 
