@@ -10,32 +10,27 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
-@Table(name = "client")
 public class Client {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    @Column(name = "id")
     private Long id;
 
     @NotEmpty(message = "{validation.client.invalid-name}")
-    @Column(name = "name")
     private String name;
 
     @Pattern(regexp = "(\\d\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2})", message = "{validation.client.invalid-phone-number}")
-    @Column(name = "phone1")
     private String phone1;
 
     @Pattern(regexp = "(\\d\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2})|(^$)", message = "{validation.client.invalid-phone-number}")
-    @Column(name = "phone2")
     private String phone2;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.MERGE)
     @ToString.Exclude
     private List<Booking> listOfBookings;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL) //TODO: check
     @ToString.Exclude
     private ApplicationUser applicationUser;
 

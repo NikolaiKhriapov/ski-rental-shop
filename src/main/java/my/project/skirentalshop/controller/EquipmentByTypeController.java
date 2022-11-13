@@ -31,7 +31,7 @@ public class EquipmentByTypeController {
     @GetMapping
     public String showAll(@PathVariable("type") String type, Model model) {
         model.addAttribute("action", "showAll");
-        model.addAttribute("listOfEquipment", equipmentService.showAllEquipment(type));
+        model.addAttribute("listOfEquipment", equipmentService.showAllEquipmentByType(type));
         return "equipment_by_type";
     }
 
@@ -60,10 +60,8 @@ public class EquipmentByTypeController {
     @GetMapping("/{equipmentId}")
     public String showOne(@PathVariable("type") String type,
                           @PathVariable("equipmentId") Long equipmentId, Model model) {
-        System.out.println("!!!!!" + equipmentService.showOneEquipmentById(equipmentId, type).toString());
         model.addAttribute("action", "update");
-        model.addAttribute("equipment",
-                equipmentService.showOneEquipmentById(equipmentId, type));
+        model.addAttribute("equipment", equipmentService.showOneEquipmentById(equipmentId, type));
         return "equipment_by_type";
     }
 
@@ -107,9 +105,8 @@ public class EquipmentByTypeController {
                                      Model model) {
         model.addAttribute("action", "showAll");
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
-        model.addAttribute("listOfEquipment", equipmentService.sortAllEquipmentByParameter(
-                parameter, sortDirection, type)
-        );
+        model.addAttribute("listOfEquipment",
+                equipmentService.sortAllEquipmentByParameter(parameter, sortDirection, type));
         return "equipment_by_type";
     }
 }

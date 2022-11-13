@@ -3,24 +3,26 @@ package my.project.skirentalshop.entity.enums;
 import java.util.ResourceBundle;
 
 public enum TypesOfEquipment {
-    SNOWBOARD("snowboard", "snowboards"),
-    SNOWBOARD_BOOTS("snowboard-boots", "snowboard-boots"),
-    SKI("ski", "ski"),
-    SKI_BOOTS("ski-boots", "ski-boots"),
-    HELMET("helmet", "helmets"),
-    JACKET("jacket", "jackets"),
-    GLOVES("gloves", "gloves"),
-    PANTS("pants", "pants"),
-    PROTECTIVE_SHORTS("protective-shorts", "protective-shorts"),
-    KNEE_PROTECTION("knee-protection", "knee-protection");
+    SNOWBOARD("snowboard", "snowboards", "snowboard"),
+    SNOWBOARD_BOOTS("snowboard-boots", "snowboard-boots", "snowboardBoots"),
+    SKI("ski", "ski", "ski"),
+    SKI_BOOTS("ski-boots", "ski-boots", "skiBoots"),
+    HELMET("helmet", "helmets", "helmet"),
+    JACKET("jacket", "jackets", "jacket"),
+    GLOVES("gloves", "gloves", "gloves"),
+    PANTS("pants", "pants", "pants"),
+    PROTECTIVE_SHORTS("protective-shorts", "protective-shorts", "protectiveShorts"),
+    KNEE_PROTECTION("knee-protection", "knee-protection", "kneeProtection");
 
-    public final String nameSingle;
-    public final String namePlural;
+    public final String nameSingularDash;
+    public final String namePluralDash;
+    public final String nameSingularCamel;
     private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("equipment");
 
-    TypesOfEquipment(String nameSingle, String namePlural) {
-        this.nameSingle = nameSingle;
-        this.namePlural = namePlural;
+    TypesOfEquipment(String nameSingularDash, String namePluralDash, String nameSingularCamel) {
+        this.nameSingularDash = nameSingularDash;
+        this.namePluralDash = namePluralDash;
+        this.nameSingularCamel = nameSingularCamel;
     }
 
     @Override
@@ -30,7 +32,9 @@ public enum TypesOfEquipment {
 
     public static TypesOfEquipment convertToEnumField(String inputType) {
         for (TypesOfEquipment oneType : TypesOfEquipment.values()) {
-            if (oneType.nameSingle.equalsIgnoreCase(inputType) || oneType.namePlural.equalsIgnoreCase(inputType)) {
+            if (oneType.nameSingularDash.equalsIgnoreCase(inputType) ||
+                    oneType.namePluralDash.equalsIgnoreCase(inputType) ||
+                    oneType.nameSingularCamel.equalsIgnoreCase(inputType)) {
                 return oneType;
             }
         }

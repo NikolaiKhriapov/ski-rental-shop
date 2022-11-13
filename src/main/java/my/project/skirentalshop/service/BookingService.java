@@ -19,21 +19,22 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final ClientRepository clientRepository;
     private final EquipmentRepository equipmentRepository;
+    private final RiderRepository riderRepository;
 
     @Autowired
     public BookingService(BookingRepository bookingRepository,
                           ClientRepository clientRepository,
-                          EquipmentRepository equipmentRepository) {
+                          EquipmentRepository equipmentRepository, RiderRepository riderRepository) {
         this.bookingRepository = bookingRepository;
         this.clientRepository = clientRepository;
         this.equipmentRepository = equipmentRepository;
+        this.riderRepository = riderRepository;
     }
 
     // ----- show all bookings -----
     public List<Booking> showAllBookings() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole applicationUserRole = applicationUser.getApplicationUserRole();
-
         switch (applicationUserRole) {
             case ADMIN -> {
                 return bookingRepository.findAllByOrderById();
@@ -138,23 +139,7 @@ public class BookingService {
             if (checkIfBookingsOverlap(booking, oneBooking)) {
                 for (Rider rider : getListOfRiders(oneBooking.getId())) {
                     BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider.getId());
-                    switch (typeOfEquipment) {
-                        case SNOWBOARD ->
-                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboard());
-                        case SNOWBOARD_BOOTS ->
-                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSnowboardBoots());
-                        case SKI -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSki());
-                        case SKI_BOOTS ->
-                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getSkiBoots());
-                        case HELMET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getHelmet());
-                        case JACKET -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getJacket());
-                        case GLOVES -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getGloves());
-                        case PANTS -> listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getPants());
-                        case PROTECTIVE_SHORTS ->
-                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getProtectiveShorts());
-                        case KNEE_PROTECTION ->
-                                listOfAvailableEquipment.remove(link.getRiderAssignedEquipment().getKneeProtection());
-                    }
+                    listOfAvailableEquipment.remove(getEquipmentByType(link.getRiderAssignedEquipment(), typeOfEquipment));
                 }
             }
         }
@@ -185,7 +170,6 @@ public class BookingService {
         for (BookingRiderEquipmentLink oneLink : booking.getListOfBookingRiderEquipmentLinks()) {
             listOfRiders.add(oneLink.getRider());
         }
-
         return listOfRiders;
     }
 
@@ -233,78 +217,72 @@ public class BookingService {
 
     public void setRiderAssignedEquipment(Long bookingToBeUpdatedId,
                                           Long riderToBeUpdatedId,
-                                          RiderAssignedEquipment updatedRiderAssignedEquipment) {
+                                          RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
+        List<Equipment> riderAssignedEquipment = new ArrayList<>();
+        if (riderAssignedEquipmentDTO.getSnowboard().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboard());
+        }
+        if (riderAssignedEquipmentDTO.getSnowboardBoots().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboardBoots());
+        }
+        if (riderAssignedEquipmentDTO.getSki().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSki());
+        }
+        if (riderAssignedEquipmentDTO.getSkiBoots().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSkiBoots());
+        }
+        if (riderAssignedEquipmentDTO.getHelmet().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getHelmet());
+        }
+        if (riderAssignedEquipmentDTO.getJacket().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getJacket());
+        }
+        if (riderAssignedEquipmentDTO.getGloves().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getGloves());
+        }
+        if (riderAssignedEquipmentDTO.getPants().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getPants());
+        }
+        if (riderAssignedEquipmentDTO.getProtectiveShorts().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getProtectiveShorts());
+        }
+        if (riderAssignedEquipmentDTO.getKneeProtection().getId() != null) {
+            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getKneeProtection());
+        }
+
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
-
-        BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, riderToBeUpdatedId);
-        RiderAssignedEquipment riderAssignedEquipment = link.getRiderAssignedEquipment();
-
-        if (updatedRiderAssignedEquipment.getSnowboard().getId() != null) {
-            riderAssignedEquipment.setSnowboard(updatedRiderAssignedEquipment.getSnowboard());
-        }
-        if (updatedRiderAssignedEquipment.getSnowboardBoots().getId() != null) {
-            riderAssignedEquipment.setSnowboardBoots(updatedRiderAssignedEquipment.getSnowboardBoots());
-        }
-        if (updatedRiderAssignedEquipment.getSki().getId() != null) {
-            riderAssignedEquipment.setSki(updatedRiderAssignedEquipment.getSki());
-        }
-        if (updatedRiderAssignedEquipment.getSkiBoots().getId() != null) {
-            riderAssignedEquipment.setSkiBoots(updatedRiderAssignedEquipment.getSkiBoots());
-        }
-        if (updatedRiderAssignedEquipment.getHelmet().getId() != null) {
-            riderAssignedEquipment.setHelmet(updatedRiderAssignedEquipment.getHelmet());
-        }
-        if (updatedRiderAssignedEquipment.getJacket().getId() != null) {
-            riderAssignedEquipment.setJacket(updatedRiderAssignedEquipment.getJacket());
-        }
-        if (updatedRiderAssignedEquipment.getGloves().getId() != null) {
-            riderAssignedEquipment.setGloves(updatedRiderAssignedEquipment.getGloves());
-        }
-        if (updatedRiderAssignedEquipment.getPants().getId() != null) {
-            riderAssignedEquipment.setPants(updatedRiderAssignedEquipment.getPants());
-        }
-        if (updatedRiderAssignedEquipment.getProtectiveShorts().getId() != null) {
-            riderAssignedEquipment.setProtectiveShorts(updatedRiderAssignedEquipment.getProtectiveShorts());
-        }
-        if (updatedRiderAssignedEquipment.getKneeProtection().getId() != null) {
-            riderAssignedEquipment.setKneeProtection(updatedRiderAssignedEquipment.getKneeProtection());
-        }
-
-        link.setRiderAssignedEquipment(riderAssignedEquipment);
-        booking.getListOfBookingRiderEquipmentLinks().remove(link);
-        booking.getListOfBookingRiderEquipmentLinks().add(link);
+        getBookingRiderEquipmentLink(booking, riderToBeUpdatedId).setRiderAssignedEquipment(riderAssignedEquipment);
         bookingRepository.save(booking);
+    }
+
+    public boolean containsEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
+        return listOfEquipment.stream().anyMatch(oneEquipment -> oneEquipment.getType() == type);
+    }
+
+    public Equipment getEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
+        List<Equipment> equipment = listOfEquipment.stream()
+                .filter(oneEquipment -> oneEquipment.getType() == type)
+                .toList();
+
+        if (equipment.size() > 1) {
+            throw new IllegalStateException("More than 2 pieces of equipment of type " + type + " have been chosen!");
+        } else if (equipment.size() < 1) {
+            return null;
+        } else {
+            return equipment.get(0);
+        }
     }
 
     public void removeRiderFromBooking(Long bookingToBeUpdatedId, Long riderToBeRemovedId) {
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
-
         BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, riderToBeRemovedId);
-        unassignRiderAssignedEquipment(booking, link);
 
-        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
-        links.remove(link);
+        link.setRiderAssignedEquipment(new ArrayList<>());
+        link.setBooking(null);
+        link.setRider(null);
 
-        bookingRepository.save(booking);
-    }
-
-    public void unassignRiderAssignedEquipment(Booking booking, BookingRiderEquipmentLink link) {
-        RiderAssignedEquipment riderAssignedEquipment = link.getRiderAssignedEquipment();
-
-        riderAssignedEquipment.setSnowboard(null);
-        riderAssignedEquipment.setSnowboardBoots(null);
-        riderAssignedEquipment.setSki(null);
-        riderAssignedEquipment.setSkiBoots(null);
-        riderAssignedEquipment.setHelmet(null);
-        riderAssignedEquipment.setJacket(null);
-        riderAssignedEquipment.setGloves(null);
-        riderAssignedEquipment.setPants(null);
-        riderAssignedEquipment.setProtectiveShorts(null);
-        riderAssignedEquipment.setKneeProtection(null);
-
-        link.setRiderAssignedEquipment(riderAssignedEquipment);
         booking.getListOfBookingRiderEquipmentLinks().remove(link);
-        booking.getListOfBookingRiderEquipmentLinks().add(link);
+
         bookingRepository.save(booking);
     }
 
@@ -313,20 +291,13 @@ public class BookingService {
         Rider rider = showOneRiderById(riderId);
 
         booking.getListOfBookingRiderEquipmentLinks()
-                .add(new BookingRiderEquipmentLink(booking, rider, new RiderAssignedEquipment(), new ArrayList<>()));
+                .add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new ArrayList<>()));
         bookingRepository.save(booking);
     }
 
-    public Rider showOneRiderById(Long riderId) {
-        //workaround, just so not to use riderService.showOneRiderById(Long riderId)
-        //1 and only 1 rider will be found
-        return showAllBookings().stream()
-                .map(booking -> Objects.requireNonNull(booking.getListOfBookingRiderEquipmentLinks().stream()
-                                .filter(link -> Objects.equals(link.getRider().getId(), riderId))
-                                .findAny().orElse(null))
-                        .getRider())
-                .findAny()
-                .orElse(null);
+    public Rider showOneRiderById(Long id) {
+        return riderRepository.findById(id).orElseThrow(() ->
+                new IllegalStateException("Rider with id = " + id + " not found!"));
     }
 
     // ----- delete booking -----

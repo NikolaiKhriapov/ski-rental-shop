@@ -6,56 +6,43 @@ import javax.persistence.*;
 
 import static my.project.skirentalshop.entity.enums.TypesOfEquipment.*;
 
-@Entity
 @NoArgsConstructor
 @Data
-@Table(name = "rider_assigned_equipment")
-public class RiderAssignedEquipment {
+public class RiderAssignedEquipmentDTO {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "snowboard_id")
     private Equipment snowboard;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "snowboard_boots_id")
     private Equipment snowboardBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ski_id")
     private Equipment ski;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ski_boots_id")
     private Equipment skiBoots;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "helmet_id")
     private Equipment helmet;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "jacket_id")
     private Equipment jacket;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gloves_id")
     private Equipment gloves;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pants_id")
     private Equipment pants;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "protective_shorts_id")
     private Equipment protectiveShorts;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "knee_protection_id")
     private Equipment kneeProtection;
 
     @OneToOne(mappedBy = "riderAssignedEquipment")

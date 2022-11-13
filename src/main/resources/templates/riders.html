@@ -229,7 +229,7 @@
                         <td th:text="${oneRider.height}"/>
                         <td th:text="${oneRider.weight}"/>
                         <td th:text="#{${'riders.sex.' + oneRider.sex}}"/>
-                        <td th:text="#{${'equipment.foot-size.' + oneRider.footSize}}"/>
+                        <td th:text="#{${'equipment.size.' + oneRider.footSize}}"/>
                         <td th:if="${role == 'admin'}"
                             th:width="1">
                             <a th:href="@{'/' + ${role} + '/riders/' + ${oneRider.id}}">
@@ -337,7 +337,7 @@
                                 <select id="select-foot-size" name="footSize">
                                     <option th:each="i : ${T(my.project.skirentalshop.entity.enums.FootSize).values}"
                                             th:value="${i.name}"
-                                            th:text="#{${'equipment.foot-size.' + i}}"
+                                            th:text="#{${'equipment.size.' + i}}"
                                             th:selected="${action == 'create'} ? false :
                                                         (${action == 'update'} ? ${rider.footSize.toString == i.toString} : false)">
                                     </option>

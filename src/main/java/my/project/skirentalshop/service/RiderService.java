@@ -64,7 +64,7 @@ public class RiderService {
                     bookingRepository.findById(bookingId).orElseThrow(() ->
                             new IllegalStateException("Booking with id = " + bookingId + " not found!")),
                     rider,
-                    new RiderAssignedEquipment(),
+                    new ArrayList<>(),
                     new ArrayList<>())
             );
             riderRepository.save(rider);

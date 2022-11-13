@@ -7,45 +7,41 @@ import my.project.skirentalshop.validation.EquipmentSize;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Data
 @EquipmentSize
-@Table(name = "equipment")
 public class Equipment {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    @Column(name = "id")
-    Long id;
+    private Long id;
 
-    @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    TypesOfEquipment type;
+    private TypesOfEquipment type;
 
     @NotBlank(message = "{validation.equipment.invalid-name.not-empty}")
     @Size(message = "{validation.equipment.invalid-name.size}")
-    @Column(name = "name")
-    String name;
+    private String name;
 
-    @Column(name = "condition")
     @Enumerated(EnumType.STRING)
-    EquipmentCondition condition;
+    private EquipmentCondition condition;
 
-    @Column(name = "size")
-    String size;
+    private String size;
 
-    @Column(name = "stiffness")
     @Enumerated(EnumType.STRING)
-    Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
+    private Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
 
-    @Column(name = "arch")
     @Enumerated(EnumType.STRING)
-    Arch arch; //Snowboard
+    private Arch arch; //Snowboard
 
-    @Column(name = "binding_size")
     @Enumerated(EnumType.STRING)
-    BindingSize bindingSize; //Snowboard
+    private BindingSize bindingSize; //Snowboard
+
+    @ManyToMany(mappedBy = "riderAssignedEquipment")
+    @ToString.Exclude
+    private List<BookingRiderEquipmentLink> bookingRiderEquipmentLink;
 }

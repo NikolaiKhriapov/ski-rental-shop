@@ -22,7 +22,7 @@ public class EquipmentService {
     }
 
     // ----- show all -----
-    public List<Equipment> showAllEquipment(String type) {
+    public List<Equipment> showAllEquipmentByType(String type) {
         return equipmentRepository.findAllByTypeOrderById(TypesOfEquipment.convertToEnumField(type));
     }
 
@@ -90,7 +90,8 @@ public class EquipmentService {
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         List<Equipment> allEquipmentSortedByParameter = equipmentRepository.findAll(sort);
 
-        allEquipmentSortedByParameter.removeIf(i -> !(i.getType().equals(TypesOfEquipment.convertToEnumField(type))));
+        allEquipmentSortedByParameter
+                .removeIf(oneEquipment -> !(oneEquipment.getType().equals(TypesOfEquipment.convertToEnumField(type))));
         return allEquipmentSortedByParameter;
     }
 

@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static my.project.skirentalshop.entity.enums.TypesOfEquipment.*;
-
 @Controller
 @RequestMapping("/{applicationUserRole}/bookings")
 @SuppressWarnings("SpringMVCViewInspection")
@@ -56,26 +54,16 @@ public class BookingController {
 
     // ----- edit -----
     @GetMapping("/{bookingId}")
-    public String showOne(@PathVariable("applicationUserRole") String applicationUserRole,
-                          @PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
+    public String showOne(@PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
         Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
 
         model.addAttribute("action", "update");
         model.addAttribute("booking", bookingToBeUpdated);
+        model.addAttribute("bookingService", bookingService);
+        model.addAttribute("riderAssignedEquipmentDTO", new RiderAssignedEquipmentDTO());
         model.addAttribute("existingRiderToBeAddedId", 0L);
         model.addAttribute("allAvailableRidersForClient",
                 bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
-
-        model.addAttribute("allAvailableSnowboards", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SNOWBOARD));
-        model.addAttribute("allAvailableSnowboardBoots", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SNOWBOARD_BOOTS));
-        model.addAttribute("allAvailableSki", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SKI));
-        model.addAttribute("allAvailableSkiBoots", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, SKI_BOOTS));
-        model.addAttribute("allAvailableHelmets", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, HELMET));
-        model.addAttribute("allAvailableJackets", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, JACKET));
-        model.addAttribute("allAvailableGloves", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, GLOVES));
-        model.addAttribute("allAvailablePants", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PANTS));
-        model.addAttribute("allAvailableProtectiveShorts", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, PROTECTIVE_SHORTS));
-        model.addAttribute("allAvailableKneeProtection", bookingService.showAllAvailableEquipmentByType(bookingToBeUpdated, KNEE_PROTECTION));
         return "bookings";
     }
 
@@ -87,7 +75,9 @@ public class BookingController {
         if (bindingResult.hasErrors()) {
             bookingService.resetListOfRiders(updatedBookingInfo, bookingToBeUpdatedId);
             model.addAttribute("action", "update");
+            model.addAttribute("bookingService", bookingService);
             model.addAttribute("booking", updatedBookingInfo);
+            model.addAttribute("riderAssignedEquipmentDTO", new RiderAssignedEquipmentDTO());
             model.addAttribute("existingRiderToBeAddedId", 0L);
             model.addAttribute("allAvailableRidersForClient",
                     bookingService.showAvailableExistingRidersForClientForBooking(bookingToBeUpdatedId));
@@ -110,8 +100,8 @@ public class BookingController {
     public String updateRiderAssignedEquipment(@PathVariable("applicationUserRole") String applicationUserRole,
                                                @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                                @PathVariable("riderId") Long riderToBeUpdatedId,
-                                               @ModelAttribute("oneLink.riderAssignedEquipment") RiderAssignedEquipment riderAssignedEquipment) {
-        bookingService.setRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipment);
+                                               @ModelAttribute("riderAssignedEquipmentDTO") RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
+        bookingService.setRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipmentDTO);
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
@@ -161,8 +151,7 @@ public class BookingController {
 
     // ----- search -----
     @GetMapping("/search")
-    public String showBySearch(@PathVariable("applicationUserRole") String applicationUserRole,
-                               @RequestParam("search") String search,
+    public String showBySearch(@RequestParam("search") String search,
                                Model model) {
         model.addAttribute("action", "search");
         model.addAttribute("listOfBookings", bookingService.showBookingsBySearch(search));
@@ -172,8 +161,7 @@ public class BookingController {
 
     // ----- sort -----
     @GetMapping("/sort")
-    public String sortByParameter(@PathVariable("applicationUserRole") String applicationUserRole,
-                                  @RequestParam("parameter") String parameter,
+    public String sortByParameter(@RequestParam("parameter") String parameter,
                                   @RequestParam("sortDirection") String sortDirection,
                                   Model model) {
         model.addAttribute("action", "showAll");

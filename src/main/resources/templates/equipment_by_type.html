@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="#{${typeOfEquipment.namePlural + '.title'}}"/>
+    <title th:text="#{${typeOfEquipment.namePluralDash + '.title'}}"/>
     <link rel="stylesheet" th:href="@{${#themes.code('stylesheet')}}"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -137,12 +137,12 @@
             <div th:if="${action == 'showAll' || action == 'search'}" class="table">
 
                 <!--Header-->
-                <h1 th:if="${action == 'showAll'}" th:text="#{${typeOfEquipment.namePlural + '.header.show-all'}}"/>
+                <h1 th:if="${action == 'showAll'}" th:text="#{${typeOfEquipment.namePluralDash + '.header.show-all'}}"/>
                 <h1 th:if="${action == 'search'}" th:text="#{equipment.search.header}"/>
 
                 <!--Search-->
                 <form th:method="GET"
-                      th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/search'}">
+                      th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/search'}">
                     <label for="input-search"></label>
                     <input id="input-search" style="width:200px"
                            type="text" th:name="search"
@@ -159,37 +159,37 @@
                         <th th:width="50">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.id}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.id}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=id&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- name -->
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.name}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.name}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=name&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- condition -->
                         <th>
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.condition}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.condition}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=condition&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- snowboardSize -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.snowboard-size}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.snowboard-size}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- skiSize -->
                         <th th:if="${typeOfEquipment.name == 'SKI'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.ski-size}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.ski-size}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- bootsSize -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD_BOOTS' || typeOfEquipment.name == 'SKI_BOOTS'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.boots-size}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.boots-size}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- clothesSize -->
                         <th th:if="${typeOfEquipment.name == 'HELMET'            || typeOfEquipment.name == 'JACKET' ||
@@ -197,27 +197,27 @@
                                      typeOfEquipment.name == 'PROTECTIVE_SHORTS' || typeOfEquipment.name == 'KNEE_PROTECTION'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.clothes-size}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.clothes-size}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=size&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- stiffness -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD' || typeOfEquipment.name == 'SNOWBOARD_BOOTS' ||
                                      typeOfEquipment.name == 'SKI'       || typeOfEquipment.name == 'SKI_BOOTS'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.stiffness}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.stiffness}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=stiffness&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- arch -->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.arch}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.arch}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=arch&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <!-- bindingSize -->
                         <!--/*@thymesVar id="SNOWBOARD" type="my.project.skirentalshop.entity.enums.TypesOfEquipment"*/-->
                         <th th:if="${typeOfEquipment.name == 'SNOWBOARD'}">
                             <a th:if="${action == 'search'}" th:text="#{equipment.parameter.binding-size.header}"/>
                             <a th:if="${action == 'showAll'}" th:text="#{equipment.parameter.binding-size.header}"
-                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"/>
+                               th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/sort?parameter=bindingSize&sortDirection=' + ${reverseSortDirection}}"/>
                         </th>
                         <th></th>
                         <th></th>
@@ -243,7 +243,7 @@
                         <!-- bootsSize -->
                         <td th:if="${oneEquipment.type == typeOfEquipment &&
                                      (typeOfEquipment.name == 'SNOWBOARD_BOOTS' || typeOfEquipment.name == 'SKI_BOOTS')}"
-                            th:text="#{${'equipment.foot-size.' + oneEquipment.size}}"/>
+                            th:text="#{${'equipment.size.' + oneEquipment.size}}"/>
                         <!-- clothesSize -->
                         <td th:if="${oneEquipment.type == typeOfEquipment &&
                                      (typeOfEquipment.name == 'HELMET'            || typeOfEquipment.name == 'JACKET' ||
@@ -266,7 +266,7 @@
                         <!-- Edit button -->
                         <td th:if="${oneEquipment.type == typeOfEquipment}"
                             th:width="1">
-                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/' + ${oneEquipment.id}}">
+                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/' + ${oneEquipment.id}}">
                                 <button class="button" th:text="#{equipment.button.edit}"/>
                             </a>
                         </td>
@@ -274,7 +274,7 @@
                         <td th:if="${oneEquipment.type == typeOfEquipment}"
                             th:width="1">
                             <form th:method="DELETE"
-                                  th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/' + ${oneEquipment.id}}">
+                                  th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/' + ${oneEquipment.id}}">
                                 <input class="button" type="submit" th:value="#{equipment.button.delete}"/>
                             </form>
                         </td>
@@ -285,14 +285,14 @@
 
                 <!--Go to "new"-->
                 <div th:if="${action == 'showAll'}">
-                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/new'}">
-                        <button class="button" th:text="#{${typeOfEquipment.namePlural + '.button.add-new'}}"/>
+                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/new'}">
+                        <button class="button" th:text="#{${typeOfEquipment.namePluralDash + '.button.add-new'}}"/>
                     </a>
                 </div>
 
                 <!--Return to "show-all"-->
                 <div th:if="${action == 'search'}">
-                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural}}">
+                    <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash}}">
                         <button class="button" th:text="#{equipment.button.return}"/>
                     </a>
                 </div>
@@ -302,14 +302,14 @@
             <div th:if="${action == 'create' || action == 'update'}" class="new-edit">
 
                 <!--Header-->
-                <h1 th:if="${action == 'create'}" th:text="#{${typeOfEquipment.namePlural + '.header.add-new'}}"/>
-                <h1 th:if="${action == 'update'}" th:text="#{${typeOfEquipment.namePlural + '.header.edit'}}"/>
+                <h1 th:if="${action == 'create'}" th:text="#{${typeOfEquipment.namePluralDash + '.header.add-new'}}"/>
+                <h1 th:if="${action == 'update'}" th:text="#{${typeOfEquipment.namePluralDash + '.header.edit'}}"/>
 
                 <!--Input parameters-->
                 <form th:method="${action == 'create'} ? POST :
                                 (${action == 'update'} ? PATCH : '')"
-                      th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + ${action == 'create' ? '' : ''}
-                                                                                       + ${action == 'update' ? '/' + equipmentId : ''}}"
+                      th:action="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + ${action == 'create' ? '' : ''}
+                                                                                           + ${action == 'update' ? '/' + equipmentId : ''}}"
                       th:object="${equipment}">
                     <div th:switch="${typeOfEquipment}">
                         <table>
@@ -376,7 +376,7 @@
                                     <select id="select-foot-size" name="size">
                                         <option th:each="i : ${T(my.project.skirentalshop.entity.enums.FootSize).values}"
                                                 th:value="${i.name}"
-                                                th:text="#{${'equipment.foot-size.' + i}}"
+                                                th:text="#{${'equipment.size.' + i}}"
                                                 th:selected="${action == 'create'} ? false :
                                                             (${action == 'update'} ? ${equipment.size == i.name} : false)">
                                         </option>
@@ -459,7 +459,7 @@
                     <div>
                         <input th:if="${action == 'create'}"
                                class="button" type="submit"
-                               th:value="#{${typeOfEquipment.namePlural + '.button.add-new'}}"/>
+                               th:value="#{${typeOfEquipment.namePluralDash + '.button.add-new'}}"/>
                         <input th:if="${action == 'update'}"
                                class="button" type="submit" th:value="#{equipment.button.save}"/>
                     </div>
@@ -468,7 +468,7 @@
                 </form>
 
                 <!--Return to "show-all"-->
-                <a th:href="@{'/admin/equipment/' + ${typeOfEquipment}}">
+                <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash}}">
                     <button class="button" th:text="#{equipment.button.return}"/>
                 </a>
 

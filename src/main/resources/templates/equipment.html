@@ -120,7 +120,7 @@
                  th:each="typeOfEquipment : ${T(my.project.skirentalshop.entity.enums.TypesOfEquipment).values}">
 
                 <!--Header-->
-                <h1 th:text="#{${typeOfEquipment.namePlural + '.title'}}"/>
+                <h1 th:text="#{${typeOfEquipment.namePluralDash + '.title'}}"/>
 
                 <!--Table-->
                 <table>
@@ -185,7 +185,7 @@
                         <!-- bootsSize -->
                         <td th:if="${oneEquipment.type == typeOfEquipment &&
                                      (typeOfEquipment.name == 'SNOWBOARD_BOOTS' || typeOfEquipment.name == 'SKI_BOOTS')}"
-                            th:text="#{${'equipment.foot-size.' + oneEquipment.size}}"/>
+                            th:text="#{${'equipment.size.' + oneEquipment.size}}"/>
                         <!-- clothesSize -->
                         <td th:if="${oneEquipment.type == typeOfEquipment &&
                                      (typeOfEquipment.name == 'HELMET'            || typeOfEquipment.name == 'JACKET' ||
@@ -208,7 +208,7 @@
                         <!-- Edit button -->
                         <td th:if="${oneEquipment.type == typeOfEquipment}"
                             th:width="1">
-                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePlural} + '/' + ${oneEquipment.id}}">
+                            <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash} + '/' + ${oneEquipment.id}}">
                                 <button class="button" th:text="#{equipment.button.edit}"/>
                             </a>
                         </td>

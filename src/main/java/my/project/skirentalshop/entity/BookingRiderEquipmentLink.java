@@ -9,35 +9,29 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
-@Table(name = "booking_rider_equipment_link")
 public class BookingRiderEquipmentLink {
 
     @Id
     @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
-    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Booking booking;
 
-    @ManyToOne
-    @JoinColumn(name = "rider_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Rider rider;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rider_assigned_equipment_id")
-    private RiderAssignedEquipment riderAssignedEquipment;
-
     @ElementCollection(targetClass = TypesOfEquipment.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "link_requested_equipment",
-            joinColumns = @JoinColumn(name = "booking_rider_equipment_link_id"))
+    @CollectionTable(joinColumns = @JoinColumn)
     private List<TypesOfEquipment> riderRequestedEquipment;
+
+    @ManyToMany
+    private List<Equipment> riderAssignedEquipment;
 
     public BookingRiderEquipmentLink(Booking booking,
                                      Rider rider,
-                                     RiderAssignedEquipment riderAssignedEquipment,
+                                     List<Equipment> riderAssignedEquipment,
                                      List<TypesOfEquipment> riderRequestedEquipment) {
         this.booking = booking;
         this.rider = rider;

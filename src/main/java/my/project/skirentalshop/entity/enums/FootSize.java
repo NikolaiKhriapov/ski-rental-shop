@@ -34,6 +34,6 @@ public enum FootSize {
 
     @Override
     public String toString() {
-        return resourceBundle.getString("equipment.foot-size." + name());
+        return resourceBundle.getString("equipment.size." + name());
     }
 }
