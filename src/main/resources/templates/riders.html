@@ -242,6 +242,9 @@
                                 <input class="button" type="submit" th:value="#{riders.button.delete}"/>
                             </form>
                         </td>
+                        <td th:if="${role == 'admin' && oneRider.listOfBookingRiderEquipmentLinks.size != 0}"
+                            th:width="1">
+                        </td>
                     </tr>
                 </table>
 

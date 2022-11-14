@@ -40,7 +40,11 @@ public class RiderService {
 
                 List<Rider> listOfAllRiders = riderRepository.findAllByOrderById();
                 for (Rider oneRider : listOfAllRiders) {
-                    for (BookingRiderEquipmentLink oneLink : oneRider.getListOfBookingRiderEquipmentLinks()) {
+                    List<BookingRiderEquipmentLink> links = oneRider.getListOfBookingRiderEquipmentLinks();
+                    if (links == null) {
+                        links = new ArrayList<>();
+                    }
+                    for (BookingRiderEquipmentLink oneLink : links) {
                         if (Objects.equals(oneLink.getBooking().getClient().getId(), applicationUser.getClient().getId())) {
                             if (!allRidersForClient.contains(oneRider)) {
                                 allRidersForClient.add(oneRider);
@@ -65,15 +69,18 @@ public class RiderService {
 
     public void addNewRiderToDB(Rider rider, Long bookingId) {
         riderRepository.save(rider);
-
         if (bookingId != null) {
             List<BookingRiderEquipmentLink> links = rider.getListOfBookingRiderEquipmentLinks();
+            if (links == null) {
+                links = new ArrayList<>();
+            }
             links.add(new BookingRiderEquipmentLink(
                     showOneBookingById(bookingId),
                     rider,
                     new ArrayList<>(),
                     new ArrayList<>())
             );
+            rider.setListOfBookingRiderEquipmentLinks(links);
             riderRepository.save(rider);
         }
     }
@@ -91,7 +98,9 @@ public class RiderService {
         } else {
             Rider rider = showOneRiderById(riderId);
             List<BookingRiderEquipmentLink> links = rider.getListOfBookingRiderEquipmentLinks();
-
+            if (links == null) {
+                links = new ArrayList<>();
+            }
             return links.stream()
                     .filter(link -> Objects.equals(link.getBooking().getId(), bookingId))
                     .findAny()

@@ -48,11 +48,4 @@ public class Booking {
         this.dateOfArrival = dateOfArrival;
         this.dateOfReturn = dateOfReturn;
     }
-
-    public List<BookingRiderEquipmentLink> getListOfBookingRiderEquipmentLinks() {
-        if (listOfBookingRiderEquipmentLinks == null) {
-            listOfBookingRiderEquipmentLinks = new ArrayList<>();
-        }
-        return listOfBookingRiderEquipmentLinks;
-    }
 }

@@ -41,6 +41,7 @@ public class AuthenticationController {
     @PostMapping("/sign-up")
     public String signUp(@ModelAttribute("registrationRequest") @Valid RegistrationRequest registrationRequest,
                          BindingResult bindingResult) {
+        registrationService.checkIfApplicationUserExists(registrationRequest.getEmail(), bindingResult);
         if (bindingResult.hasErrors()) {
             return "authentication/sign_up";
         }

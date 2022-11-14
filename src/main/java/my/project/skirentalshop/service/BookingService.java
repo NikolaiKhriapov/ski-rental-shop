@@ -162,6 +162,9 @@ public class BookingService {
 
     public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Long riderId) {
         List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
 
         return links.stream()
                 .filter(link -> Objects.equals(link.getRider().getId(), riderId))
@@ -181,7 +184,11 @@ public class BookingService {
         List<Rider> listOfRiders = new ArrayList<>();
         Booking booking = showOneBookingById(bookingId);
 
-        for (BookingRiderEquipmentLink oneLink : booking.getListOfBookingRiderEquipmentLinks()) {
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        for (BookingRiderEquipmentLink oneLink : links) {
             listOfRiders.add(oneLink.getRider());
         }
         return listOfRiders;
@@ -193,6 +200,9 @@ public class BookingService {
         //the list again
         Booking bookingToUpdateFrom = showOneBookingById(bookingToUpdateFromId);
         List<BookingRiderEquipmentLink> linksToUpdateFrom = bookingToUpdateFrom.getListOfBookingRiderEquipmentLinks();
+        if (linksToUpdateFrom == null) {
+            linksToUpdateFrom = new ArrayList<>();
+        }
         bookingToBeUpdated.setListOfBookingRiderEquipmentLinks(linksToUpdateFrom);
     }
 
@@ -223,7 +233,11 @@ public class BookingService {
                                               BookingRiderEquipmentLink updatedLink) {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
 
-        for (BookingRiderEquipmentLink oneLink : bookingToBeUpdated.getListOfBookingRiderEquipmentLinks()) {
+        List<BookingRiderEquipmentLink> links = bookingToBeUpdated.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        for (BookingRiderEquipmentLink oneLink : links) {
             if (oneLink.getRider().getId().equals(riderToBeUpdatedId)) {
                 oneLink.setRiderRequestedEquipment(updatedLink.getRiderRequestedEquipment());
             }
@@ -234,36 +248,57 @@ public class BookingService {
     public void setRiderAssignedEquipment(Long bookingToBeUpdatedId,
                                           Long riderToBeUpdatedId,
                                           RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
+
         List<Equipment> riderAssignedEquipment = new ArrayList<>();
-        if (riderAssignedEquipmentDTO.getSnowboard().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboard());
+        if (riderAssignedEquipmentDTO.getSnowboard() != null) {
+            if (riderAssignedEquipmentDTO.getSnowboard().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboard());
+            }
         }
-        if (riderAssignedEquipmentDTO.getSnowboardBoots().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboardBoots());
+        if (riderAssignedEquipmentDTO.getSnowboardBoots() != null) {
+            if (riderAssignedEquipmentDTO.getSnowboardBoots().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSnowboardBoots());
+            }
         }
-        if (riderAssignedEquipmentDTO.getSki().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSki());
+        if (riderAssignedEquipmentDTO.getSki() != null) {
+            if (riderAssignedEquipmentDTO.getSki().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSki());
+            }
         }
-        if (riderAssignedEquipmentDTO.getSkiBoots().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSkiBoots());
+        if (riderAssignedEquipmentDTO.getSkiBoots() != null) {
+            if (riderAssignedEquipmentDTO.getSkiBoots().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getSkiBoots());
+            }
         }
-        if (riderAssignedEquipmentDTO.getHelmet().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getHelmet());
+        if (riderAssignedEquipmentDTO.getHelmet() != null) {
+            if (riderAssignedEquipmentDTO.getHelmet().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getHelmet());
+            }
         }
-        if (riderAssignedEquipmentDTO.getJacket().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getJacket());
+        if (riderAssignedEquipmentDTO.getJacket() != null) {
+            if (riderAssignedEquipmentDTO.getJacket().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getJacket());
+            }
         }
-        if (riderAssignedEquipmentDTO.getGloves().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getGloves());
+        if (riderAssignedEquipmentDTO.getGloves() != null) {
+            if (riderAssignedEquipmentDTO.getGloves().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getGloves());
+            }
         }
-        if (riderAssignedEquipmentDTO.getPants().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getPants());
+        if (riderAssignedEquipmentDTO.getPants() != null) {
+            if (riderAssignedEquipmentDTO.getPants().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getPants());
+            }
         }
-        if (riderAssignedEquipmentDTO.getProtectiveShorts().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getProtectiveShorts());
+        if (riderAssignedEquipmentDTO.getProtectiveShorts() != null) {
+            if (riderAssignedEquipmentDTO.getProtectiveShorts().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getProtectiveShorts());
+            }
         }
-        if (riderAssignedEquipmentDTO.getKneeProtection().getId() != null) {
-            riderAssignedEquipment.add(riderAssignedEquipmentDTO.getKneeProtection());
+        if (riderAssignedEquipmentDTO.getKneeProtection() != null) {
+            if (riderAssignedEquipmentDTO.getKneeProtection().getId() != null) {
+                riderAssignedEquipment.add(riderAssignedEquipmentDTO.getKneeProtection());
+            }
         }
 
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
@@ -299,7 +334,11 @@ public class BookingService {
         link.setBooking(null);
         link.setRider(null);
 
-        booking.getListOfBookingRiderEquipmentLinks().remove(link);
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        links.remove(link);
 
         bookingRepository.save(booking);
     }
@@ -308,8 +347,11 @@ public class BookingService {
         Booking booking = showOneBookingById(bookingId);
         Rider rider = showOneRiderById(riderId);
 
-        booking.getListOfBookingRiderEquipmentLinks()
-                .add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new ArrayList<>()));
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        links.add(new BookingRiderEquipmentLink(booking, rider, new ArrayList<>(), new ArrayList<>()));
         bookingRepository.save(booking);
     }
 

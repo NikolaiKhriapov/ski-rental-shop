@@ -68,11 +68,4 @@ public class ApplicationUser implements UserDetails {
         this.password = password;
         this.applicationUserRole = applicationUserRole;
     }
-
-    public Client getClient() {
-        if (client == null) {
-            return new Client();
-        }
-        return client;
-    }
 }

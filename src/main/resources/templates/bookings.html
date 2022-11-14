@@ -382,7 +382,7 @@
 
                 <!--Edit list of riders-->
                 <div th:if="${action == 'update'}" class="booking-edit-rider">
-                    <div th:if="${booking.listOfBookingRiderEquipmentLinks.size > 0}">
+                    <div th:if="${booking.listOfBookingRiderEquipmentLinks != null && booking.listOfBookingRiderEquipmentLinks.size > 0}">
                         <table>
                             <tr th:each="oneLink : ${booking.listOfBookingRiderEquipmentLinks}">
                                 <td th:text="${oneLink.rider.id}" style="vertical-align:top" th:width="1"/>
@@ -460,7 +460,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div th:unless="${booking.listOfBookingRiderEquipmentLinks.size > 0}"
+                    <div th:unless="${booking.listOfBookingRiderEquipmentLinks != null && booking.listOfBookingRiderEquipmentLinks.size > 0}"
                          th:text="#{bookings.empty-table}"/>
                     <br>
                 </div>

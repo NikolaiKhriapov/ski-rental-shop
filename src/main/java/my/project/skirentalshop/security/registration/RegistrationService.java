@@ -6,6 +6,7 @@ import my.project.skirentalshop.security.applicationUser.ApplicationUserRole;
 import my.project.skirentalshop.security.applicationUser.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 @Service
 public class RegistrationService {
@@ -15,6 +16,12 @@ public class RegistrationService {
     @Autowired
     public RegistrationService(ApplicationUserService applicationUserService) {
         this.applicationUserService = applicationUserService;
+    }
+
+    public void checkIfApplicationUserExists(String email, BindingResult bindingResult) {
+        if (applicationUserService.checkIfExists(email)) {
+            bindingResult.rejectValue("email", "auth.sign-up.email-taken");
+        }
     }
 
     public void register(RegistrationRequest registrationRequest) {

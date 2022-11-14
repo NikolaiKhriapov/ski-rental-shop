@@ -40,11 +40,4 @@ public class Rider {
     @OneToMany(mappedBy = "rider", cascade = CascadeType.MERGE)
     @ToString.Exclude
     private List<BookingRiderEquipmentLink> listOfBookingRiderEquipmentLinks;
-
-    public List<BookingRiderEquipmentLink> getListOfBookingRiderEquipmentLinks() {
-        if (listOfBookingRiderEquipmentLinks == null) {
-            listOfBookingRiderEquipmentLinks = new ArrayList<>();
-        }
-        return listOfBookingRiderEquipmentLinks;
-    }
 }
