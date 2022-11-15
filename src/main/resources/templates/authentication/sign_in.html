@@ -65,6 +65,10 @@
                        type="password" name="password" th:placeholder="#{auth.sign-in.placeholder.password}"/>
             </span>
 
+            <div style="color:red"
+                 th:if="${param.error}" th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+            </div>
+
             <a href="/sign-up" th:text="#{auth.sign-in.link.sign-up}"/>
             <br>
             <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{auth.sign-in.button.sign-in}"/>
