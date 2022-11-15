@@ -23,12 +23,12 @@ public class EquipmentService {
         this.equipmentRepository = equipmentRepository;
     }
 
-    // ----- show all -----
+    // ----- EquipmentByTypeController / show all -----
     public List<Equipment> showAllEquipmentByType(String type) {
         return equipmentRepository.findAllByTypeOrderById(TypesOfEquipment.convertToEnumField(type));
     }
 
-    // ----- add new -----
+    // ----- EquipmentByTypeController / add new -----
     public Equipment createNewEquipmentByType(String type) {
         Equipment equipment = new Equipment();
         equipment.setType(TypesOfEquipment.convertToEnumField(type));
@@ -39,7 +39,7 @@ public class EquipmentService {
         equipmentRepository.save(equipment);
     }
 
-    // ----- edit -----
+    // ----- EquipmentByTypeController / edit -----
     public Equipment showOneEquipmentById(Long id, String type) {
         Equipment equipment = equipmentRepository.findByIdAndType(id, TypesOfEquipment.convertToEnumField(type));
         if (equipment == null) {
@@ -76,19 +76,19 @@ public class EquipmentService {
         equipmentRepository.save(equipmentToBeUpdated);
     }
 
-    // ----- delete -----
+    // ----- EquipmentByTypeController / delete -----
     public void deleteEquipmentById(Long id) {
         equipmentRepository.deleteById(id);
     }
 
-    // ----- search -----
+    // ----- EquipmentByTypeController / search -----
     public List<Equipment> showEquipmentBySearch(String search, String type) {
         return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(
                 TypesOfEquipment.convertToEnumField(type), search
         );
     }
 
-    // ----- sort -----
+    // ----- EquipmentByTypeController / sort -----
     public List<Equipment> sortAllEquipmentByParameter(String parameter, String sortDirection, String type) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
@@ -99,7 +99,7 @@ public class EquipmentService {
         return allEquipmentSortedByParameter;
     }
 
-    // ----- show broken equipment -----
+    // ----- EquipmentController / show equipment (broken / in service) -----
     public List<Equipment> showEquipmentByCondition(EquipmentCondition condition) {
         return equipmentRepository.findAllByConditionOrderByType(condition);
     }

@@ -101,7 +101,7 @@ public class BookingController {
                                                @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                                @PathVariable("riderId") Long riderToBeUpdatedId,
                                                @ModelAttribute("riderAssignedEquipmentDTO") RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
-        bookingService.setRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipmentDTO);
+        bookingService.updateRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipmentDTO);
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 

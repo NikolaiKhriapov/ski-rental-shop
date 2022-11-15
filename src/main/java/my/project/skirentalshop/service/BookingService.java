@@ -32,7 +32,7 @@ public class BookingService {
         this.riderRepository = riderRepository;
     }
 
-    // ----- show all bookings -----
+    // ----- BookingController / show all bookings -----
     public List<Booking> showAllBookings() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
@@ -49,7 +49,7 @@ public class BookingService {
         }
     }
 
-    // ----- add new booking -----
+    // ----- BookingController / add new booking -----
     public Booking createNewBooking() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
@@ -95,11 +95,23 @@ public class BookingService {
         bookingRepository.save(newBooking);
     }
 
-    // ----- edit booking info / show one booking -----
+    // ----- BookingController / edit booking info -----
     public Booking showOneBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
                 getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
         ));
+    }
+
+    public void resetListOfRiders(Booking bookingToBeUpdated, Long bookingToUpdateFromId) {
+        //because we did not populate booking.listOfBookingRiderEquipmentLinks, it became NULL after pulling it from
+        //the view, and after failing validation we are being thrown to the view again, therefore we need to populate
+        //the list again
+        Booking bookingToUpdateFrom = showOneBookingById(bookingToUpdateFromId);
+        List<BookingRiderEquipmentLink> linksToUpdateFrom = bookingToUpdateFrom.getListOfBookingRiderEquipmentLinks();
+        if (linksToUpdateFrom == null) {
+            linksToUpdateFrom = new ArrayList<>();
+        }
+        bookingToBeUpdated.setListOfBookingRiderEquipmentLinks(linksToUpdateFrom);
     }
 
     public List<Rider> showAvailableExistingRidersForClientForBooking(Long bookingToBeUpdatedId) {
@@ -138,72 +150,6 @@ public class BookingService {
                     getExceptionMessage("exception.app-user.role-not-found", role.toString())
             );
         }
-    }
-
-    public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
-        //get all equipment by type
-        List<Equipment> listOfAvailableEquipment = equipmentRepository.findAllByTypeOrderBySize(typeOfEquipment);
-        //remove equipment that is broken, in service, or otherwise not ready
-        listOfAvailableEquipment.removeIf(oneEquipment ->
-                oneEquipment.getCondition().equals(EquipmentCondition.BROKEN) ||
-                        oneEquipment.getCondition().equals(EquipmentCondition.SERVICE) ||
-                        oneEquipment.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
-        for (Booking oneBooking : showAllBookings()) {
-            if (checkIfBookingsOverlap(booking, oneBooking)) {
-                for (Rider rider : getListOfRiders(oneBooking.getId())) {
-                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider.getId());
-                    listOfAvailableEquipment.remove(getEquipmentByType(link.getRiderAssignedEquipment(), typeOfEquipment));
-                }
-            }
-        }
-        return listOfAvailableEquipment;
-    }
-
-    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Long riderId) {
-        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
-        if (links == null) {
-            links = new ArrayList<>();
-        }
-
-        return links.stream()
-                .filter(link -> Objects.equals(link.getRider().getId(), riderId))
-                .findAny()
-                .orElse(null);
-    }
-
-    public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
-        return ((booking1.getDateOfArrival().after(booking2.getDateOfArrival()) || booking1.getDateOfArrival().equals(booking2.getDateOfArrival())) &&
-                (booking1.getDateOfArrival().before(booking2.getDateOfReturn()) || booking1.getDateOfArrival().equals(booking2.getDateOfReturn()))) ||
-                ((booking1.getDateOfReturn().after(booking2.getDateOfArrival()) || booking1.getDateOfReturn().equals(booking2.getDateOfArrival())) &&
-                        (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
-                (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
-    }
-
-    public List<Rider> getListOfRiders(Long bookingId) {
-        List<Rider> listOfRiders = new ArrayList<>();
-        Booking booking = showOneBookingById(bookingId);
-
-        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
-        if (links == null) {
-            links = new ArrayList<>();
-        }
-        for (BookingRiderEquipmentLink oneLink : links) {
-            listOfRiders.add(oneLink.getRider());
-        }
-        return listOfRiders;
-    }
-
-    public void resetListOfRiders(Booking bookingToBeUpdated, Long bookingToUpdateFromId) {
-        //because we did not populate booking.listOfBookingRiderEquipmentLinks, it became NULL after pulling it from
-        //the view, and after failing validation we are being thrown to the view again, therefore we need to populate
-        //the list again
-        Booking bookingToUpdateFrom = showOneBookingById(bookingToUpdateFromId);
-        List<BookingRiderEquipmentLink> linksToUpdateFrom = bookingToUpdateFrom.getListOfBookingRiderEquipmentLinks();
-        if (linksToUpdateFrom == null) {
-            linksToUpdateFrom = new ArrayList<>();
-        }
-        bookingToBeUpdated.setListOfBookingRiderEquipmentLinks(linksToUpdateFrom);
     }
 
     public void updateBookingById(Long bookingToBeUpdatedId, Booking updatedBookingInfo) {
@@ -245,9 +191,9 @@ public class BookingService {
         bookingRepository.save(bookingToBeUpdated);
     }
 
-    public void setRiderAssignedEquipment(Long bookingToBeUpdatedId,
-                                          Long riderToBeUpdatedId,
-                                          RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
+    public void updateRiderAssignedEquipment(Long bookingToBeUpdatedId,
+                                             Long riderToBeUpdatedId,
+                                             RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
 
         List<Equipment> riderAssignedEquipment = new ArrayList<>();
         if (riderAssignedEquipmentDTO.getSnowboard() != null) {
@@ -306,26 +252,6 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public boolean containsEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
-        return listOfEquipment.stream().anyMatch(oneEquipment -> oneEquipment.getType() == type);
-    }
-
-    public Equipment getEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
-        List<Equipment> equipment = listOfEquipment.stream()
-                .filter(oneEquipment -> oneEquipment.getType() == type)
-                .toList();
-
-        if (equipment.size() > 1) {
-            throw new IllegalStateException(
-                    getExceptionMessage("exception.equipment.many-of-type", type.toString())
-            );
-        } else if (equipment.size() < 1) {
-            return null;
-        } else {
-            return equipment.get(0);
-        }
-    }
-
     public void removeRiderFromBooking(Long bookingToBeUpdatedId, Long riderToBeRemovedId) {
         Booking booking = showOneBookingById(bookingToBeUpdatedId);
         BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(booking, riderToBeRemovedId);
@@ -355,13 +281,7 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public Rider showOneRiderById(Long riderId) {
-        return riderRepository.findById(riderId).orElseThrow(() -> new IllegalStateException(
-                getExceptionMessage("exception.rider.id-not-found", riderId.toString())
-        ));
-    }
-
-    // ----- delete booking -----
+    // ----- BookingController / delete booking -----
     public void deleteBookingById(Long bookingToBeDeletedId) {
         // remove riders from booking
         for (Rider oneRider : getListOfRiders(bookingToBeDeletedId)) {
@@ -374,20 +294,20 @@ public class BookingService {
         bookingRepository.delete(bookingToBeDeleted);
     }
 
-    // ----- mark booking completed -----
+    // ----- BookingController / mark booking completed -----
     public void changeBookingCompleted(Long bookingId) {
         Booking booking = showOneBookingById(bookingId);
         booking.setCompleted(!booking.isCompleted());
         bookingRepository.save(booking);
     }
 
-    // ----- search -----
+    // ----- BookingController / search -----
     public List<Booking> showBookingsBySearch(String search) {
         return bookingRepository.findAllByClientNameContainingIgnoreCaseOrClientPhone1ContainingIgnoreCaseOrClientPhone2ContainingIgnoreCase(
                 search, search, search);
     }
 
-    // ----- sort -----
+    // ----- BookingController / sort -----
     public List<Booking> sortAllBookingsByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
@@ -453,6 +373,86 @@ public class BookingService {
     }
 
     // ----- supplementary -----
+    public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
+        //get all equipment by type
+        List<Equipment> listOfAvailableEquipment = equipmentRepository.findAllByTypeOrderBySize(typeOfEquipment);
+        //remove equipment that is broken, in service, or otherwise not ready
+        listOfAvailableEquipment.removeIf(oneEquipment ->
+                oneEquipment.getCondition().equals(EquipmentCondition.BROKEN) ||
+                        oneEquipment.getCondition().equals(EquipmentCondition.SERVICE) ||
+                        oneEquipment.getCondition().equals(EquipmentCondition.UNKNOWN));
+        //remove already assigned equipment
+        for (Booking oneBooking : showAllBookings()) {
+            if (checkIfBookingsOverlap(booking, oneBooking)) {
+                for (Rider rider : getListOfRiders(oneBooking.getId())) {
+                    BookingRiderEquipmentLink link = getBookingRiderEquipmentLink(oneBooking, rider.getId());
+                    listOfAvailableEquipment.remove(getEquipmentByType(link.getRiderAssignedEquipment(), typeOfEquipment));
+                }
+            }
+        }
+        return listOfAvailableEquipment;
+    }
+
+    public BookingRiderEquipmentLink getBookingRiderEquipmentLink(Booking booking, Long riderId) {
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+
+        return links.stream()
+                .filter(link -> Objects.equals(link.getRider().getId(), riderId))
+                .findAny()
+                .orElse(null);
+    }
+
+    public boolean checkIfBookingsOverlap(Booking booking1, Booking booking2) {
+        return ((booking1.getDateOfArrival().after(booking2.getDateOfArrival()) || booking1.getDateOfArrival().equals(booking2.getDateOfArrival())) &&
+                (booking1.getDateOfArrival().before(booking2.getDateOfReturn()) || booking1.getDateOfArrival().equals(booking2.getDateOfReturn()))) ||
+                ((booking1.getDateOfReturn().after(booking2.getDateOfArrival()) || booking1.getDateOfReturn().equals(booking2.getDateOfArrival())) &&
+                        (booking1.getDateOfReturn().before(booking2.getDateOfReturn()) || booking1.getDateOfReturn().equals(booking2.getDateOfReturn()))) ||
+                (booking1.getDateOfArrival().before(booking2.getDateOfArrival()) && booking1.getDateOfReturn().after(booking2.getDateOfReturn()));
+    }
+
+    public List<Rider> getListOfRiders(Long bookingId) {
+        List<Rider> listOfRiders = new ArrayList<>();
+        Booking booking = showOneBookingById(bookingId);
+
+        List<BookingRiderEquipmentLink> links = booking.getListOfBookingRiderEquipmentLinks();
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        for (BookingRiderEquipmentLink oneLink : links) {
+            listOfRiders.add(oneLink.getRider());
+        }
+        return listOfRiders;
+    }
+
+    public boolean containsEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
+        return listOfEquipment.stream().anyMatch(oneEquipment -> oneEquipment.getType() == type);
+    }
+
+    public Equipment getEquipmentByType(List<Equipment> listOfEquipment, TypesOfEquipment type) {
+        List<Equipment> equipment = listOfEquipment.stream()
+                .filter(oneEquipment -> oneEquipment.getType() == type)
+                .toList();
+
+        if (equipment.size() > 1) {
+            throw new IllegalStateException(
+                    getExceptionMessage("exception.equipment.many-of-type", type.toString())
+            );
+        } else if (equipment.size() < 1) {
+            return null;
+        } else {
+            return equipment.get(0);
+        }
+    }
+
+    public Rider showOneRiderById(Long riderId) {
+        return riderRepository.findById(riderId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.rider.id-not-found", riderId.toString())
+        ));
+    }
+
     public String getExceptionMessage(String propertyKey, String parameter) {
         return String.format(
                 ResourceBundle

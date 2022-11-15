@@ -61,12 +61,6 @@ public class RiderService {
     }
 
     // ----- add new -----
-    public Booking showOneBookingById(Long bookingId) {
-        return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
-                getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
-        ));
-    }
-
     public void addNewRiderToDB(Rider rider, Long bookingId) {
         riderRepository.save(rider);
         if (bookingId != null) {
@@ -145,6 +139,12 @@ public class RiderService {
     }
 
     // ----- supplementary -----
+    public Booking showOneBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
+                getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
+        ));
+    }
+
     public String getExceptionMessage(String propertyKey, String parameter) {
         return String.format(
                 ResourceBundle
