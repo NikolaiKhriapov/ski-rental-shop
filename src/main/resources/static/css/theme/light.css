@@ -241,7 +241,7 @@ h2 {
 
 .content .new-edit table {
     width: auto;
-    margin-left: 20%;
+    margin-left: auto;
     margin-right: auto;
     text-align: left;
 }
