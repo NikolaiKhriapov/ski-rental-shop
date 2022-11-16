@@ -1,4 +1,4 @@
-# Booking Management Application for Ski Rental Shop
+# Booking Management System for Ski Rental Shop
 
 ### Technologies: 
 - Java
