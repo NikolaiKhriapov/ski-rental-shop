@@ -393,7 +393,7 @@
                                     <div th:text="#{riders.parameter.weight} + ': ' + ${oneLink.rider.weight}"/>
                                     <div th:text="#{riders.parameter.foot-size} + ': ' + #{${'equipment.size.' + oneLink.rider.footSize}}"/>
                                 </td>
-                                <td th:width="190" th:align="left">
+                                <td th:width="${role == 'admin'} ? 190" th:align="left">
                                     <div th:each="oneEquipment : ${oneLink.riderRequestedEquipment}">
                                         <div th:text="#{'equipment.type.' + ${oneEquipment.name}}"/>
                                     </div>

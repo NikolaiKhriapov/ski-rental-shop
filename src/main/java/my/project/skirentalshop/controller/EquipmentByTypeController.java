@@ -75,7 +75,7 @@ public class EquipmentByTypeController {
             return "equipment_by_type";
         }
         equipmentService.updateEquipmentById(equipmentId, updatedEquipment, type);
-        return "redirect:/admin/equipment/" + type;
+        return "redirect:/admin/equipment/" + type + "/" + equipmentId;
     }
 
     // ----- delete -----

@@ -461,16 +461,16 @@
                                class="button" type="submit"
                                th:value="#{${typeOfEquipment.namePluralDash + '.button.add-new'}}"/>
                         <input th:if="${action == 'update'}"
-                               class="button" type="submit" th:value="#{equipment.button.save}"/>
+                               class="button" type="submit" th:value="#{equipment.button.save}">
                     </div>
 
                     <br>
                 </form>
 
                 <!--Return to "show-all"-->
-                <a th:href="@{'/admin/equipment/' + ${typeOfEquipment.namePluralDash}}">
-                    <button class="button" th:text="#{equipment.button.return}"/>
-                </a>
+                <form>
+                    <input class="button" type="button" th:value="#{equipment.button.back}" onclick="history.back()">
+                </form>
 
             </div>
 
