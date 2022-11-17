@@ -42,17 +42,17 @@ public class ApplicationConfigI18n implements WebMvcConfigurer {
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames(
-                "classpath:/authentication",
-                "classpath:/navigation",
                 "classpath:/application_user",
-                "classpath:/user_admin",
-                "classpath:/user_client",
+                "classpath:/authentication",
                 "classpath:/booking",
                 "classpath:/client",
-                "classpath:/rider",
                 "classpath:/equipment",
-                "classpath:/validation",
-                "classpath:/exception"
+                "classpath:/exception",
+                "classpath:/navigation",
+                "classpath:/rider",
+                "classpath:/user_admin",
+                "classpath:/user_client",
+                "classpath:/validation"
         );
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
