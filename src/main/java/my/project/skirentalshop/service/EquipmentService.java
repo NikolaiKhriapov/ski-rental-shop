@@ -94,8 +94,9 @@ public class EquipmentService {
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         List<Equipment> allEquipmentSortedByParameter = equipmentRepository.findAll(sort);
 
-        allEquipmentSortedByParameter
-                .removeIf(oneEquipment -> !(oneEquipment.getType().equals(TypesOfEquipment.convertToEnumField(type))));
+        allEquipmentSortedByParameter.removeIf(
+                oneEquipment -> !(oneEquipment.getType().equals(TypesOfEquipment.convertToEnumField(type)))
+        );
         return allEquipmentSortedByParameter;
     }
 
@@ -113,5 +114,4 @@ public class EquipmentService {
                 parameter
         );
     }
-
 }

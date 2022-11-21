@@ -1,5 +1,6 @@
 package my.project.skirentalshop.controller;
 
+import my.project.skirentalshop.dto.RiderAssignedEquipmentDTO;
 import my.project.skirentalshop.entity.*;
 import my.project.skirentalshop.security.applicationUser.ApplicationUser;
 import my.project.skirentalshop.service.*;
@@ -100,7 +101,8 @@ public class BookingController {
     public String updateRiderAssignedEquipment(@PathVariable("applicationUserRole") String applicationUserRole,
                                                @PathVariable("bookingId") Long bookingToBeUpdatedId,
                                                @PathVariable("riderId") Long riderToBeUpdatedId,
-                                               @ModelAttribute("riderAssignedEquipmentDTO") RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
+                                               @ModelAttribute("riderAssignedEquipmentDTO")
+                                                   RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
         bookingService.updateRiderAssignedEquipment(bookingToBeUpdatedId, riderToBeUpdatedId, riderAssignedEquipmentDTO);
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }

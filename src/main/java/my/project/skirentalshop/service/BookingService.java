@@ -1,5 +1,6 @@
 package my.project.skirentalshop.service;
 
+import my.project.skirentalshop.dto.RiderAssignedEquipmentDTO;
 import my.project.skirentalshop.entity.*;
 import my.project.skirentalshop.entity.enums.EquipmentCondition;
 import my.project.skirentalshop.entity.enums.TypesOfEquipment;
@@ -194,7 +195,6 @@ public class BookingService {
     public void updateRiderAssignedEquipment(Long bookingToBeUpdatedId,
                                              Long riderToBeUpdatedId,
                                              RiderAssignedEquipmentDTO riderAssignedEquipmentDTO) {
-
         List<Equipment> riderAssignedEquipment = new ArrayList<>();
         if (riderAssignedEquipmentDTO.getSnowboard() != null) {
             if (riderAssignedEquipmentDTO.getSnowboard().getId() != null) {

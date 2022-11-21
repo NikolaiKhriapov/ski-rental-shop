@@ -95,13 +95,11 @@ public class ApplicationUserService implements UserDetailsService {
     // ----- ClientProfileController / update applicationUser info -----
     public void updatePersonalInfo(ApplicationUser applicationUserToBeUpdated,
                                    RegistrationRequest registrationRequest) {
-
         boolean emailExists = checkIfExists(registrationRequest.getEmail());
         if (!emailExists || registrationRequest.getEmail().equals(applicationUserToBeUpdated.getEmail())) {
             applicationUserToBeUpdated.getClient().setName(registrationRequest.getName());
             applicationUserToBeUpdated.getClient().setPhone1(registrationRequest.getPhone1());
             applicationUserToBeUpdated.setEmail(registrationRequest.getEmail());
-
             applicationUserRepository.save(applicationUserToBeUpdated);
         }
     }
@@ -115,13 +113,11 @@ public class ApplicationUserService implements UserDetailsService {
 
     public void updatePhoto(ApplicationUser applicationUser, MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
+
             String fileName = applicationUser.getId() + "-user-photo" + Objects.requireNonNull(file.getOriginalFilename())
                     .substring(file.getOriginalFilename().lastIndexOf("."));
 
-            if (applicationUser.getPhoto() != null) {
-                Path oldFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, applicationUser.getPhoto());
-                Files.delete(oldFileNameAndPath);
-            }
+            deletePhoto(applicationUser);
 
             Path newFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, fileName);
             Files.write(newFileNameAndPath, file.getBytes());
@@ -133,10 +129,8 @@ public class ApplicationUserService implements UserDetailsService {
 
     public void deletePhoto(ApplicationUser applicationUser) throws IOException {
         if (applicationUser.getPhoto() != null) {
-
             Path oldFileNameAndPath = Paths.get(DIRECTORY_FOR_USER_PHOTOS, applicationUser.getPhoto());
             Files.delete(oldFileNameAndPath);
-
             applicationUser.setPhoto(null);
         }
     }

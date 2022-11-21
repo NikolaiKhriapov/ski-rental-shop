@@ -1,6 +1,8 @@
-package my.project.skirentalshop.entity;
+package my.project.skirentalshop.dto;
 
 import lombok.*;
+import my.project.skirentalshop.entity.BookingRiderEquipmentLink;
+import my.project.skirentalshop.entity.Equipment;
 
 import javax.persistence.*;
 
