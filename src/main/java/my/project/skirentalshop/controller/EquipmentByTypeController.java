@@ -27,7 +27,6 @@ public class EquipmentByTypeController {
         model.addAttribute("typeOfEquipment", TypesOfEquipment.convertToEnumField(type));
     }
 
-    // ----- show all -----
     @GetMapping
     public String showAll(@PathVariable("type") String type, Model model) {
         model.addAttribute("action", "showAll");
@@ -35,7 +34,6 @@ public class EquipmentByTypeController {
         return "equipment_by_type";
     }
 
-    // ----- add new -----
     @GetMapping("/new")
     public String create(@PathVariable("type") String type,
                          Model model) {
@@ -56,7 +54,6 @@ public class EquipmentByTypeController {
         return "redirect:/admin/equipment/" + type;
     }
 
-    // ----- edit -----
     @GetMapping("/{equipmentId}")
     public String showOne(@PathVariable("type") String type,
                           @PathVariable("equipmentId") Long equipmentId, Model model) {
@@ -78,7 +75,6 @@ public class EquipmentByTypeController {
         return "redirect:/admin/equipment/" + type + "/" + equipmentId;
     }
 
-    // ----- delete -----
     @DeleteMapping("/{equipmentId}")
     public String delete(@PathVariable("type") String type,
                          @PathVariable("equipmentId") Long equipmentId) {
@@ -86,7 +82,6 @@ public class EquipmentByTypeController {
         return "redirect:/admin/equipment/" + type;
     }
 
-    // ----- search -----
     @GetMapping("/search")
     public String showAllBySearch(@PathVariable("type") String type,
                                   @RequestParam("search") String search,
@@ -97,7 +92,6 @@ public class EquipmentByTypeController {
         return "equipment_by_type";
     }
 
-    // ----- sort -----
     @GetMapping("/sort")
     public String sortAllByParameter(@PathVariable("type") String type,
                                      @RequestParam("parameter") String parameter,

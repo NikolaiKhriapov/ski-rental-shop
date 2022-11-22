@@ -22,7 +22,6 @@ public class RiderController {
         this.riderService = riderService;
     }
 
-    // ----- show all -----
     @GetMapping
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
@@ -30,7 +29,6 @@ public class RiderController {
         return "riders";
     }
 
-    // ----- add new -----
     @GetMapping("/new")
     public String create(@RequestParam(value = "bookingId", required = false) Long bookingId,
                          Model model) {
@@ -58,7 +56,6 @@ public class RiderController {
         }
     }
 
-    // ----- edit -----
     @GetMapping("/{riderId}")
     public String showOne(@PathVariable("riderId") Long riderId,
                           @RequestParam(value = "bookingId", required = false) Long bookingId,
@@ -93,7 +90,6 @@ public class RiderController {
         }
     }
 
-    // ----- delete -----
     @DeleteMapping("/{riderId}")
     public String delete(@PathVariable("applicationUserRole") String applicationUserRole,
                          @PathVariable("riderId") Long riderId) {
@@ -101,7 +97,6 @@ public class RiderController {
         return "redirect:/" + applicationUserRole + "/riders";
     }
 
-    // ----- search -----
     @GetMapping("/search")
     public String showAllBySearch(@RequestParam("search") String search,
                                   Model model) {
@@ -111,7 +106,6 @@ public class RiderController {
         return "riders";
     }
 
-    // ----- sort -----
     @GetMapping("/sort")
     public String sortAllByParameter(@RequestParam("parameter") String parameter,
                                      @RequestParam("sortDirection") String sortDirection,

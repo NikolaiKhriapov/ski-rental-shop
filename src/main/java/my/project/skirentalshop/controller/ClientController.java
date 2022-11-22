@@ -21,7 +21,6 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    // ----- show all -----
     @GetMapping
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
@@ -29,7 +28,6 @@ public class ClientController {
         return "clients";
     }
 
-    // ----- add new -----
     @GetMapping("/new")
     public String create(Model model) {
         model.addAttribute("action", "create");
@@ -48,7 +46,6 @@ public class ClientController {
         return "redirect:/admin/clients";
     }
 
-    // ----- edit -----
     @GetMapping("/{clientId}")
     public String showOne(@PathVariable("clientId") Long clientId, Model model) {
         model.addAttribute("action", "update");
@@ -68,14 +65,12 @@ public class ClientController {
         return "redirect:/admin/clients";
     }
 
-    // ----- delete -----
     @DeleteMapping("/{clientId}")
     public String delete(@PathVariable("clientId") Long clientId) {
         clientService.deleteClientById(clientId);
         return "redirect:/admin/clients";
     }
 
-    // ----- search -----
     @GetMapping("/search")
     public String showAllBySearch(@RequestParam("search") String search,
                                   Model model) {
@@ -85,7 +80,6 @@ public class ClientController {
         return "clients";
     }
 
-    // ----- sort -----
     @GetMapping("/sort")
     public String sortAllByParameter(@RequestParam("parameter") String parameter,
                                      @RequestParam("sortDirection") String sortDirection,

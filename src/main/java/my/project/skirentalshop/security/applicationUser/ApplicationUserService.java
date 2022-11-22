@@ -43,12 +43,10 @@ public class ApplicationUserService implements UserDetailsService {
         ));
     }
 
-    // ----- RegistrationService / checkIfApplicationUserExists -----
     public boolean checkIfExists(String email) {
         return applicationUserRepository.findByEmail(email).isPresent();
     }
 
-    // ----- RegistrationService / register -----
     public void signUpUser(ApplicationUser applicationUser) {
         boolean userExists = checkIfExists(applicationUser.getEmail());
         if (userExists) {
@@ -61,12 +59,10 @@ public class ApplicationUserService implements UserDetailsService {
         applicationUserRepository.save(applicationUser);
     }
 
-    // ----- AdminSettingsController / show all -----
     public List<ApplicationUser> showAllApplicationUsers() {
         return applicationUserRepository.findAllByApplicationUserRoleNot(ADMIN);
     }
 
-    // ----- AdminSettingsController / lock one -----
     public void changeApplicationUserLocked(Long applicationUserId) {
         ApplicationUser user = applicationUserRepository.findById(applicationUserId).orElseThrow(() ->
                 new IllegalStateException(getExceptionMessage(
@@ -77,7 +73,6 @@ public class ApplicationUserService implements UserDetailsService {
         applicationUserRepository.save(user);
     }
 
-    // ----- AdminSettingsController / search -----
     public List<ApplicationUser> showApplicationUsersBySearch(String search) {
         List<ApplicationUser> listOfApplicationUsers = applicationUserRepository
                 .findAllByClientNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search);
@@ -85,14 +80,12 @@ public class ApplicationUserService implements UserDetailsService {
         return listOfApplicationUsers;
     }
 
-    // ----- AdminSettingsController / sort -----
     public List<ApplicationUser> sortAllApplicationUsersByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return applicationUserRepository.findAll(sort);
     }
 
-    // ----- ClientProfileController / update applicationUser info -----
     public void updatePersonalInfo(ApplicationUser applicationUserToBeUpdated,
                                    RegistrationRequest registrationRequest) {
         boolean emailExists = checkIfExists(registrationRequest.getEmail());
@@ -135,7 +128,6 @@ public class ApplicationUserService implements UserDetailsService {
         }
     }
 
-    // ----- supplementary -----
     public String getExceptionMessage(String propertyKey, String parameter) {
         return String.format(
                 ResourceBundle

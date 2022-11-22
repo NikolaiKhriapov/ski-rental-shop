@@ -27,7 +27,6 @@ public class RiderService {
         this.bookingRepository = bookingRepository;
     }
 
-    // ----- show all -----
     public List<Rider> showAllRiders() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
@@ -60,7 +59,6 @@ public class RiderService {
         }
     }
 
-    // ----- add new -----
     public void addNewRiderToDB(Rider rider, Long bookingId) {
         riderRepository.save(rider);
         if (bookingId != null) {
@@ -79,7 +77,6 @@ public class RiderService {
         }
     }
 
-    // ----- edit -----
     public Rider showOneRiderById(Long riderId) {
         return riderRepository.findById(riderId).orElseThrow(() -> new IllegalStateException(
                 getExceptionMessage("exception.rider.id-not-found", riderId.toString())
@@ -114,7 +111,6 @@ public class RiderService {
         riderRepository.save(riderToBeUpdated);
     }
 
-    // ----- delete -----
     public void deleteRiderById(Long riderId) {
         try {
             riderRepository.deleteById(riderId);
@@ -126,19 +122,16 @@ public class RiderService {
         }
     }
 
-    // ----- search -----
     public List<Rider> showRidersBySearch(String search) {
         return riderRepository.findAllByNameContainingIgnoreCaseOrderById(search);
     }
 
-    // ----- sort -----
     public List<Rider> sortAllRidersByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return riderRepository.findAll(sort);
     }
 
-    // ----- supplementary -----
     public Booking showOneBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
                 getExceptionMessage("exception.booking.id-not-found", bookingId.toString())

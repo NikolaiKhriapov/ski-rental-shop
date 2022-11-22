@@ -33,13 +33,13 @@ public class Equipment {
     private String size;
 
     @Enumerated(EnumType.STRING)
-    private Stiffness stiffness; //Snowboard, SnowboardBoots, Ski, SkiBoots
+    private Stiffness stiffness;
 
     @Enumerated(EnumType.STRING)
-    private Arch arch; //Snowboard
+    private Arch arch;
 
     @Enumerated(EnumType.STRING)
-    private BindingSize bindingSize; //Snowboard
+    private BindingSize bindingSize;
 
     @ManyToMany(mappedBy = "riderAssignedEquipment")
     @ToString.Exclude

@@ -25,7 +25,6 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    // ----- show all -----
     @GetMapping
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
@@ -33,7 +32,6 @@ public class BookingController {
         return "bookings";
     }
 
-    // ----- add new -----
     @GetMapping("/new")
     public String create(Model model) {
         model.addAttribute("action", "create");
@@ -53,7 +51,6 @@ public class BookingController {
         return "redirect:/" + applicationUserRole + "/riders/new?bookingId=" + newBooking.getId();
     }
 
-    // ----- edit -----
     @GetMapping("/{bookingId}")
     public String showOne(@PathVariable("bookingId") Long bookingToBeUpdatedId, Model model) {
         Booking bookingToBeUpdated = bookingService.showOneBookingById(bookingToBeUpdatedId);
@@ -123,7 +120,6 @@ public class BookingController {
         return "redirect:/" + applicationUserRole + "/bookings/" + bookingToBeUpdatedId;
     }
 
-    // ----- delete -----
     @DeleteMapping("/{bookingId}")
     public String delete(@PathVariable("applicationUserRole") String applicationUserRole,
                          @PathVariable("bookingId") Long bookingId) {
@@ -143,7 +139,6 @@ public class BookingController {
         }
     }
 
-    // ----- mark completed -----
     @GetMapping("/{bookingId}/change-completed")
     public String changeCompleted(@PathVariable("applicationUserRole") String applicationUserRole,
                                   @PathVariable("bookingId") Long bookingId) {
@@ -151,7 +146,6 @@ public class BookingController {
         return "redirect:/" + applicationUserRole + "/bookings";
     }
 
-    // ----- search -----
     @GetMapping("/search")
     public String showBySearch(@RequestParam("search") String search,
                                Model model) {
@@ -161,7 +155,6 @@ public class BookingController {
         return "bookings";
     }
 
-    // ----- sort -----
     @GetMapping("/sort")
     public String sortByParameter(@RequestParam("parameter") String parameter,
                                   @RequestParam("sortDirection") String sortDirection,

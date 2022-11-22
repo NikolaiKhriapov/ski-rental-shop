@@ -19,7 +19,6 @@ public class AdminHomeController {
         this.bookingService = bookingService;
     }
 
-    // ----- admin home page -----
     @GetMapping
     public String showAdminHome(Model model) {
         model.addAttribute("allBookings", bookingService.showAllIncompleteBookings());
@@ -27,7 +26,6 @@ public class AdminHomeController {
         return "admin/admin_home";
     }
 
-    // ----- bookings for today -----
     @GetMapping("/bookings-today")
     public String showBookingsForToday(Model model) {
         Date todayBeginning = bookingService.getTodayBeginningAndEnd()[0];
@@ -38,7 +36,6 @@ public class AdminHomeController {
         return "admin/bookings_by_date";
     }
 
-    // ----- bookings for tomorrow -----
     @GetMapping("/bookings-tomorrow")
     public String showBookingsForTomorrow(Model model) {
         Date tomorrowBeginning = bookingService.getTomorrowBeginningAndEnd()[0];
@@ -49,7 +46,6 @@ public class AdminHomeController {
         return "admin/bookings_by_date";
     }
 
-    // ----- mark booking completed -----
     @GetMapping("/{bookingId}/change-completed")
     public String changeBookingCompleted(@PathVariable("bookingId") Long bookingId) {
         bookingService.changeBookingCompleted(bookingId);

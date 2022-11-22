@@ -27,7 +27,6 @@ public class ClientHomeController {
         model.addAttribute("applicationUserToBeUpdated", applicationUserToBeUpdated);
     }
 
-    // ----- client home page -----
     @GetMapping
     public String showClientMainPage(Model model) {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

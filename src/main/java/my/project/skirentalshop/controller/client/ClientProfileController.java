@@ -25,7 +25,6 @@ public class ClientProfileController {
         this.applicationUserService = applicationUserService;
     }
 
-    // ----- update applicationUser info -----
     @GetMapping
     public String showSettings(@AuthenticationPrincipal ApplicationUser applicationUserToBeUpdated,
                                Model model) {

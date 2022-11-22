@@ -33,7 +33,6 @@ public class BookingService {
         this.riderRepository = riderRepository;
     }
 
-    // ----- BookingController / show all bookings -----
     public List<Booking> showAllBookings() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
@@ -50,7 +49,6 @@ public class BookingService {
         }
     }
 
-    // ----- BookingController / add new booking -----
     public Booking createNewBooking() {
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
@@ -96,7 +94,6 @@ public class BookingService {
         bookingRepository.save(newBooking);
     }
 
-    // ----- BookingController / edit booking info -----
     public Booking showOneBookingById(Long bookingId) {
         return bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalStateException(
                 getExceptionMessage("exception.booking.id-not-found", bookingId.toString())
@@ -104,9 +101,6 @@ public class BookingService {
     }
 
     public void resetListOfRiders(Booking bookingToBeUpdated, Long bookingToUpdateFromId) {
-        //because we did not populate booking.listOfBookingRiderEquipmentLinks, it became NULL after pulling it from
-        //the view, and after failing validation we are being thrown to the view again, therefore we need to populate
-        //the list again
         Booking bookingToUpdateFrom = showOneBookingById(bookingToUpdateFromId);
         List<BookingRiderEquipmentLink> linksToUpdateFrom = bookingToUpdateFrom.getListOfBookingRiderEquipmentLinks();
         if (linksToUpdateFrom == null) {
@@ -130,7 +124,7 @@ public class BookingService {
                 List<Booking> allBookingsForClient = showAllBookings();
                 List<Booking> allBookingsForTheSameTime = showBookingsForTheDate(
                         bookingToBeUpdated.getDateOfArrival(), bookingToBeUpdated.getDateOfReturn());
-                //add all unique riders from all bookings of the client
+
                 for (Booking oneBooking : allBookingsForClient) {
                     for (Rider oneRider : getListOfRiders(oneBooking.getId())) {
                         if (!allRidersForClient.contains(oneRider)) {
@@ -138,11 +132,11 @@ public class BookingService {
                         }
                     }
                 }
-                //remove all riders that appear in client bookings for the same time
+
                 for (Booking oneBooking : allBookingsForTheSameTime) {
                     allRidersForClient.removeAll(getListOfRiders(oneBooking.getId()));
                 }
-                //remove all riders that already appear in this booking
+
                 allRidersForClient.removeAll(getListOfRiders(bookingToBeUpdated.getId()));
 
                 return allRidersForClient;
@@ -155,10 +149,10 @@ public class BookingService {
 
     public void updateBookingById(Long bookingToBeUpdatedId, Booking updatedBookingInfo) {
         Booking bookingToBeUpdated = showOneBookingById(bookingToBeUpdatedId);
-        //update client
+
         bookingToBeUpdated.getClient().setName(updatedBookingInfo.getClient().getName());
         bookingToBeUpdated.getClient().setPhone1(updatedBookingInfo.getClient().getPhone1());
-        //update applicationUser, if needed (applicationUser gets updated anyway, but after reauthorization)
+
         ApplicationUser applicationUser = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ApplicationUserRole role = applicationUser.getApplicationUserRole();
         switch (role) {
@@ -169,7 +163,7 @@ public class BookingService {
                     getExceptionMessage("exception.app-user.role-not-found", role.toString())
             );
         }
-        //update booking
+
         bookingToBeUpdated.setDateOfArrival(updatedBookingInfo.getDateOfArrival());
         bookingToBeUpdated.setDateOfReturn(updatedBookingInfo.getDateOfReturn());
         bookingRepository.save(bookingToBeUpdated);
@@ -281,50 +275,41 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    // ----- BookingController / delete booking -----
     public void deleteBookingById(Long bookingToBeDeletedId) {
-        // remove riders from booking
         for (Rider oneRider : getListOfRiders(bookingToBeDeletedId)) {
             removeRiderFromBooking(bookingToBeDeletedId, oneRider.getId());
         }
-        // delete booking
         Booking bookingToBeDeleted = showOneBookingById(bookingToBeDeletedId);
         bookingToBeDeleted.setClient(null);
         bookingRepository.save(bookingToBeDeleted);
         bookingRepository.delete(bookingToBeDeleted);
     }
 
-    // ----- BookingController / mark booking completed -----
     public void changeBookingCompleted(Long bookingId) {
         Booking booking = showOneBookingById(bookingId);
         booking.setCompleted(!booking.isCompleted());
         bookingRepository.save(booking);
     }
 
-    // ----- BookingController / search -----
     public List<Booking> showBookingsBySearch(String search) {
         return bookingRepository.findAllByClientNameContainingIgnoreCaseOrClientPhone1ContainingIgnoreCaseOrClientPhone2ContainingIgnoreCase(
                 search, search, search);
     }
 
-    // ----- BookingController / sort -----
     public List<Booking> sortAllBookingsByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return bookingRepository.findAll(sort);
     }
 
-    // ----- AdminHomeController / show all incomplete bookings -----
     public List<Booking> showAllIncompleteBookings() {
         return bookingRepository.findAllByCompletedFalseOrderByDateOfArrivalAsc();
     }
 
-    // ----- AdminHomeController / show all current bookings -----
     public List<Booking> showAllCurrentBookings() {
         return bookingRepository.findAllByDateOfArrivalBeforeAndDateOfReturnAfter(new Date(), new Date());
     }
 
-    // ----- AdminHomeController / show bookings for the date -----
     public Date[] getTodayBeginningAndEnd() {
         Calendar c1 = Calendar.getInstance();
         c1.setTime(new Date());
@@ -367,21 +352,18 @@ public class BookingService {
         return bookingRepository.findByDateOfArrivalIsBetween(dateFrom, dateTo);
     }
 
-    // ----- ClientHomeController / show upcoming bookings for the client -----
     public List<Booking> showCurrentBookingsForClient(Long clientId) {
         return bookingRepository.findAllByClientIdAndDateOfReturnAfter(clientId, new Date());
     }
 
-    // ----- supplementary -----
     public List<Equipment> showAllAvailableEquipmentByType(Booking booking, TypesOfEquipment typeOfEquipment) {
-        //get all equipment by type
         List<Equipment> listOfAvailableEquipment = equipmentRepository.findAllByTypeOrderBySize(typeOfEquipment);
-        //remove equipment that is broken, in service, or otherwise not ready
+
         listOfAvailableEquipment.removeIf(oneEquipment ->
                 oneEquipment.getCondition().equals(EquipmentCondition.BROKEN) ||
                         oneEquipment.getCondition().equals(EquipmentCondition.SERVICE) ||
                         oneEquipment.getCondition().equals(EquipmentCondition.UNKNOWN));
-        //remove already assigned equipment
+
         for (Booking oneBooking : showAllBookings()) {
             if (checkIfBookingsOverlap(booking, oneBooking)) {
                 for (Rider rider : getListOfRiders(oneBooking.getId())) {

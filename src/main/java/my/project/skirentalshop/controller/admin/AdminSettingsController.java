@@ -20,7 +20,6 @@ public class AdminSettingsController {
         this.applicationUserService = applicationUserService;
     }
 
-    // ----- show all -----
     @GetMapping
     public String showAll(Model model) {
         model.addAttribute("action", "showAll");
@@ -28,14 +27,12 @@ public class AdminSettingsController {
         return "authentication/application_user";
     }
 
-    // ----- lock one -----
     @GetMapping("/{applicationUserId}")
     public String changeLocked(@PathVariable("applicationUserId") Long applicationUserId) {
         applicationUserService.changeApplicationUserLocked(applicationUserId);
         return "redirect:/admin/application-users";
     }
 
-    // ----- search -----
     @GetMapping("/search")
     public String showAllBySearch(@RequestParam("search") String search,
                                   Model model) {
@@ -46,7 +43,6 @@ public class AdminSettingsController {
         return "authentication/application_user";
     }
 
-    // ----- sort -----
     @GetMapping("/sort")
     public String sortAllByParameter(@RequestParam("parameter") String parameter,
                                      @RequestParam("sortDirection") String sortDirection,

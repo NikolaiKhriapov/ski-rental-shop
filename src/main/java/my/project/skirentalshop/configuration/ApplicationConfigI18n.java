@@ -15,7 +15,6 @@ import java.util.Locale;
 @Configuration
 public class ApplicationConfigI18n implements WebMvcConfigurer {
 
-    //    ----- default locale of the application -----
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
@@ -23,7 +22,6 @@ public class ApplicationConfigI18n implements WebMvcConfigurer {
         return sessionLocaleResolver;
     }
 
-    //    ----- change to a different locale based on the value of the language parameter added to the request -----
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
@@ -31,13 +29,11 @@ public class ApplicationConfigI18n implements WebMvcConfigurer {
         return localeChangeInterceptor;
     }
 
-    //    ----- add the LocaleChangeInterceptor into the application's registry interceptor -----
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-    //    ----- add ResourceBundle directories (for localization) -----
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

@@ -21,7 +21,6 @@ public class EquipmentController {
         this.equipmentService = equipmentService;
     }
 
-    // ----- show broken equipment -----
     @GetMapping("/broken")
     public String showBroken(Model model) {
         model.addAttribute("equipmentCondition", BROKEN);
@@ -29,7 +28,6 @@ public class EquipmentController {
         return "equipment";
     }
 
-    // ----- show equipment in service -----
     @GetMapping("/in-service")
     public String showInService(Model model) {
         model.addAttribute("equipmentCondition", SERVICE);

@@ -21,17 +21,14 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    // ----- show all -----
     public List<Client> showAllClients() {
         return clientRepository.findAllByOrderById();
     }
 
-    // ----- add new -----
     public void addNewClientToDB(Client client) {
         clientRepository.save(client);
     }
 
-    // ----- edit -----
     public Client showOneClientById(Long clientId) {
         return clientRepository.findById(clientId).orElseThrow(() ->
                 new IllegalStateException(
@@ -50,7 +47,6 @@ public class ClientService {
         clientRepository.save(clientToBeUpdated);
     }
 
-    // ----- delete -----
     public void deleteClientById(Long clientId) {
         try {
             clientRepository.deleteById(clientId);
@@ -62,20 +58,17 @@ public class ClientService {
         }
     }
 
-    // ----- search -----
     public List<Client> showClientsBySearch(String search) {
         return clientRepository.findAllByNameContainingIgnoreCaseOrPhone1ContainingIgnoreCaseOrPhone2ContainingIgnoreCase(
                 search, search, search);
     }
 
-    // ----- sort -----
     public List<Client> sortAllClientsByParameter(String parameter, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
         return clientRepository.findAll(sort);
     }
 
-    // ----- supplementary -----
     public String getExceptionMessage(String propertyKey, String parameter) {
         return String.format(
                 ResourceBundle

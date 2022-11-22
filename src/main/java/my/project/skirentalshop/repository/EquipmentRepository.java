@@ -11,19 +11,14 @@ import java.util.List;
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
-    // ----- show all -----
     List<Equipment> findAllByTypeOrderById(TypesOfEquipment type);
 
-    // ----- edit -----
     Equipment findByIdAndType(Long id, TypesOfEquipment type);
 
-    // ----- search -----
     List<Equipment> findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(TypesOfEquipment type, String partOfName);
 
-    //// ----- edit booking info / assign equipment to riders -----
     List<Equipment> findAllByTypeOrderBySize(TypesOfEquipment type);
 
-    // ----- show equipment by condition -----
     List<Equipment> findAllByConditionOrderByType(EquipmentCondition condition);
 
 }

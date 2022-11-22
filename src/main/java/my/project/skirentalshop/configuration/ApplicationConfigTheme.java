@@ -11,7 +11,6 @@ import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 @Configuration
 public class ApplicationConfigTheme implements WebMvcConfigurer {
 
-    //    ----- default locale of the application -----
     @Bean
     public ThemeResolver themeResolver() {
         SessionThemeResolver sessionThemeResolver = new SessionThemeResolver();
@@ -19,7 +18,6 @@ public class ApplicationConfigTheme implements WebMvcConfigurer {
         return sessionThemeResolver;
     }
 
-    //    ----- change to a different theme based on the value of the parameter added to the request -----
     @Bean
     public ThemeChangeInterceptor themeChangeInterceptor() {
         ThemeChangeInterceptor themeChangeInterceptor = new ThemeChangeInterceptor();
@@ -27,7 +25,6 @@ public class ApplicationConfigTheme implements WebMvcConfigurer {
         return themeChangeInterceptor;
     }
 
-    //    ----- add the ThemeChangeInterceptor into the application's registry interceptor -----
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(themeChangeInterceptor());

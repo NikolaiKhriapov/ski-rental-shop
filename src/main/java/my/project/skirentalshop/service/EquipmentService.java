@@ -23,12 +23,10 @@ public class EquipmentService {
         this.equipmentRepository = equipmentRepository;
     }
 
-    // ----- EquipmentByTypeController / show all -----
     public List<Equipment> showAllEquipmentByType(String type) {
         return equipmentRepository.findAllByTypeOrderById(TypesOfEquipment.convertToEnumField(type));
     }
 
-    // ----- EquipmentByTypeController / add new -----
     public Equipment createNewEquipmentByType(String type) {
         Equipment equipment = new Equipment();
         equipment.setType(TypesOfEquipment.convertToEnumField(type));
@@ -39,7 +37,6 @@ public class EquipmentService {
         equipmentRepository.save(equipment);
     }
 
-    // ----- EquipmentByTypeController / edit -----
     public Equipment showOneEquipmentById(Long id, String type) {
         Equipment equipment = equipmentRepository.findByIdAndType(id, TypesOfEquipment.convertToEnumField(type));
         if (equipment == null) {
@@ -76,19 +73,16 @@ public class EquipmentService {
         equipmentRepository.save(equipmentToBeUpdated);
     }
 
-    // ----- EquipmentByTypeController / delete -----
     public void deleteEquipmentById(Long id) {
         equipmentRepository.deleteById(id);
     }
 
-    // ----- EquipmentByTypeController / search -----
     public List<Equipment> showEquipmentBySearch(String search, String type) {
         return equipmentRepository.findAllByTypeEqualsAndNameContainingIgnoreCaseOrderById(
                 TypesOfEquipment.convertToEnumField(type), search
         );
     }
 
-    // ----- EquipmentByTypeController / sort -----
     public List<Equipment> sortAllEquipmentByParameter(String parameter, String sortDirection, String type) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(parameter).ascending() : Sort.by(parameter).descending();
@@ -100,12 +94,10 @@ public class EquipmentService {
         return allEquipmentSortedByParameter;
     }
 
-    // ----- EquipmentController / show equipment (broken / in service) -----
     public List<Equipment> showEquipmentByCondition(EquipmentCondition condition) {
         return equipmentRepository.findAllByConditionOrderByType(condition);
     }
 
-    // ----- supplementary -----
     public String getExceptionMessage(String propertyKey, String parameter) {
         return String.format(
                 ResourceBundle
