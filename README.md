@@ -1,14 +1,12 @@
 # Booking Management System for Ski Rental Shop
 
 ### Technologies: 
-- Java
-- Spring Framework
-- PostgreSQL
-- HTML, Thymeleaf, CSS
+- Java,
+- Spring Framework,
+- PostgreSQL,
+- Maven,
+- HTML/CSS/Thymeleaf,
+- Git.
 
 ### Description:
-- Maintenance of database of all equipment and its characteristics;
-- Registration and management of bookings (client, riders, needed equipment, assigned equipment);
-- Support for multiple languages;
-- Support for multiple themes;
-- Types of users: Admin (management of all equipment, bookings, clients, riders, assignment of equipment), Client (management of bookings and riders related to the client).
+Web application for managing bookings at a ski rental shop. The application includes a registration and booking management system that handles client and rider information, as well as the required and assigned equipment. Support for multiple languages and themes to enhance user experience was implemented. Additionally, different user roles are used to ensure security and access control. The frontend of the application was created using HTML, Thymeleaf, and CSS.
